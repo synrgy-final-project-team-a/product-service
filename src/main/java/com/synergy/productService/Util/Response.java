@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Component
 public class Response {
-    
+
     public Boolean isRequired(Object obj){
         if(obj == null){
             return  true;

@@ -1,12 +1,15 @@
 package com.synergy.productService.Entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Data
 @Entity
 @Table(name = "kost_photo")
+@Where(clause = "deleted_at is null")
 public class KostPhoto {
 
     @Id
@@ -25,4 +28,14 @@ public class KostPhoto {
     @Lob
     @Column(name = "front_farbuilding_photo")
     private String frontFarbuildingPhoto;
+
+    @Column(name = "created_at")
+    private LocalTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalTime deletedAt;
+
 }

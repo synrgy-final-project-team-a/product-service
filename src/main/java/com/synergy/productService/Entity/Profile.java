@@ -1,12 +1,15 @@
 package com.synergy.productService.Entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Entity
 @Data
 @Table(name = "profile")
+@Where(clause = "deleted_at is null")
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,5 +43,14 @@ public class Profile {
     @Lob
     @Column(name = "gender")
     private String gender;
+
+    @Column(name = "created_at")
+    private LocalTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalTime deletedAt;
 
 }
