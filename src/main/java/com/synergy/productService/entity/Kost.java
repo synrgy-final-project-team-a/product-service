@@ -1,6 +1,5 @@
-package com.synergy.productService.Entity;
+package com.synergy.productService.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;

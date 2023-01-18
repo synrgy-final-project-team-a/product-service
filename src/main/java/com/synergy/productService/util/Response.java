@@ -1,4 +1,4 @@
-package com.synergy.productService.Util;
+package com.synergy.productService.util;
 
 import org.springframework.stereotype.Component;
 

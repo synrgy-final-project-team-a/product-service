@@ -1,6 +1,6 @@
-package com.synergy.productService.Repository;
+package com.synergy.productService.repository;
 
-import com.synergy.productService.Entity.Price;
+import com.synergy.productService.entity.Price;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

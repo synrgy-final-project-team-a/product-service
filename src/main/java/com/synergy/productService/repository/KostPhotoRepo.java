@@ -1,6 +1,6 @@
-package com.synergy.productService.Repository;
+package com.synergy.productService.repository;
 
-import com.synergy.productService.Entity.KostPhoto;
+import com.synergy.productService.entity.KostPhoto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
