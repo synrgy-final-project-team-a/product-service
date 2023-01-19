@@ -104,4 +104,7 @@ public class Kost {
     @Column(name = "deleted_at")
     private LocalTime deletedAt;
 
+    @Column(name = "enabled")
+    private Boolean enabled;
+
 }
