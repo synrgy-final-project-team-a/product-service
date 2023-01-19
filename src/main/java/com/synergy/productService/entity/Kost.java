@@ -56,12 +56,6 @@ public class Kost {
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
-    @Column(name = "quantity_room", nullable = false)
-    private Integer quantityRoom;
-
-    @Column(name = "available_room", nullable = false)
-    private Integer availableRoom;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kost_photo_id", nullable = false)
     private KostPhoto kostPhoto;

@@ -40,4 +40,6 @@ public class BathroomFacility {
     @Column(name = "deleted_at")
     private LocalTime deletedAt;
 
+    JSONOb
+
 }
