@@ -51,26 +51,55 @@ public class Kost {
     @Type(type = "org.hibernate.type.TextType")
     private String additionalNotes;
 
+    @Lob
+    @Column(name = "front_building_photo")
+    private String frontBuildingPhoto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    @Lob
+    @Column(name = "front_road_photo")
+    private String frontRoadPhoto;
 
+<<<<<<< HEAD
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kost_photo_id", nullable = false)
     private KostPhoto kostPhoto;
+=======
+    @Lob
+    @Column(name = "front_farbuilding_photo")
+    private String frontFarbuildingPhoto;
 
-    @ManyToMany(targetEntity = Facility.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Lob
+    @Column(name = "province")
+    private String province;
+
+    @Lob
+    @Column(name = "city")
+    private String city;
+>>>>>>> master
+
+    @Lob
+    @Column(name = "address")
+    private String address;
+
+    @Lob
+    @Column(name = "gmaps")
+    private String gmaps;
+
+    @Column(name = "location_additional_notes")
+    @Type(type = "org.hibernate.type.TextType")
+    private String locationAdditionalNotes;
+
+    @ManyToMany(targetEntity = Room.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "kost_facility",
+            name = "kost_room",
             joinColumns = {
                     @JoinColumn(name = "kost_id")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "facility_id")
+                    @JoinColumn(name = "room_id")
             }
     )
-    private List<Facility> facilityList = new ArrayList<>();
+    private List<Room> roomList = new ArrayList<>();
 
     @Column(name = "created_at")
     private LocalTime createdAt;
@@ -80,5 +109,8 @@ public class Kost {
 
     @Column(name = "deleted_at")
     private LocalTime deletedAt;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
 
 }

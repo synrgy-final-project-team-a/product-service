@@ -10,25 +10,14 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "facility")
+@Table(name = "room")
 @Where(clause = "deleted_at is null")
-public class Facility {
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "facility_id", nullable = false)
+    @Column(name = "room_id", nullable = false)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "bathroom_facility_id", nullable = false)
-    private BathroomFacility bathroomFacility;
-
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "general_Facility_id", nullable = false)
-    private GeneralFacility generalFacility;
-
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "room_facility_id", nullable = false)
-    private RoomFacility roomFacility;
     @Lob
     @Column(name = "front_room_photo")
     private String frontRoomPhoto;
@@ -51,15 +40,17 @@ public class Facility {
     @Column(name = "available_room")
     private Integer availableRoom;
 
+    @Column(name = "facility")
+    private String facility;
     @Lob
     @Column(name = "kost_type")
     private String kostType;
 
     @ManyToMany(targetEntity = Price.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "facility_price",
+            name = "room_price",
             joinColumns = {
-                    @JoinColumn(name = "facility_id")
+                    @JoinColumn(name = "room_id")
             },
             inverseJoinColumns = {
                     @JoinColumn(name = "price_id")
@@ -76,5 +67,6 @@ public class Facility {
     @Column(name = "deleted_at")
     private LocalTime deletedAt;
 
-
+    @Column(name = "enabled")
+    private Boolean enabled;
 }
