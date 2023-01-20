@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/seeker/")
+@RequestMapping("/tennant/")
 public class KostController {
 
     @Autowired
@@ -33,12 +33,6 @@ public class KostController {
     @Autowired
     private ProfileRepo profileRepo;
 
-    //    @PostMapping("/kost/add")
-//    public Map<String, Object> uploadImage(
-//            @RequestParam("file") MultipartFile file,
-//            @RequestParam("test") String test) throws IOException {
-//        return kostServiceImpl.uploadImageInsiderRoomPhoto(file);
-//    }
     @PostMapping("/kost/add")
     public ResponseEntity<Map> uploadImage(
             @RequestParam("frontBuildingPhoto") MultipartFile file1,
@@ -55,7 +49,6 @@ public class KostController {
             @RequestParam("gmaps") String gmaps,
             @RequestParam("locationAdditionalNotes") String locationAdditionalNotes,
             @RequestParam("electric") Boolean electric,
-
             @RequestParam("water") Boolean water,
             @RequestParam("wifi") Boolean wifi,
             @RequestParam("laundry") Boolean laundry,
