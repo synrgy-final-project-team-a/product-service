@@ -107,4 +107,23 @@ public class Kost {
     @Column(name = "enabled")
     private Boolean enabled;
 
+    @Column(name = "electric")
+    private Boolean electric;
+    @Column(name = "water")
+    private Boolean water;
+
+    @Column(name = "wifi")
+    private Boolean wifi;
+
+    @Column(name = "laundry")
+    private Boolean laundry;
+    @Column(name = "refrigerator")
+    private Boolean refrigerator;
+    @Column(name = "dispenser")
+    private Boolean dispenser;
+    @Column(name = "size_room")
+    private String sizeRoom;
+    @Column(name = "inside_bathroom")
+    private Boolean insideBathroom;
+
 }

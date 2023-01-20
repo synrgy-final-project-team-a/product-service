@@ -69,4 +69,8 @@ public class Room {
 
     @Column(name = "enabled")
     private Boolean enabled;
+
+    @OneToOne(targetEntity = Facility.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "facility_id")
+    private Facility facilityId;
 }
