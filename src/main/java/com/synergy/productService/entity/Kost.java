@@ -27,14 +27,6 @@ public class Kost {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Column(name = "room_type", nullable = false)
-    private String roomType;
-
-    @Lob
-    @Column(name = "kost_type", nullable = false)
-    private String kostType;
-
     @Column(name = "description", nullable = false)
     @Type(type = "org.hibernate.type.TextType")
     private String description;
@@ -58,12 +50,6 @@ public class Kost {
     @Lob
     @Column(name = "front_road_photo")
     private String frontRoadPhoto;
-
-<<<<<<< HEAD
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kost_photo_id", nullable = false)
-    private KostPhoto kostPhoto;
-=======
     @Lob
     @Column(name = "front_farbuilding_photo")
     private String frontFarbuildingPhoto;
@@ -75,7 +61,6 @@ public class Kost {
     @Lob
     @Column(name = "city")
     private String city;
->>>>>>> master
 
     @Lob
     @Column(name = "address")

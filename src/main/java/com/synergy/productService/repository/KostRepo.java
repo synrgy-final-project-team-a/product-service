@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KostRepo extends JpaRepository<Kost, Long> {
+
 }
