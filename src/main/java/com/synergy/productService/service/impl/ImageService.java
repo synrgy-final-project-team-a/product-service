@@ -1,4 +1,4 @@
-package com.synergy.productService.service;
+package com.synergy.productService.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -21,13 +21,13 @@ public class ImageService {
     @Autowired
     private KostPhotoRepo kostPhotoRepo;
 
-    public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
+    public String uploadImageInsiderRoomPhoto(MultipartFile file) throws IOException {
         Map<String, Object> options = new HashMap<>();
         options.put("folder", "inside_room_photo");
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
         String publicId = (String) uploadResult.get("public_id");
         String secureUrl = cloudinary.url().secure(true).generate(publicId);
-        kostPhotoRepo.save(secureUrl);
-        return result;    }
+        return secureUrl;
+    }
 }
 

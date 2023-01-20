@@ -1,6 +1,6 @@
 package com.synergy.productService.controller;
 
-import com.synergy.productService.service.ImageService;
+import com.synergy.productService.service.impl.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class ImageController {
 
     @PostMapping("/upload")
     public Map<String, Object> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("test") String test) throws IOException {
-        return imageService.uploadImage(file);
+        return imageService.uploadImageInsiderRoomPhoto(file);
     }
 }
 
