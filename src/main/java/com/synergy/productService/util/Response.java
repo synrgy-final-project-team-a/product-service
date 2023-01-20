@@ -9,10 +9,7 @@ import java.util.Map;
 public class Response {
 
     public Boolean isRequired(Object obj){
-        if(obj == null){
-            return  true;
-        }
-        return false;
+        return obj == null;
     }
 
     public Map<String, Object> resSuccess(Object data, String message, Integer statusCode) {
