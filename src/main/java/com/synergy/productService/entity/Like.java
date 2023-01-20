@@ -6,22 +6,21 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.time.LocalTime;
 
-@Data
 @Entity
-@Table(name = "price")
-@Where(clause = "deleted_at is null")
-public class Price {
-
+@Data
+@Table(name = "like")
+@Where(clause = "deleted_at IS NULL")
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "price_id", nullable = false)
+    @Column(name = "like_id")
     private Long id;
 
-    @Column(name = "price")
-    private Double price;
+    @Column(name = "kost_id")
+    private Long kosId;
 
-    @Column(name = "duration_type")
-    private String durationType;
+    @Column(name = "profile_id")
+    private Long profileId;
 
     @Column(name = "created_at")
     private LocalTime createdAt;
@@ -31,5 +30,4 @@ public class Price {
 
     @Column(name = "deleted_at")
     private LocalTime deletedAt;
-
 }
