@@ -17,9 +17,9 @@ public class Rating {
     private Long id;
 
     @Column(name = "rate")
-    private Long rate;
+    private Integer rate;
 
-    @Lob
+    
     @Column(name = "review")
     private String review;
 
@@ -31,7 +31,7 @@ public class Rating {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kost_id", nullable = false)
-    private Kost kostId;
+    private Kost kost;
 
     @Column(name = "created_at")
     private LocalTime createdAt;

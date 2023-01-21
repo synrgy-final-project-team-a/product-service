@@ -23,27 +23,17 @@ public class Kost {
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
-    @Lob
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Column(name = "room_type", nullable = false)
-    private String roomType;
-
-    @Lob
-    @Column(name = "kost_type", nullable = false)
-    private String kostType;
 
     @Column(name = "description", nullable = false)
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
-    @Lob
     @Column(name = "pic", nullable = false)
     private String pic;
 
-    @Lob
     @Column(name = "pic_phone_number", nullable = false)
     private String picPhoneNumber;
 
@@ -51,31 +41,24 @@ public class Kost {
     @Type(type = "org.hibernate.type.TextType")
     private String additionalNotes;
 
-    @Lob
     @Column(name = "front_building_photo")
     private String frontBuildingPhoto;
 
-    @Lob
     @Column(name = "front_road_photo")
     private String frontRoadPhoto;
 
-    @Lob
     @Column(name = "front_farbuilding_photo")
     private String frontFarbuildingPhoto;
 
-    @Lob
     @Column(name = "province")
     private String province;
 
-    @Lob
     @Column(name = "city")
     private String city;
 
-    @Lob
     @Column(name = "address")
     private String address;
 
-    @Lob
     @Column(name = "gmaps")
     private String gmaps;
 
@@ -83,7 +66,7 @@ public class Kost {
     @Type(type = "org.hibernate.type.TextType")
     private String locationAdditionalNotes;
 
-    @ManyToMany(targetEntity = Room.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Room.class, cascade = CascadeType.ALL)
     @JoinTable(
             name = "kost_room",
             joinColumns = {
@@ -94,6 +77,20 @@ public class Kost {
             }
     )
     private List<Room> roomList = new ArrayList<>();
+
+
+    @ManyToMany(targetEntity = Rule.class, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "kost_rule",
+            joinColumns = {
+                    @JoinColumn(name = "kost_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "rule_id")
+            }
+    )
+    private List<Rule> ruleList = new ArrayList<>();
+
 
     @Column(name = "created_at")
     private LocalTime createdAt;
