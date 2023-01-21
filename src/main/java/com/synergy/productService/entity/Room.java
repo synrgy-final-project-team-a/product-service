@@ -18,19 +18,19 @@ public class Room {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    @Lob
+    
     @Column(name = "front_room_photo")
     private String frontRoomPhoto;
 
-    @Lob
+    
     @Column(name = "inside_room_photo")
     private String insideRoomPhoto;
 
-    @Lob
+    
     @Column(name = "bathroom_photo")
     private String bathroomPhoto;
 
-    @Lob
+    
     @Column(name = "other_room_photo")
     private String otherRoomPhoto;
 
@@ -42,9 +42,12 @@ public class Room {
 
     @Column(name = "facility")
     private String facility;
-    @Lob
-    @Column(name = "kost_type")
-    private String kostType;
+    @Column(name = "kost_type_man")
+    private Boolean kostTypeMan;
+    @Column(name = "kost_type_woman")
+    private Boolean kostTypeWoman;
+    @Column(name = "kost_type_mix")
+    private Boolean kostTypeMix;
 
     @ManyToMany(targetEntity = Price.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(

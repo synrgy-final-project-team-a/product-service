@@ -40,7 +40,7 @@ public class Profile {
     @Column(name = "province")
     private String province;
 
-    @Lob
+    
     @Column(name = "gender")
     private String gender;
 
