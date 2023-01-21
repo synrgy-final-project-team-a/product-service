@@ -1,6 +1,5 @@
 package com.synergy.productService.controller;
 
-import com.synergy.productService.dto.KostModel;
 import com.synergy.productService.entity.Kost;
 import com.synergy.productService.entity.Profile;
 import com.synergy.productService.repository.KostRepo;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
