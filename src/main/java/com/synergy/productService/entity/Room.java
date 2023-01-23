@@ -42,20 +42,18 @@ public class Room {
 
     @Column(name = "facility")
     private String facility;
-    @Column(name = "kost_type")
-    private String kostType;
+    @Column(name = "kost_type_man")
+    private Boolean kostTypeMan;
 
-    @ManyToMany(targetEntity = Price.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "room_price",
-            joinColumns = {
-                    @JoinColumn(name = "room_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "price_id")
-            }
-    )
-    private List<Price> priceList = new ArrayList<>();
+    @Column(name = "kost_type_woman")
+    private Boolean kostTypeWoman;
+
+    @Column(name = "kost_type_mixed")
+    private Boolean kostTypeMixed;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "price_id", nullable = false)
+    private Price price;
 
     @Column(name = "created_at")
     private LocalTime createdAt;

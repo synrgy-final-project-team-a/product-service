@@ -66,31 +66,14 @@ public class Kost {
     @Type(type = "org.hibernate.type.TextType")
     private String locationAdditionalNotes;
 
-    @ManyToMany(targetEntity = Room.class, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "kost_room",
-            joinColumns = {
-                    @JoinColumn(name = "kost_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "room_id")
-            }
-    )
-    private List<Room> roomList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
 
 
-    @ManyToMany(targetEntity = Rule.class, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "kost_rule",
-            joinColumns = {
-                    @JoinColumn(name = "kost_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "rule_id")
-            }
-    )
-    private List<Rule> ruleList = new ArrayList<>();
-
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "rule_id", nullable = false)
+    private Rule rule;
 
     @Column(name = "created_at")
     private LocalTime createdAt;
