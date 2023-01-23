@@ -42,12 +42,8 @@ public class Room {
 
     @Column(name = "facility")
     private String facility;
-    @Column(name = "kost_type_man")
-    private Boolean kostTypeMan;
-    @Column(name = "kost_type_woman")
-    private Boolean kostTypeWoman;
-    @Column(name = "kost_type_mix")
-    private Boolean kostTypeMix;
+    @Column(name = "kost_type")
+    private String kostType;
 
     @ManyToMany(targetEntity = Price.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
