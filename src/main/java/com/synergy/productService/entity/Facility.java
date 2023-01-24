@@ -58,6 +58,9 @@ public class Facility {
     @Column(name = "outside_bathroom")
     private Boolean outsideBathroom;
 
+    @Column(name = "size_room")
+    private String sizeRoom;
+
     @Column(name = "created_at")
     private LocalTime createdAt;
 
