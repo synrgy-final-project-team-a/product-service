@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,14 +67,18 @@ public class Kost {
     @Type(type = "org.hibernate.type.TextType")
     private String locationAdditionalNotes;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rule_id", nullable = false)
-    private Rule rule;
+    @ManyToMany(targetEntity = Rule.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "kost_rule",
+            joinColumns = {
+                    @JoinColumn(name = "kost_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "rule_id")
+            }
+    )
+    private List<Rule> ruleList = new ArrayList<>();
 
     @Column(name = "created_at")
     private LocalTime createdAt;
@@ -82,7 +87,7 @@ public class Kost {
     private LocalTime updatedAt;
 
     @Column(name = "deleted_at")
-    private LocalTime deletedAt;
+    private LocalDateTime deletedAt;
 
     @Column(name = "enabled")
     private Boolean enabled;

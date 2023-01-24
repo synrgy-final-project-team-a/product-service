@@ -19,6 +19,10 @@ public class Room {
     private Long id;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kost_id", nullable = true)
+    private Kost kost;
+
     @Column(name = "front_room_photo")
     private String frontRoomPhoto;
 

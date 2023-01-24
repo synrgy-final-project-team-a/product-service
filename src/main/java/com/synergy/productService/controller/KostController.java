@@ -5,6 +5,7 @@ import com.synergy.productService.entity.Profile;
 import com.synergy.productService.entity.Room;
 import com.synergy.productService.entity.Rule;
 import com.synergy.productService.repository.KostRepo;
+import com.synergy.productService.repository.KostRuleRepo;
 import com.synergy.productService.repository.ProfileRepo;
 import com.synergy.productService.repository.RuleRepo;
 import com.synergy.productService.service.impl.KostServiceImpl;
@@ -17,10 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/tennant/")
@@ -40,6 +38,8 @@ public class KostController {
 
     @Autowired
     private ProfileRepo profileRepo;
+    @Autowired
+    private KostRuleRepo kostRuleRepo;
 
     @PostMapping("/kost/add")
     public ResponseEntity<Map> uploadImage(
@@ -112,18 +112,18 @@ public class KostController {
     public ResponseEntity<Map> deleteKostById(@PathVariable Long id)
     {
         Kost kost = kostRepo.findById(id).get();
+// implement soft delete by set DeletedAt
+        kost.setDeletedAt(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 
-//       convert date into localtime
-        kost.setDeletedAt(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
-
-        Kost obj = kostRepo.save(kost);
+        kostRepo.save(kost);
+        Kost obj = kostRepo.findById(id).get();
 
         return new ResponseEntity<Map>(response.resSuccess(obj, "Success delete kost!", 200), HttpStatus.OK);
     }
 
-    @PutMapping("/kost/edit/{id}")
+    @PutMapping("/kost/edit")
     public ResponseEntity<Map> editKost(
-            @PathVariable Long id,
+            @RequestParam("id") Long id,
             @RequestParam("frontBuildingPhoto") MultipartFile file1,
             @RequestParam("frontRoadPhoto") MultipartFile file2,
             @RequestParam("frontFarBuildingPhoto") MultipartFile file3,
@@ -145,11 +145,10 @@ public class KostController {
             @RequestParam("dispenser") Boolean dispenser,
             @RequestParam("sizeRoom") String sizeRoom,
             @RequestParam("insideBathroom") Boolean insideBathroom,
-            @RequestParam("profileId") Long profileId,
             @RequestParam("ruleId") String ruleId
     ) throws IOException {
 
-        Kost kost = kostRepo.findById(id).get();
+        Kost kost = kostRepo.checkExistingKostId(id);
         kost.setName(name);
         kost.setDescription(description);
         kost.setPic(pic);
@@ -168,15 +167,14 @@ public class KostController {
         kost.setDispenser(dispenser);
         kost.setSizeRoom(sizeRoom);
         kost.setInsideBathroom(insideBathroom);
-//        update rule to kost
+
+//       delete old rule and add new rule
+        kostRuleRepo.deleteRuleById(kostRepo.findById(id).get().getId());
         List<Rule> rules = new ArrayList<>();
         for (String idRule : ruleId.split(",")) {
             rules.add(ruleRepo.findById(Long.parseLong(idRule)).get());
         }
         kost.setRuleList(rules);
-
-        Profile profile = profileRepo.checkExistingProfileId(profileId);
-        kost.setProfile(profile);
         kost.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(file1));
         kost.setFrontRoadPhoto(kostServiceImpl.uploadFrontRoadPhoto(file2));
         kost.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(file3));
