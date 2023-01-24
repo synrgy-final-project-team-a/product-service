@@ -148,40 +148,46 @@ public class KostController {
             @RequestParam("ruleId") String ruleId
     ) throws IOException {
 
-        Kost kost = kostRepo.checkExistingKostId(id);
-        kost.setName(name);
-        kost.setDescription(description);
-        kost.setPic(pic);
-        kost.setAdditionalNotes(additionalNotes);
-        kost.setPicPhoneNumber(picPhoneNumber);
-        kost.setProvince(province);
-        kost.setAddress(address);
-        kost.setCity(city);
-        kost.setGmaps(gmaps);
-        kost.setLocationAdditionalNotes(locationAdditionalNotes);
-        kost.setElectric(electric);
-        kost.setWater(water);
-        kost.setWifi(wifi);
-        kost.setLaundry(laundry);
-        kost.setRefrigerator(refrigerator);
-        kost.setDispenser(dispenser);
-        kost.setSizeRoom(sizeRoom);
-        kost.setInsideBathroom(insideBathroom);
+        try{
+            Kost kost = kostRepo.checkExistingKostId(id);
+            kost.setName(name);
+            kost.setDescription(description);
+            kost.setPic(pic);
+            kost.setAdditionalNotes(additionalNotes);
+            kost.setPicPhoneNumber(picPhoneNumber);
+            kost.setProvince(province);
+            kost.setAddress(address);
+            kost.setCity(city);
+            kost.setGmaps(gmaps);
+            kost.setLocationAdditionalNotes(locationAdditionalNotes);
+            kost.setElectric(electric);
+            kost.setWater(water);
+            kost.setWifi(wifi);
+            kost.setLaundry(laundry);
+            kost.setRefrigerator(refrigerator);
+            kost.setDispenser(dispenser);
+            kost.setSizeRoom(sizeRoom);
+            kost.setInsideBathroom(insideBathroom);
 
 //       delete old rule and add new rule
-        kostRuleRepo.deleteRuleById(kostRepo.findById(id).get().getId());
-        List<Rule> rules = new ArrayList<>();
-        for (String idRule : ruleId.split(",")) {
-            rules.add(ruleRepo.findById(Long.parseLong(idRule)).get());
+            kostRuleRepo.deleteRuleById(kostRepo.findById(id).get().getId());
+            List<Rule> rules = new ArrayList<>();
+            for (String idRule : ruleId.split(",")) {
+                rules.add(ruleRepo.findById(Long.parseLong(idRule)).get());
+            }
+            kost.setRuleList(rules);
+            kost.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(file1));
+            kost.setFrontRoadPhoto(kostServiceImpl.uploadFrontRoadPhoto(file2));
+            kost.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(file3));
+
+            Kost obj = kostRepo.save(kost);
+
+            return new ResponseEntity<Map>(response.resSuccess(obj, "Success edit kost!", 200), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<Map>(response.clientError("Failed edit kost!"), HttpStatus.BAD_REQUEST);
         }
-        kost.setRuleList(rules);
-        kost.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(file1));
-        kost.setFrontRoadPhoto(kostServiceImpl.uploadFrontRoadPhoto(file2));
-        kost.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(file3));
 
-        Kost obj = kostRepo.save(kost);
-
-        return new ResponseEntity<Map>(response.resSuccess(obj, "Success edit kost!", 200), HttpStatus.OK);
 
     }
 }
