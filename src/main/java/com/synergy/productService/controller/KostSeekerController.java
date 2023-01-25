@@ -48,7 +48,7 @@ public class KostSeekerController {
 
     @GetMapping(value = {"/kost/get/{id}"})
     public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<Map>(kostServiceImpl.getById(id), HttpStatus.OK);
+        return new ResponseEntity<Map>(kostServiceImpl.getByIdSeeker(id), HttpStatus.OK);
     }
 
     @GetMapping(value = {"/kost/favorite"})

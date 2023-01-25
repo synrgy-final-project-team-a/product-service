@@ -40,6 +40,11 @@ public class KostTennantController {
     @Autowired
     private KostRuleRepo kostRuleRepo;
 
+    @GetMapping()
+    public String index() {
+        return "tennant";
+    }
+
     @PostMapping("/kost/add")
     public ResponseEntity<Map> uploadImage(
             @RequestParam("frontBuildingPhoto") MultipartFile file1,
@@ -209,7 +214,7 @@ public class KostTennantController {
     }
     @GetMapping(value = {"/kost/get/{id}"})
     public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<Map>(kostServiceImpl.getById(id), HttpStatus.OK);
+        return new ResponseEntity<Map>(kostServiceImpl.getByIdTennant(id), HttpStatus.OK);
     }
 
 }
