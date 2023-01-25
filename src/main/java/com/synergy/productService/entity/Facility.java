@@ -5,67 +5,61 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-@Data
 @Entity
+@Data
 @Table(name = "facility")
 @Where(clause = "deleted_at is null")
 public class Facility {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "facility_id", nullable = false)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "bathroom_facility_id", nullable = false)
-    private BathroomFacility bathroomFacility;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "general_Facility_id", nullable = false)
-    private GeneralFacility generalFacility;
+    @Column(name = "ac")
+    private Boolean ac;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "room_facility_id", nullable = false)
-    private RoomFacility roomFacility;
-    @Lob
-    @Column(name = "front_room_photo")
-    private String frontRoomPhoto;
+    @Column(name = "windows")
+    private Boolean windows;
 
-    @Lob
-    @Column(name = "inside_room_photo")
-    private String insideRoomPhoto;
+    @Column(name = "tv")
+    private Boolean tv;
+    @Column(name = "table_learning")
+    private Boolean tableLearning;
+    @Column(name = "springbed")
+    private Boolean springbed;
 
-    @Lob
-    @Column(name = "bathroom_photo")
-    private String bathroomPhoto;
+    @Column(name = "furniture")
+    private Boolean furniture;
 
-    @Lob
-    @Column(name = "other_room_photo")
-    private String otherRoomPhoto;
+    @Column(name = "fan")
+    private Boolean fan;
 
-    @Column(name = "quantity_room")
-    private Integer quantityRoom;
+    @Column(name = "blanket")
+    private Boolean blanket;
 
-    @Column(name = "available_room")
-    private Integer availableRoom;
+    @Column(name = "sitting_closet")
+    private Boolean sittingCloset;
 
-    @Lob
-    @Column(name = "kost_type")
-    private String kostType;
+    @Column(name = "non_sitting_closet")
+    private Boolean nonSittingCloset;
 
-    @ManyToMany(targetEntity = Price.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "facility_price",
-            joinColumns = {
-                    @JoinColumn(name = "facility_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "price_id")
-            }
-    )
-    private List<Price> priceList = new ArrayList<>();
+    @Column(name = "water_heater")
+    private Boolean waterHeater;
+
+    @Column(name = "shower")
+    private Boolean shower;
+
+    @Column(name = "inisde_bathroom")
+    private Boolean insideBathroom;
+
+    @Column(name = "outside_bathroom")
+    private Boolean outsideBathroom;
+
+    @Column(name = "size_room")
+    private String sizeRoom;
 
     @Column(name = "created_at")
     private LocalTime createdAt;
@@ -75,6 +69,4 @@ public class Facility {
 
     @Column(name = "deleted_at")
     private LocalTime deletedAt;
-
-
 }

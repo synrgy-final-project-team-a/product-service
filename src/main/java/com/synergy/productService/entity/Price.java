@@ -20,12 +20,6 @@ public class Price {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "duration")
-    private Integer duration;
-
-    @Column(name = "additional_amount")
-    private Double additionalAmount;
-
     @Column(name = "duration_type")
     private String durationType;
 

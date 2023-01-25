@@ -8,19 +8,21 @@ import java.time.LocalTime;
 
 @Entity
 @Data
-@Table(name = "like")
+@Table(name = "favorite")
 @Where(clause = "deleted_at IS NULL")
-public class Like {
+public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_id")
+    @Column(name = "favorite_id")
     private Long id;
 
-    @Column(name = "kost_id")
-    private Long kosId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
 
-    @Column(name = "profile_id")
-    private Long profileId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kost_id", nullable = false)
+    private Kost kost;
 
     @Column(name = "created_at")
     private LocalTime createdAt;

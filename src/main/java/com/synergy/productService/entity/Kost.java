@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,27 +24,17 @@ public class Kost {
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
-    @Lob
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Column(name = "room_type", nullable = false)
-    private String roomType;
-
-    @Lob
-    @Column(name = "kost_type", nullable = false)
-    private String kostType;
 
     @Column(name = "description", nullable = false)
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
-    @Lob
     @Column(name = "pic", nullable = false)
     private String pic;
 
-    @Lob
     @Column(name = "pic_phone_number", nullable = false)
     private String picPhoneNumber;
 
@@ -51,32 +42,43 @@ public class Kost {
     @Type(type = "org.hibernate.type.TextType")
     private String additionalNotes;
 
+    @Column(name = "front_building_photo")
+    private String frontBuildingPhoto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    @Column(name = "front_road_photo")
+    private String frontRoadPhoto;
 
-    @Column(name = "quantity_room", nullable = false)
-    private Integer quantityRoom;
+    @Column(name = "front_farbuilding_photo")
+    private String frontFarbuildingPhoto;
 
-    @Column(name = "available_room", nullable = false)
-    private Integer availableRoom;
+    @Column(name = "province")
+    private String province;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kost_photo_id", nullable = false)
-    private KostPhoto kostPhoto;
+    @Column(name = "city")
+    private String city;
 
-    @ManyToMany(targetEntity = Facility.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "gmaps")
+    private String gmaps;
+
+    @Column(name = "location_additional_notes")
+    @Type(type = "org.hibernate.type.TextType")
+    private String locationAdditionalNotes;
+
+
+    @ManyToMany(targetEntity = Rule.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "kost_facility",
+            name = "kost_rule",
             joinColumns = {
                     @JoinColumn(name = "kost_id")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "facility_id")
+                    @JoinColumn(name = "rule_id")
             }
     )
-    private List<Facility> facilityList = new ArrayList<>();
+    private List<Rule> ruleList = new ArrayList<>();
 
     @Column(name = "created_at")
     private LocalTime createdAt;
@@ -85,6 +87,40 @@ public class Kost {
     private LocalTime updatedAt;
 
     @Column(name = "deleted_at")
-    private LocalTime deletedAt;
+    private LocalDateTime deletedAt;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
+
+    @Column(name = "electric")
+    private Boolean electric;
+    @Column(name = "water")
+    private Boolean water;
+
+    @Column(name = "wifi")
+    private Boolean wifi;
+
+    @Column(name = "laundry")
+    private Boolean laundry;
+    @Column(name = "refrigerator")
+    private Boolean refrigerator;
+    @Column(name = "dispenser")
+    private Boolean dispenser;
+
+    @Column(name = "tv")
+    private Boolean tv;
+
+    @Column(name = "kitchen")
+    private Boolean kitchen;
+
+    @Column(name = "parking")
+    private Boolean parking;
+
+    @Column(name = "drying_ground")
+    private Boolean dryingGround;
+
+    @Column(name = "living_room")
+    private Boolean livingRoom;
+
 
 }
