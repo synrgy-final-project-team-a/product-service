@@ -18,19 +18,23 @@ public class Room {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kost_id", nullable = true)
+    private Kost kost;
+
     @Column(name = "front_room_photo")
     private String frontRoomPhoto;
 
-    
+
     @Column(name = "inside_room_photo")
     private String insideRoomPhoto;
 
-    
+
     @Column(name = "bathroom_photo")
     private String bathroomPhoto;
 
-    
+
     @Column(name = "other_room_photo")
     private String otherRoomPhoto;
 
