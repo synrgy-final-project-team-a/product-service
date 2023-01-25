@@ -1,7 +1,7 @@
 package com.synergy.productService.service.Impl;
 
 import com.synergy.productService.entity.Kost;
-import com.synergy.productService.repository.KostRepo;
+import com.synergy.productService.repository.KostRepoGet;
 import com.synergy.productService.service.KostServiceGet;
 import com.synergy.productService.util.Response;
 import org.slf4j.Logger;
@@ -16,14 +16,14 @@ public class KostServiceGetImpl implements KostServiceGet {
 
     private static Logger logger = LoggerFactory.getLogger(KostServiceGetImpl.class);
     @Autowired
-    private KostRepo kostRepository;
+    private KostRepoGet kostRepositoryGet;
     @Autowired
     public Response templateResponse;
 
     @Override
     public Map getById(Long id) {
         try {
-            Kost checkingData = kostRepository.getById(id);
+            Kost checkingData = kostRepositoryGet.getById(id);
             if (checkingData == null) {
                 return templateResponse.notFoundError("Data cannot be found!");
             }
