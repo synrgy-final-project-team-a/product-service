@@ -1,6 +1,6 @@
 package com.synergy.productService.entity.controller;
 
-import com.synergy.productService.service.KostService;
+import com.synergy.productService.service.KostServiceGet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +13,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/tennant")
-public class KostController {
+public class KostControllerGet {
 
     @Autowired
-    public KostService kostService;
+    public KostServiceGet kostServiceGet;
 
     //    @GetMapping("/kost/get/{id}")
     @GetMapping(value = {"/kost/get/{id}"})
     public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<Map>(kostService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<Map>(kostServiceGet.getById(id), HttpStatus.OK);
     }
 }

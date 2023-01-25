@@ -2,7 +2,7 @@ package com.synergy.productService.service.Impl;
 
 import com.synergy.productService.entity.Kost;
 import com.synergy.productService.repository.KostRepo;
-import com.synergy.productService.service.KostService;
+import com.synergy.productService.service.KostServiceGet;
 import com.synergy.productService.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class KostServiceImpl implements KostService {
+public class KostServiceGetImpl implements KostServiceGet {
 
-    private static Logger logger = LoggerFactory.getLogger(KostServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(KostServiceGetImpl.class);
     @Autowired
     private KostRepo kostRepository;
     @Autowired
