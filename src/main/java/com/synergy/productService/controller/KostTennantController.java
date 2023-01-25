@@ -207,4 +207,9 @@ public class KostTennantController {
 
 
     }
+    @GetMapping(value = {"/kost/get/{id}"})
+    public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<Map>(kostServiceImpl.getById(id), HttpStatus.OK);
+    }
+
 }
