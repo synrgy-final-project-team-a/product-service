@@ -10,6 +10,9 @@ import com.synergy.productService.repository.RuleRepo;
 import com.synergy.productService.service.impl.KostServiceImpl;
 import com.synergy.productService.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -217,4 +220,14 @@ public class KostTennantController {
         return new ResponseEntity<Map>(kostServiceImpl.getByIdTennant(id), HttpStatus.OK);
     }
 
+    @GetMapping("/kost/list/{profileId}")
+    public ResponseEntity<Map> getListKostTennant(
+            @PathVariable Long profileId,
+            @RequestParam(required = true) Integer page,
+            @RequestParam(required = true) Integer size) {
+        Pageable show_data = PageRequest.of(page, size);
+        Page<Kost> list = null;
+        list = kostRepo.getListDataTennant(profileId, show_data);
+        return new ResponseEntity<Map>(response.resSuccess(list, "Success get list kost", 400), HttpStatus.OK);
+    }
 }

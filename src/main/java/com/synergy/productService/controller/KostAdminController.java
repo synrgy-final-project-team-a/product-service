@@ -50,13 +50,13 @@ public class KostAdminController {
     public ResponseEntity<Map> approveById(@PathVariable(value = "id") Long id){
         return new ResponseEntity<Map>(kostServiceImpl.approveById(id), HttpStatus.OK);
     }
-    @GetMapping("/list")
+    @GetMapping("/kost/list")
     public ResponseEntity<Map> getListKostAdmin(
             @RequestParam(required = true) Integer page,
             @RequestParam(required = true) Integer size) {
         Pageable show_data = PageRequest.of(page, size);
         Page<Kost> list = null;
-        list = kostRepo.getListData(show_data);
+        list = kostRepo.getListDataAdmin(show_data);
         return new ResponseEntity<Map>(response.resSuccess(list, "Success get list kost", 400), HttpStatus.OK);
     }
 
