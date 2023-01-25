@@ -52,7 +52,7 @@ public class Facility {
     @Column(name = "shower")
     private Boolean shower;
 
-    @Column(name = "inisde_bathroom")
+    @Column(name = "inside_bathroom")
     private Boolean insideBathroom;
 
     @Column(name = "outside_bathroom")
