@@ -17,12 +17,11 @@ public class Favorite {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id", nullable = false)
-    private Profile profile;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kost_id", nullable = false)
     private Kost kost;
+
+    @Column(name = "profile_id")
+    private Long profileId;
 
     @Column(name = "created_at")
     private LocalTime createdAt;
