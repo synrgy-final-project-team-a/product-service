@@ -1,0 +1,45 @@
+package com.synergy.productService.controller;
+
+
+import com.synergy.productService.repository.KostRepo;
+import com.synergy.productService.repository.KostRuleRepo;
+import com.synergy.productService.repository.ProfileRepo;
+import com.synergy.productService.repository.RuleRepo;
+import com.synergy.productService.service.impl.KostServiceImpl;
+import com.synergy.productService.util.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/seeker/")
+public class KostSeekerController {
+    @Autowired
+    private KostServiceImpl kostServiceImpl;
+
+    @Autowired
+    public Response response;
+
+    @Autowired
+    private KostRepo kostRepo;
+
+    @Autowired
+    private RuleRepo ruleRepo;
+
+    @Autowired
+    private ProfileRepo profileRepo;
+    @Autowired
+    private KostRuleRepo kostRuleRepo;
+
+    @GetMapping(value = {"/kost/get/{id}"})
+    public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<Map>(kostServiceImpl.getById(id), HttpStatus.OK);
+    }
+
+}

@@ -21,7 +21,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/tennant/")
-public class KostController {
+public class KostTennantController {
 
     @Autowired
     private KostServiceImpl kostServiceImpl;
