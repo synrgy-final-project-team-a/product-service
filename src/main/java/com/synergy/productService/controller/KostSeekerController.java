@@ -1,7 +1,6 @@
 package com.synergy.productService.controller;
 
 
-import com.synergy.productService.entity.Favorite;
 import com.synergy.productService.repository.KostRepo;
 import com.synergy.productService.repository.KostRuleRepo;
 import com.synergy.productService.repository.ProfileRepo;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,6 +24,7 @@ public class KostSeekerController {
     @Autowired
     private KostServiceImpl kostServiceImpl;
 
+    @Autowired
     private KostFavoriteServiceImpl kostFavoriteServiceImpl;
 
     @Autowired
@@ -53,8 +52,13 @@ public class KostSeekerController {
     }
 
     @GetMapping(value = {"/kost/favorite"})
-    public List<Favorite> getFavoriteKost() {
-        return kostFavoriteServiceImpl.getKostFavorite();
+    public ResponseEntity<Map<String, Object>> getFavoriteKost() {
+        return new ResponseEntity<>(kostFavoriteServiceImpl.getKostFavorite(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/kost/favorite/{id}"})
+    public ResponseEntity<Map<String, Object>> getFavoriteKostByProfile(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<>(kostFavoriteServiceImpl.getFavoriteKostByProfile(id), HttpStatus.OK);
     }
 
 }
