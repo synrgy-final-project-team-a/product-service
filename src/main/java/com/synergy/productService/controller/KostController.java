@@ -2,7 +2,6 @@ package com.synergy.productService.controller;
 
 import com.synergy.productService.entity.Kost;
 import com.synergy.productService.entity.Profile;
-import com.synergy.productService.entity.Room;
 import com.synergy.productService.entity.Rule;
 import com.synergy.productService.repository.KostRepo;
 import com.synergy.productService.repository.KostRuleRepo;
@@ -62,61 +61,73 @@ public class KostController {
             @RequestParam("laundry") Boolean laundry,
             @RequestParam("refrigerator") Boolean refrigerator,
             @RequestParam("dispenser") Boolean dispenser,
-            @RequestParam("sizeRoom") String sizeRoom,
-            @RequestParam("insideBathroom") Boolean insideBathroom,
+            @RequestParam("tv") Boolean tv,
+            @RequestParam("kitchen") Boolean kitchen,
+            @RequestParam("parking") Boolean parking,
+            @RequestParam("dryingGround") Boolean dryingGround,
+            @RequestParam("livingRoom") Boolean livingRoom,
             @RequestParam("profileId") Long profileId,
             @RequestParam("ruleId") String ruleId
     ) throws IOException {
 
-        Kost kost = new Kost();
-        kost.setName(name);
-        kost.setDescription(description);
-        kost.setPic(pic);
-        kost.setAdditionalNotes(additionalNotes);
-        kost.setPicPhoneNumber(picPhoneNumber);
-        kost.setProvince(province);
-        kost.setAddress(address);
-        kost.setCity(city);
-        kost.setGmaps(gmaps);
-        kost.setLocationAdditionalNotes(locationAdditionalNotes);
-        kost.setElectric(electric);
-        kost.setWater(water);
-        kost.setWifi(wifi);
-        kost.setLaundry(laundry);
-        kost.setRefrigerator(refrigerator);
-        kost.setDispenser(dispenser);
-        kost.setSizeRoom(sizeRoom);
-        kost.setInsideBathroom(insideBathroom);
+        try {
+            Kost kost = new Kost();
+            kost.setName(name);
+            kost.setDescription(description);
+            kost.setPic(pic);
+            kost.setAdditionalNotes(additionalNotes);
+            kost.setPicPhoneNumber(picPhoneNumber);
+            kost.setProvince(province);
+            kost.setAddress(address);
+            kost.setCity(city);
+            kost.setGmaps(gmaps);
+            kost.setLocationAdditionalNotes(locationAdditionalNotes);
+            kost.setElectric(electric);
+            kost.setWater(water);
+            kost.setWifi(wifi);
+            kost.setLaundry(laundry);
+            kost.setRefrigerator(refrigerator);
+            kost.setDispenser(dispenser);
+            kost.setTv(tv);
+            kost.setKitchen(kitchen);
+            kost.setParking(parking);
+            kost.setDryingGround(dryingGround);
+            kost.setLivingRoom(livingRoom);
 
-//        add rule to kost
-        List<Rule> rules = new ArrayList<>();
-        for (String id : ruleId.split(",")) {
-            rules.add(ruleRepo.findById(Long.parseLong(id)).get());
+            //        add rule to kost
+            List<Rule> rules = new ArrayList<>();
+            for (String id : ruleId.split(",")) {
+                rules.add(ruleRepo.findById(Long.parseLong(id)).get());
+            }
+            kost.setRuleList(rules);
+
+
+            Profile profile = profileRepo.checkExistingProfileId(profileId);
+            kost.setProfile(profile);
+            kost.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(file1));
+            kost.setFrontRoadPhoto(kostServiceImpl.uploadFrontRoadPhoto(file2));
+            kost.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(file3));
+
+            Kost obj = kostRepo.save(kost);
+
+            return new ResponseEntity<Map>(response.resSuccess(obj, "Success add kost!", 201), HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            return new ResponseEntity<Map>(response.clientError("Failed add kost!"), HttpStatus.BAD_REQUEST);
         }
-        kost.setRuleList(rules);
 
-
-        Profile profile = profileRepo.checkExistingProfileId(profileId);
-        kost.setProfile(profile);
-        kost.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(file1));
-        kost.setFrontRoadPhoto(kostServiceImpl.uploadFrontRoadPhoto(file2));
-        kost.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(file3));
-
-        Kost obj = kostRepo.save(kost);
-
-        return new ResponseEntity<Map>(response.resSuccess(obj, "Success add kost!", 201), HttpStatus.CREATED);
 
     }
 
     @DeleteMapping("/kost/delete/{id}")
-    public ResponseEntity<Map> deleteKostById(@PathVariable Long id)
-    {
-        Kost kost = kostRepo.findById(id).get();
-// implement soft delete by set DeletedAt
+    public ResponseEntity<Map> deleteKostById(@PathVariable Long id) {
+        Kost kost = kostRepo.checkExistingKostId(id);
+
+        // implement soft delete by set DeletedAt
         kost.setDeletedAt(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 
         kostRepo.save(kost);
-        Kost obj = kostRepo.findById(id).get();
+        Kost obj = kostRepo.checkExistingKostId(id);
 
         return new ResponseEntity<Map>(response.resSuccess(obj, "Success delete kost!", 200), HttpStatus.OK);
     }
@@ -143,12 +154,15 @@ public class KostController {
             @RequestParam("laundry") Boolean laundry,
             @RequestParam("refrigerator") Boolean refrigerator,
             @RequestParam("dispenser") Boolean dispenser,
-            @RequestParam("sizeRoom") String sizeRoom,
-            @RequestParam("insideBathroom") Boolean insideBathroom,
+            @RequestParam("tv") Boolean tv,
+            @RequestParam("kitchen") Boolean kitchen,
+            @RequestParam("parking") Boolean parking,
+            @RequestParam("dryingGround") Boolean dryingGround,
+            @RequestParam("livingRoom") Boolean livingRoom,
             @RequestParam("ruleId") String ruleId
     ) throws IOException {
 
-        try{
+        try {
             Kost kost = kostRepo.checkExistingKostId(id);
             kost.setName(name);
             kost.setDescription(description);
@@ -166,8 +180,11 @@ public class KostController {
             kost.setLaundry(laundry);
             kost.setRefrigerator(refrigerator);
             kost.setDispenser(dispenser);
-            kost.setSizeRoom(sizeRoom);
-            kost.setInsideBathroom(insideBathroom);
+            kost.setTv(tv);
+            kost.setKitchen(kitchen);
+            kost.setParking(parking);
+            kost.setDryingGround(dryingGround);
+            kost.setLivingRoom(livingRoom);
 
 //       delete old rule and add new rule
             kostRuleRepo.deleteRuleById(kostRepo.findById(id).get().getId());

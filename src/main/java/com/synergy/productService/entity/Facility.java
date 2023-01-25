@@ -21,8 +21,8 @@ public class Facility {
     @Column(name = "ac")
     private Boolean ac;
 
-    @Column(name = "window")
-    private Boolean window;
+    @Column(name = "windows")
+    private Boolean windows;
 
     @Column(name = "tv")
     private Boolean tv;

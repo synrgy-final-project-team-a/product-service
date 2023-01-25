@@ -7,7 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KostRepo extends JpaRepository<Kost, Long> {
-    @Query(value = "SELECT k FROM Kost k WHERE k.id = :id", nativeQuery = false)
+//    @Query(value = "SELECT k FROM Kost k WHERE k.id = :id", nativeQuery = false)
+//    Kost checkExistingKostId(Long id);
+
+    @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :id", nativeQuery = true)
     Kost checkExistingKostId(Long id);
 
 }
