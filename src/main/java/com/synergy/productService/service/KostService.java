@@ -12,6 +12,7 @@ public interface KostService {
     public String uploadFrontRoadPhoto(MultipartFile file) throws IOException;
     public String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException;
 
-    public Map getById(Long id);
-
+    public Map getByIdTennant(Long id);
+    public Map getByIdSeeker(Long id);
+    public Map approveById(Long id);
 }
