@@ -21,6 +21,11 @@ public class Facility {
     @Column(name = "ac")
     private Boolean ac;
 
+    @Column(name = "window")
+    private Boolean window;
+
+    @Column(name = "tv")
+    private Boolean tv;
     @Column(name = "table_learning")
     private Boolean tableLearning;
     @Column(name = "springbed")
@@ -32,26 +37,29 @@ public class Facility {
     @Column(name = "fan")
     private Boolean fan;
 
-    @Column(name = "mirror")
-    private Boolean mirror;
-
     @Column(name = "blanket")
     private Boolean blanket;
-
-    @Column(name = "pillow")
-    private Boolean pillow;
 
     @Column(name = "sitting_closet")
     private Boolean sittingCloset;
 
-    @Column(name = "bathtub")
-    private Boolean bathtub;
+    @Column(name = "non_sitting_closet")
+    private Boolean nonSittingCloset;
 
     @Column(name = "water_heater")
     private Boolean waterHeater;
 
     @Column(name = "shower")
     private Boolean shower;
+
+    @Column(name = "inisde_bathroom")
+    private Boolean insideBathroom;
+
+    @Column(name = "outside_bathroom")
+    private Boolean outsideBathroom;
+
+    @Column(name = "size_room")
+    private String sizeRoom;
 
     @Column(name = "created_at")
     private LocalTime createdAt;

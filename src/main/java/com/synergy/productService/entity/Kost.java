@@ -106,9 +106,21 @@ public class Kost {
     private Boolean refrigerator;
     @Column(name = "dispenser")
     private Boolean dispenser;
-    @Column(name = "size_room")
-    private String sizeRoom;
-    @Column(name = "inside_bathroom")
-    private Boolean insideBathroom;
+
+    @Column(name = "tv")
+    private Boolean tv;
+
+    @Column(name = "kitchen")
+    private Boolean kitchen;
+
+    @Column(name = "parking")
+    private Boolean parking;
+
+    @Column(name = "drying_ground")
+    private Boolean dryingGround;
+
+    @Column(name = "living_room")
+    private Boolean livingRoom;
+
 
 }
