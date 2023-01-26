@@ -9,12 +9,16 @@ import com.synergy.productService.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class KostServiceImpl implements KostService {
@@ -22,7 +26,7 @@ public class KostServiceImpl implements KostService {
     private static Logger logger = LoggerFactory.getLogger(KostServiceImpl.class);
 
     @Autowired
-    public Response templateResponse;
+    public Response res;
 
     @Autowired
     private Cloudinary cloudinary;
@@ -58,6 +62,25 @@ public class KostServiceImpl implements KostService {
         String secureUrl = cloudinary.url().secure(true).generate(publicId);
         return secureUrl;
     }
+
+    public String uploadFile(MultipartFile file, String folderName) throws IOException {
+        HashMap<Object, Object> options = new HashMap<>();
+        options.put("folder", folderName);
+        Map uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
+        String publicId = (String) uploadedFile.get("public_id");
+        return cloudinary.url().secure(true).generate(publicId);
+    }
+
+    @Override
+    public Map<String, Object> getKostByProfileId(Long profileId) {
+        try {
+            List<Kost> kost = kostRepo.findByProfileId(profileId);
+            return res.resSuccess(kost, "success", 200);
+        }catch (Exception e){
+            return res.internalServerError(e.getMessage());
+        }
+    }
+
     @Override
     public Map getByIdTennant(Long id) {
         try {
@@ -65,7 +88,7 @@ public class KostServiceImpl implements KostService {
             if (checkingData == null) {
                 return templateResponse.notFoundError("Data cannot be found!");
             }
-            return templateResponse.resSuccess(checkingData,"success", 200);
+            return templateResponse.resSuccess(checkingData, "success", 200);
 
         } catch (Exception e) {
             logger.error("Error get by id, {} " + e);
@@ -81,13 +104,14 @@ public class KostServiceImpl implements KostService {
             if (checkingData == null) {
                 return templateResponse.notFoundError("Data cannot be found!");
             }
-            return templateResponse.resSuccess(checkingData,"success", 200);
+            return templateResponse.resSuccess(checkingData, "success", 200);
 
         } catch (Exception e) {
             logger.error("Error get by id, {} " + e);
             return templateResponse.clientError("Error get by id: " + e);
         }
     }
+
     @Override
     public Map approveById(Long id) {
         try {
@@ -97,7 +121,7 @@ public class KostServiceImpl implements KostService {
             }
             checkingData.setEnabled(true);
             Kost done = kostRepo.save(checkingData);
-            return templateResponse.resSuccess(done,"success", 200);
+            return templateResponse.resSuccess(done, "success", 200);
 
         } catch (Exception e) {
             logger.error("Error get by id, {} " + e);
@@ -105,5 +129,31 @@ public class KostServiceImpl implements KostService {
         }
     }
 
+    @Override
+    public List<Object> getKostBySearch(String city, String name, Pageable pageable) {
+        return kostRepo.getKostBySearchWithPagination(city, name, pageable);
+    }
+
+    @Override
+    public List<Object> getKostByFilter(Boolean ac, Boolean blanket,
+                                        Boolean fan, Boolean furniture,
+                                        Boolean shower, Boolean sittingCloset,
+                                        Boolean springbed, Boolean table, Boolean waterHeater,
+                                        Boolean insideBathroom, Boolean nonsittingCloset,
+                                        Boolean outsideBathroom, Boolean kostTv,
+                                        Boolean kostTypeMan, Boolean kostTypeWoman, Boolean kostTypeMixed,
+                                        String durationType,
+                                        Double priceMinimum, Double priceMaximum,
+                                        Boolean dispenser, Boolean electric,
+                                        Boolean laundry, Boolean refrigerator, Boolean water,
+                                        Boolean wifi, Boolean dryingGround, Boolean kitchen,
+                                        Boolean livingRoom, Boolean parking, Boolean roomTv, Pageable pageable) {
+
+
+        return kostRepo.getKostByFilterWithPagination(ac, blanket, fan, furniture, shower, sittingCloset, springbed,
+                table, waterHeater, insideBathroom, nonsittingCloset, outsideBathroom, kostTv, kostTypeMan, kostTypeWoman,
+                kostTypeMixed, durationType, priceMinimum, priceMaximum, dispenser, electric, laundry, refrigerator, water,
+                wifi, dryingGround, kitchen, livingRoom, parking, roomTv, pageable);
+    }
 }
 
