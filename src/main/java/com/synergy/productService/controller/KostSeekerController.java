@@ -41,16 +41,6 @@ public class KostSeekerController {
     @Autowired
     private KostRuleRepo kostRuleRepo;
 
-    @GetMapping()
-    public String index() {
-        return "seeker";
-    }
-
-    @GetMapping(value = {"/kost/get/{id}"})
-    public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<Map>(kostServiceImpl.getById(id), HttpStatus.OK);
-    }
-
     @GetMapping(value = {"/kost/favorite"})
     public ResponseEntity<Map<String, Object>> getFavoriteKost() {
         return new ResponseEntity<>(kostFavoriteServiceImpl.getKostFavorite(), HttpStatus.OK);
