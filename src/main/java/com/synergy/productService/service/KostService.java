@@ -10,9 +10,11 @@ import java.util.Map;
 
 public interface KostService {
 
-    public String uploadFrontBuildingPhoto(MultipartFile file) throws IOException;
-    public String uploadFrontRoadPhoto(MultipartFile file) throws IOException;
-    public String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException;
+    String uploadFrontBuildingPhoto(MultipartFile file) throws IOException;
+    String uploadFrontRoadPhoto(MultipartFile file) throws IOException;
+    String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException;
+
+    Map<String, Object> getKostByProfileId(Long profileIf);
 
     public Map getByIdTennant(Long id);
     public Map getByIdSeeker(Long id);

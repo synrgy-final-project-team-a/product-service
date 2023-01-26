@@ -4,7 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -23,13 +23,17 @@ public class Price {
     @Column(name = "duration_type")
     private String durationType;
 
-    @Column(name = "created_at")
-    private LocalTime createdAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
-    private LocalTime deletedAt;
+    private LocalDateTime deletedAt;
 
 }

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class KostServiceImpl implements KostService {
@@ -24,7 +26,7 @@ public class KostServiceImpl implements KostService {
     private static Logger logger = LoggerFactory.getLogger(KostServiceImpl.class);
 
     @Autowired
-    public Response templateResponse;
+    public Response res;
 
     @Autowired
     private Cloudinary cloudinary;
@@ -59,6 +61,24 @@ public class KostServiceImpl implements KostService {
         String publicId = (String) uploadResult.get("public_id");
         String secureUrl = cloudinary.url().secure(true).generate(publicId);
         return secureUrl;
+    }
+
+    public String uploadFile(MultipartFile file, String folderName) throws IOException {
+        HashMap<Object, Object> options = new HashMap<>();
+        options.put("folder", folderName);
+        Map uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
+        String publicId = (String) uploadedFile.get("public_id");
+        return cloudinary.url().secure(true).generate(publicId);
+    }
+
+    @Override
+    public Map<String, Object> getKostByProfileId(Long profileId) {
+        try {
+            List<Kost> kost = kostRepo.findByProfileId(profileId);
+            return res.resSuccess(kost, "success", 200);
+        }catch (Exception e){
+            return res.internalServerError(e.getMessage());
+        }
     }
 
     @Override

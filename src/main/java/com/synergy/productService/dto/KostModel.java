@@ -1,50 +1,59 @@
 package com.synergy.productService.dto;
 
 import lombok.Data;
-import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 
 @Data
 public class KostModel {
-
-    private Long profileId;
     private String name;
-    @Type(type = "org.hibernate.type.TextType")
     private String description;
     private String pic;
-    @Type(type = "org.hibernate.type.TextType")
-    private String additionalNotes;
+
     private String picPhoneNumber;
 
-//    private MultipartFile frontBuildingPhoto;
-//    private MultipartFile frontRoadPhoto;
-//    private MultipartFile frontFarbuildingPhoto;
+    private String additionalNotes;
+
+    private MultipartFile frontBuildingPhoto;
+
+    private MultipartFile frontRoadPhoto;
+
+    private MultipartFile frontFarbuildingPhoto;
 
     private String province;
+
     private String city;
 
     private String address;
+
     private String gmaps;
-    @Type(type = "org.hibernate.type.TextType")
+
     private String locationAdditionalNotes;
 
+    private Integer availableRoom;
+
+    private Boolean enabled = true;
+
+    private Boolean tv;
+
     private Boolean electric;
-
-    private Boolean water;
-
-    private Boolean wifi;
 
     private Boolean laundry;
 
     private Boolean refrigerator;
 
-    private Boolean dispenser;
+    private Boolean water;
 
-    private String sizeRoom;
+    private Boolean wifi;
 
-    private Boolean insideBathroom;
+    private Boolean drying_ground;
+
+    private Boolean kitchen;
+
+    private Boolean livingRoom;
+
+    private Boolean parking;
+
+    private String ruleList;
 
 }

@@ -12,8 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface KostRepo extends JpaRepository<Kost, Long> {
+    @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :id", nativeQuery = true)
+    Kost checkExistingKostId(Long id);
+
+    List<Kost> findByProfileId(Long profileId);
+    
 //    @Query(value = "SELECT k FROM Kost k WHERE k.id = :id", nativeQuery = false)
 //    Kost checkExistingKostId(Long id);
 
@@ -95,5 +103,4 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                                                @Param("wifi") Boolean wifi, @Param("drying_ground") Boolean dryingGround,
                                                @Param("kitchen") Boolean kitchen,@Param("living_room") Boolean livingRoom,
                                                @Param("parking") Boolean parking,@Param("room_tv") Boolean roomTv, Pageable pageable);
-
 }

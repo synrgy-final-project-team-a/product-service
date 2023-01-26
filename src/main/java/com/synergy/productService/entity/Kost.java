@@ -1,13 +1,12 @@
 package com.synergy.productService.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,10 +18,6 @@ public class Kost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "kost_id")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "profile_id", nullable = false)
-    private Profile profile;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -43,12 +38,15 @@ public class Kost {
     private String additionalNotes;
 
     @Column(name = "front_building_photo")
+    @Type(type = "org.hibernate.type.TextType")
     private String frontBuildingPhoto;
 
     @Column(name = "front_road_photo")
+    @Type(type = "org.hibernate.type.TextType")
     private String frontRoadPhoto;
 
     @Column(name = "front_farbuilding_photo")
+    @Type(type = "org.hibernate.type.TextType")
     private String frontFarbuildingPhoto;
 
     @Column(name = "province")
@@ -61,6 +59,7 @@ public class Kost {
     private String address;
 
     @Column(name = "gmaps")
+    @Type(type = "org.hibernate.type.TextType")
     private String gmaps;
 
     @Column(name = "location_additional_notes")
@@ -78,49 +77,57 @@ public class Kost {
                     @JoinColumn(name = "rule_id")
             }
     )
-    private List<Rule> ruleList = new ArrayList<>();
+    private List<Rule> ruleList;
 
-    @Column(name = "created_at")
-    private LocalTime createdAt;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
 
-    @Column(name = "updated_at")
-    private LocalTime updatedAt;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    @Column(name = "available_room")
+    private Integer availableRoom;
 
     @Column(name = "enabled")
     private Boolean enabled;
 
+    @Column(name = "tv")
+    private Boolean tv;
+
     @Column(name = "electric")
     private Boolean electric;
+
+    @Column(name = "laundry")
+    private Boolean laundry;
+
+    @Column(name = "refrigerator")
+    private Boolean refrigerator;
+
     @Column(name = "water")
     private Boolean water;
 
     @Column(name = "wifi")
     private Boolean wifi;
 
-    @Column(name = "laundry")
-    private Boolean laundry;
-    @Column(name = "refrigerator")
-    private Boolean refrigerator;
-    @Column(name = "dispenser")
-    private Boolean dispenser;
-
-    @Column(name = "tv")
-    private Boolean tv;
+    @Column(name = "drying_ground")
+    private Boolean drying_ground;
 
     @Column(name = "kitchen")
     private Boolean kitchen;
 
-    @Column(name = "parking")
-    private Boolean parking;
-
-    @Column(name = "drying_ground")
-    private Boolean dryingGround;
-
     @Column(name = "living_room")
     private Boolean livingRoom;
 
+    @Column(name = "parking")
+    private Boolean parking;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
 }
