@@ -71,15 +71,15 @@ public class KostServiceImpl implements KostService {
         return cloudinary.url().secure(true).generate(publicId);
     }
 
-    @Override
-    public Map<String, Object> getKostByProfileId(Long profileId) {
-        try {
-            List<Kost> kost = kostRepo.findByProfileId(profileId);
-            return res.resSuccess(kost, "success", 200);
-        }catch (Exception e){
-            return res.internalServerError(e.getMessage());
-        }
-    }
+//    @Override
+//    public Map<String, Object> getKostByProfileId(Long profileId) {
+//        try {
+//            List<Kost> kost = kostRepo.findByProfileId(profileId);
+//            return res.resSuccess(kost, "success", 200);
+//        }catch (Exception e){
+//            return res.internalServerError(e.getMessage());
+//        }
+//    }
 
     @Override
     public Map getByIdTennant(Long id) {

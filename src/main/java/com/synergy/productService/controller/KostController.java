@@ -147,4 +147,9 @@ public class KostController {
             return new ResponseEntity<>(response.internalServerError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(value = {"/get/{id}"})
+    public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<Map>(kostService.getByIdSeeker(id), HttpStatus.OK);
+    }
 }

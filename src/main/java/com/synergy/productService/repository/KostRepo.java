@@ -17,7 +17,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
     @Query(value = "SELECT count(profile_id) FROM kost k WHERE k.profile_id = :profileId", nativeQuery = true)
     Integer checkExistingProfileId(Long profileId);
 
-    List<Kost> findByProfileId(Long profilepId);
+//    List<Kost> findByProfileId(Long profilepId);
     
 //    @Query(value = "SELECT k FROM Kost k WHERE k.id = :id", nativeQuery = false)
 //    Kost checkExistingKostId(Long id);
@@ -41,7 +41,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\t\tr.kost_type_woman, ko.city, ko.province\t\t\n" +
             "from room r\n" +
             "\tjoin facility f on f.facility_id = r.facility_id\n" +
-            "\t join price pr on  pr.price_id = r.price_id\n" +
+            "\t join price pr on  pr.room_id = r.room_id\n" +
             "\t join kost ko on ko.kost_id = r.kost_id\n" +
             "\twhere (:city is null or ko.city like %:city%)\n" +
             "\tand (:name is null or ko.name like '%:name:%') ", nativeQuery = true)
@@ -55,7 +55,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tr.kost_type_woman, ko.city, ko.province \t " +
             "\tfrom room r\n" +
             "\tjoin facility f on f.facility_id = r.facility_id \n" +
-            "\tjoin price pr on  pr.price_id = r.price_id \n" +
+            "\tjoin price pr on  pr.room_id = r.room_id \n" +
             "\tjoin kost ko on ko.kost_id = r.kost_id \n" +
             "\twhere (:ac is null or f.ac = :ac) \n" +
             "\tand (:blanket is null or f.blanket = :blanket ) \n" +

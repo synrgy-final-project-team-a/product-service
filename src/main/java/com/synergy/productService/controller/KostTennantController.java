@@ -242,13 +242,13 @@ public class KostTennantController {
     }
 
 
-    @GetMapping(value = {"/kost/user/{id}"})
-    public ResponseEntity<Map<String, Object>> getKostByProfileId(
-            @PathVariable(value = "id") Long profileId
-    ){
-        return new ResponseEntity<>(kostServiceImpl.getKostByProfileId(profileId), HttpStatus.OK);
-
-    }
+//    @GetMapping(value = {"/kost/user/{id}"})
+//    public ResponseEntity<Map<String, Object>> getKostByProfileId(
+//            @PathVariable(value = "id") Long profileId
+//    ){
+//        return new ResponseEntity<>(kostServiceImpl.getKostByProfileId(profileId), HttpStatus.OK);
+//
+//    }
 
     @GetMapping("/kost/list/{profileId}")
     public ResponseEntity<Map> getListKostTennant(
@@ -259,5 +259,10 @@ public class KostTennantController {
         Page<Kost> list = null;
         list = kostRepo.getListDataTennant(profileId, show_data);
         return new ResponseEntity<Map>(res.resSuccess(list, "Success get list kost", 200), HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/kost/get/{id}"})
+    public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<Map>(kostServiceImpl.getByIdTennant(id), HttpStatus.OK);
     }
 }
