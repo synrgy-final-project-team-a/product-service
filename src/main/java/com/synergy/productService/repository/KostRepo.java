@@ -7,20 +7,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface KostRepo extends JpaRepository<Kost, Long> {
-    @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :id", nativeQuery = true)
-    Kost checkExistingKostId(Long id);
 
-    List<Kost> findByProfileId(Long profileId);
+    @Query(value = "SELECT count(profile_id) FROM kost k WHERE k.profile_id = :profileId", nativeQuery = true)
+    Integer checkExistingProfileId(Long profileId);
+
+    List<Kost> findByProfileId(Long profilepId);
     
 //    @Query(value = "SELECT k FROM Kost k WHERE k.id = :id", nativeQuery = false)
 //    Kost checkExistingKostId(Long id);

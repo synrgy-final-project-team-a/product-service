@@ -53,6 +53,9 @@ public class KostTennantController {
             @ModelAttribute KostModel kost
             ) throws IOException {
         try {
+            if((kostRepo.checkExistingProfileId(profileId)) > 2){
+                return new ResponseEntity<>(res.clientError("Kost cannot be added more than 2!"), HttpStatus.BAD_REQUEST);
+            }
             Kost kostInstance = new Kost();
 
             kostInstance.setName(kost.getName());
@@ -255,6 +258,6 @@ public class KostTennantController {
         Pageable show_data = PageRequest.of(page, size);
         Page<Kost> list = null;
         list = kostRepo.getListDataTennant(profileId, show_data);
-        return new ResponseEntity<Map>(response.resSuccess(list, "Success get list kost", 400), HttpStatus.OK);
+        return new ResponseEntity<Map>(res.resSuccess(list, "Success get list kost", 200), HttpStatus.OK);
     }
 }

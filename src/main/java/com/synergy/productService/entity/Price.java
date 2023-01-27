@@ -1,6 +1,7 @@
 package com.synergy.productService.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -28,9 +29,11 @@ public class Price {
     private Room room;
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
