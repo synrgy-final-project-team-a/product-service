@@ -53,6 +53,9 @@ public class KostTennantController {
             @ModelAttribute KostModel kost
             ) throws IOException {
         try {
+            if((kostRepo.checkExistingProfileId(profileId)) > 2){
+                return new ResponseEntity<>(res.clientError("Kost cannot be added more than 2!"), HttpStatus.BAD_REQUEST);
+            }
             Kost kostInstance = new Kost();
 
             kostInstance.setName(kost.getName());

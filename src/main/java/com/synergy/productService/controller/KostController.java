@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/kost")
+@RequestMapping("/kost")
 @CrossOrigin("*")
 @Slf4j
 public class KostController {

@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class KostAdminController {
         Kost kost = kostRepo.checkExistingKostIdAdmin(id);
 
         // implement soft delete by set DeletedAt
-        kost.setDeletedAt(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        kost.setDeletedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
 
         kostRepo.save(kost);
         Kost obj = kostRepo.checkExistingKostId(id);
