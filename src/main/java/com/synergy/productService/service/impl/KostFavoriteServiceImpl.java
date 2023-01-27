@@ -42,18 +42,18 @@ public class KostFavoriteServiceImpl implements KostFavorite {
         }
     }
 
-    @Override
-    public Map<String, Object> getFavoriteKostByProfile(Long profileId) {
-        try {
-            List<Favorite> kostFavoriteByProfileId = favoriteRepo.findByProfileId(profileId);
-            if(kostFavoriteByProfileId.size() < 1) {
-                return res.notFoundError("There is no favorite kost for current user");
-            }
-            return res.resSuccess(kostFavoriteByProfileId, "success", 200);
-        }catch (Exception e){
-            return res.internalServerError(e.getMessage());
-        }
-    }
+//    @Override
+//    public Map<String, Object> getFavoriteKostByProfile(Long profileId) {
+//        try {
+//            Favorite kostFavoriteByProfileId = favoriteRepo.findByProfileId(profileId);
+//            if(kostFavoriteByProfileId == null) {
+//                return res.notFoundError("There is no favorite kost for current user");
+//            }
+//            return res.resSuccess(kostFavoriteByProfileId, "success", 200);
+//        }catch (Exception e){
+//            return res.internalServerError(e.getMessage());
+//        }
+//    }
 
     @Override
     public void postFavorite(Long profileId, Long kostId) {

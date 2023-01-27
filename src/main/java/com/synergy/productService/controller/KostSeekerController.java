@@ -3,13 +3,16 @@ package com.synergy.productService.controller;
 
 import com.synergy.productService.dto.FavoriteModel;
 import com.synergy.productService.entity.Favorite;
+import com.synergy.productService.entity.Kost;
 import com.synergy.productService.repository.*;
 import com.synergy.productService.service.impl.KostFavoriteServiceImpl;
 import com.synergy.productService.service.impl.KostServiceImpl;
 import com.synergy.productService.util.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,16 +54,26 @@ public class KostSeekerController {
 
 
 
-    @GetMapping(value = {"/kost/favorite"})
-    public ResponseEntity<Map<String, Object>> getFavoriteKost() {
-        return new ResponseEntity<>(kostFavoriteServiceImpl.getKostFavorite(), HttpStatus.OK);
-    }
+//    @GetMapping(value = {"/kost/favorite"})
+//    public ResponseEntity<Map<String, Object>> getFavoriteKost() {
+//        return new ResponseEntity<>(kostFavoriteServiceImpl.getKostFavorite(), HttpStatus.OK);
+//    }
 
-    @GetMapping(value = {"/kost/favorite/{id}"})
-    public ResponseEntity<Map<String, Object>> getFavoriteKostByProfile(@PathVariable(value = "id") Long id) {
-        return new ResponseEntity<>(kostFavoriteServiceImpl.getFavoriteKostByProfile(id), HttpStatus.OK);
-    }
+//    @GetMapping(value = {"/kost/favorite/{id}"})
+//    public ResponseEntity<Map<String, Object>> getFavoriteKostByProfile(@PathVariable(value = "id") Long id) {
+//        return new ResponseEntity<>(kostFavoriteServiceImpl.getFavoriteKostByProfile(id), HttpStatus.OK);
+//    }
 
+    @GetMapping("/kost/favorite/{profileId}")
+    public ResponseEntity<Map> getFavoriteKostByProfile(
+            @PathVariable Long profileId,
+            @RequestParam(required = true) Integer page,
+            @RequestParam(required = true) Integer size) {
+        Pageable show_data = PageRequest.of(page, size);
+        Page<Favorite> list = null;
+        list = favoriteRepo.findByProfileId(profileId, show_data);
+        return new ResponseEntity<Map>(response.resSuccess(list, "Success get list favorite kost", 200), HttpStatus.OK);
+    }
     @PostMapping("/kost/favorite/add")
     public ResponseEntity addKostToFavorite(@ModelAttribute FavoriteModel favoriteModel){
         Map<String, Object> resp = new HashMap<>();
@@ -82,7 +95,7 @@ public class KostSeekerController {
         }
     }
 
-    @DeleteMapping("/kost/favorite/delete/{favoriteId}")
+    @DeleteMapping("/kost/favorite/{favoriteId}")
     public ResponseEntity deleteKostFromFavorite(
             @PathVariable(value = "favoriteId") Long favoriteId){
         Map<String, Object> resp = new HashMap<>();
