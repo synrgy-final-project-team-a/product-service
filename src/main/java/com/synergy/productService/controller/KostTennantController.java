@@ -255,6 +255,6 @@ public class KostTennantController {
         Pageable show_data = PageRequest.of(page, size);
         Page<Kost> list = null;
         list = kostRepo.getListDataTennant(profileId, show_data);
-        return new ResponseEntity<Map>(response.resSuccess(list, "Success get list kost", 400), HttpStatus.OK);
+        return new ResponseEntity<Map>(res.resSuccess(list, "Success get list kost", 200), HttpStatus.OK);
     }
 }

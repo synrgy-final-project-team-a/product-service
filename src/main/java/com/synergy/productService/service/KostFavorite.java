@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface KostFavorite {
-    public Map<String, Object> getKostFavorite();
-    public Map<String, Object> getFavoriteKostByProfile(Long profileId);
+     Map<String, Object> getKostFavorite();
+     Map<String, Object> getFavoriteKostByProfile(Long profileId);
+     void deleteFavorite(Long favoriteId);
+     void postFavorite(Long profileId, Long kostId);
+
+
 }

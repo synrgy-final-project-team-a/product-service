@@ -1,9 +1,11 @@
 package com.synergy.productService.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -33,13 +35,15 @@ public class Rating {
     @JoinColumn(name = "kost_id", nullable = false)
     private Kost kost;
 
-    @Column(name = "created_at")
-    private LocalTime createdAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalTime updatedAt;
+    @Column(name = "updated_at", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
-    private LocalTime deletedAt;
+    private LocalDateTime deletedAt;
 
 }
