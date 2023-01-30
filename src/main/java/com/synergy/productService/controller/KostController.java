@@ -1,5 +1,7 @@
 package com.synergy.productService.controller;
 
+import com.synergy.productService.entity.Kost;
+import com.synergy.productService.entity.Room;
 import com.synergy.productService.service.impl.KostServiceImpl;
 import com.synergy.productService.util.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -33,29 +36,24 @@ public class KostController {
      * @param name      -> parameter search
      * @param page      -> parameter indexing page (halaman ke berapa) > start dari 0,1,2,3,....
      * @param size      -> parameter size(data yang ditampilkan) per page (1,2,3,...)
-     * @param field     -> parameter sort by field (pr.price, ko.name)
-     * @param direction -> parameter sort by (asc, desc)
-     * @return data ko.kost_id, ko.name, ko.front_building_photo, pr.price,
-     * pr.duration_type, r.kost_type_man, r.kost_type_mixed,
-     * r.kost_type_woman, ko.city, ko.province
+     * @return data entity kost
      */
     @GetMapping("/search")
     public ResponseEntity getKostBySearch(@RequestParam(value = "city", required = false) String city,
                                           @RequestParam(value = "name", required = false) String name,
-                                          @RequestParam(value = "page", required = false) Integer page,
-                                          @RequestParam(value = "size", required = false) Integer size,
-                                          @RequestParam(value = "field", required = false) String field,
-                                          @RequestParam(value = "direction", required = false) String direction) {
+                                          @RequestParam(value = "page", required = false) @Nullable Integer page,
+                                          @RequestParam(value = "size", required = false) @Nullable Integer size
+                                          ) {
         Map<String, Object> resp = new HashMap<>();
         try {
-            List<Object> data = kostService.getKostBySearch(city, name, PageRequest.of(page, size, Sort.Direction.fromString(direction), field));
+            List<Kost> data = kostService.getKostBySearch(city, name, PageRequest.of(page, size));
             return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(response.internalServerError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
     }
+
+
 
 
     /**
@@ -66,7 +64,7 @@ public class KostController {
      * @param shower->           parameter filter
      * @param sittingCloset->    parameter filter
      * @param springbed          -> parameter filter
-     * @param table              -> parameter filter
+     * @param tableLearning              -> parameter filter
      * @param waterHeater        -> parameter filter
      * @param insideBathroom     -> parameter filter
      * @param nonsittingCloset-> parameter filter
@@ -93,54 +91,53 @@ public class KostController {
      * @param size               -> parameter size per page (1,2,3,...)
      * @param field              -> parameter sort by field (pr.price, ko.name)
      * @param direction          -> parameter sort by (asc, desc)
-     * @return data ko.kost_id, ko.name, ko.front_building_photo, pr.price,
-     * pr.duration_type, r.kost_type_man, r.kost_type_mixed,
-     * r.kost_type_woman, ko.city, ko.province
+     * @return data entity room
      */
     @GetMapping("/filter")
-    public ResponseEntity getKostByFilter(@RequestParam(value = "ac", required = false) Boolean ac,
-                                          @RequestParam(value = "blanket", required = false) Boolean blanket,
-                                          @RequestParam(value = "fan", required = false) Boolean fan,
-                                          @RequestParam(value = "furniture", required = false) Boolean furniture,
-                                          @RequestParam(value = "shower", required = false) Boolean shower,
-                                          @RequestParam(value = "sitting_closet", required = false) Boolean sittingCloset,
-                                          @RequestParam(value = "springbed", required = false) Boolean springbed,
-                                          @RequestParam(value = "table", required = false) Boolean table,
-                                          @RequestParam(value = "water_heater", required = false) Boolean waterHeater,
-                                          @RequestParam(value = "inside_bathroom", required = false) Boolean insideBathroom,
-                                          @RequestParam(value = "non_sitting_closet", required = false) Boolean nonsittingCloset,
-                                          @RequestParam(value = "outside_bathroom", required = false) Boolean outsideBathroom,
-                                          @RequestParam(value = "kost_tv", required = false) Boolean kostTv,
-                                          @RequestParam(value = "kost_type_man", required = false) Boolean kostTypeMan,
-                                          @RequestParam(value = "kost_type_woman", required = false) Boolean kostTypeWoman,
-                                          @RequestParam(value = "kost_type_mixed", required = false) Boolean kostTypeMixed,
-                                          @RequestParam(value = "duration_type", required = false) String durationType,
-                                          @RequestParam(value = "price_minimum", required = false) Double priceMinimum,
-                                          @RequestParam(value = "price_maximum", required = false) Double priceMaximum,
-                                          @RequestParam(value = "dispenser", required = false) Boolean dispenser,
-                                          @RequestParam(value = "electric", required = false) Boolean electric,
-                                          @RequestParam(value = "laundry", required = false) Boolean laundry,
-                                          @RequestParam(value = "refrigerator", required = false) Boolean refrigerator,
-                                          @RequestParam(value = "water", required = false) Boolean water,
-                                          @RequestParam(value = "wifi", required = false) Boolean wifi,
-                                          @RequestParam(value = "drying_ground", required = false) Boolean dryingGround,
-                                          @RequestParam(value = "kitchen", required = false) Boolean kitchen,
-                                          @RequestParam(value = "living_room", required = false) Boolean livingRoom,
-                                          @RequestParam(value = "parking", required = false) Boolean parking,
-                                          @RequestParam(value = "room_tv", required = false) Boolean roomTv,
-                                          @RequestParam(value = "page", required = false) Integer page,
-                                          @RequestParam(value = "size", required = false) Integer size,
-                                          @RequestParam(value = "field", required = false) String field,
-                                          @RequestParam(value = "direction", required = false) String direction
+    public ResponseEntity getKostByFilter(@RequestParam(value = "ac", required = false) @Nullable Boolean ac,
+                                          @RequestParam(value = "blanket", required = false) @Nullable Boolean blanket,
+                                          @RequestParam(value = "fan", required = false) @Nullable Boolean fan,
+                                          @RequestParam(value = "furniture", required = false) @Nullable Boolean furniture,
+                                          @RequestParam(value = "shower", required = false) @Nullable Boolean shower,
+                                          @RequestParam(value = "sitting_closet", required = false) @Nullable Boolean sittingCloset,
+                                          @RequestParam(value = "springbed", required = false) @Nullable Boolean springbed,
+                                          @RequestParam(value = "table_learning", required = false) @Nullable Boolean tableLearning,
+                                          @RequestParam(value = "water_heater", required = false) @Nullable Boolean waterHeater,
+                                          @RequestParam(value = "inside_bathroom", required = false) @Nullable Boolean insideBathroom,
+                                          @RequestParam(value = "non_sitting_closet", required = false) @Nullable Boolean nonsittingCloset,
+                                          @RequestParam(value = "outside_bathroom", required = false) @Nullable Boolean outsideBathroom,
+                                          @RequestParam(value = "windows", required = false) @Nullable Boolean windows,
+                                          @RequestParam(value = "room_tv", required = false) @Nullable Boolean roomTv,
+                                          @RequestParam(value = "kost_type_man", required = false) @Nullable Boolean kostTypeMan,
+                                          @RequestParam(value = "kost_type_woman", required = false) @Nullable Boolean kostTypeWoman,
+                                          @RequestParam(value = "kost_type_mixed", required = false) @Nullable Boolean kostTypeMixed,
+                                          @RequestParam(value = "duration_type", required = false) @Nullable String durationType,
+                                          @RequestParam(value = "price_minimum", required = false) @Nullable Double priceMinimum,
+                                          @RequestParam(value = "price_maximum", required = false) @Nullable Double priceMaximum,
+                                          @RequestParam(value = "kost_tv", required = false) @Nullable Boolean kostTv,
+                                          @RequestParam(value = "electric", required = false) @Nullable Boolean electric,
+                                          @RequestParam(value = "laundry", required = false) @Nullable Boolean laundry,
+                                          @RequestParam(value = "refrigerator", required = false) @Nullable Boolean refrigerator,
+                                          @RequestParam(value = "water", required = false) @Nullable Boolean water,
+                                          @RequestParam(value = "wifi", required = false) @Nullable Boolean wifi,
+                                          @RequestParam(value = "dispenser", required = false) @Nullable Boolean dispenser,
+                                          @RequestParam(value = "drying_ground", required = false) @Nullable Boolean dryingGround,
+                                          @RequestParam(value = "kitchen", required = false) @Nullable Boolean kitchen,
+                                          @RequestParam(value = "living_room", required = false) @Nullable Boolean livingRoom,
+                                          @RequestParam(value = "parking", required = false) @Nullable Boolean parking,
+                                          @RequestParam(value = "page", required = false) @Nullable Integer page,
+                                          @RequestParam(value = "size", required = false) @Nullable Integer size,
+                                          @RequestParam(value = "field", required = false) @Nullable String field,
+                                          @RequestParam(value = "direction", required = false) @Nullable String direction
     ) {
         Map<String, Object> resp = new HashMap<>();
 
 
         try {
-            List<Object> data = kostService.getKostByFilter(ac, blanket, fan, furniture, shower, sittingCloset, springbed,
-                    table, waterHeater, insideBathroom, nonsittingCloset, outsideBathroom, kostTv, kostTypeMan, kostTypeWoman,
-                    kostTypeMixed, durationType, priceMinimum, priceMaximum, dispenser, electric, laundry, refrigerator, water,
-                    wifi, dryingGround, kitchen, livingRoom, parking, roomTv, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), field)));
+            List<Room> data = kostService.getKostByFilter(ac, blanket, fan, furniture, shower, sittingCloset, springbed,
+                    tableLearning, waterHeater, insideBathroom, nonsittingCloset, outsideBathroom, windows, roomTv,
+                    kostTypeMan, kostTypeWoman, kostTypeMixed, durationType, priceMinimum, priceMaximum, kostTv, electric,
+                    laundry, refrigerator, water, wifi, dispenser, dryingGround, kitchen, livingRoom, parking, PageRequest.of(page, size, Sort.Direction.fromString(direction), field));
 
             return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
         } catch (Exception e) {
