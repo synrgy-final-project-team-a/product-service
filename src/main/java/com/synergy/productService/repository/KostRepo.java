@@ -35,11 +35,27 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
     public Page<Kost> getListDataTennant(@Param("profileId") Long profileId, Pageable pageable);
 
 
-    @Query(value = "\tselect * from kost k\n" +
-            "\twhere (:city is null or lower(k.city) like lower (concat('%', :city,'%')))\n" +
-            "\tor (:name is null or lower(k.name) like lower (concat('%', :name,'%')))", nativeQuery = true)
-    List<Kost> getKostBySearchWithPagination(@Param("city") String city,
-                                               @Param("name") String name,
+    @Query(value = "select\n" +
+            "\tk.kost_id,\n" +
+            "\tk.\"name\",\n" +
+            "\tk.address,\n" +
+            "\tk.city,\n" +
+            "\tp.price,\n" +
+            "\tr.kost_type_man,\n" +
+            "\tr.kost_type_mixed,\n" +
+            "\tr.kost_type_woman,\n" +
+            "\tp.duration_type\n" +
+            "from\n" +
+            "\tkost k\n" +
+            "left join room r on\n" +
+            "\tk.kost_id = r.kost_id\n" +
+            "left join price p on\n" +
+            "\tr.room_id = p.room_id\n" +
+            "where\n" +
+            "\tk.\"name\" ilike %:search%\n" +
+            "\tor k.address ilike %:search%\n" +
+            "\tor k.city ilike %:search%", nativeQuery = true)
+    List<Map<String, Object>> getKostBySearchWithPagination(@Param("search") String search,
                                                Pageable pageable);
 
 

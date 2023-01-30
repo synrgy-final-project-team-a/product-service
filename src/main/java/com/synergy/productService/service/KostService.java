@@ -20,7 +20,7 @@ public interface KostService {
     public Map getByIdSeeker(Long id);
     public Map approveById(Long id);
 
-    List<Kost> getKostBySearch(String city, String name, Pageable pageable);
+    List<Map<String, Object>> getKostBySearch(String search, Pageable pageable);
 
 
 

@@ -31,21 +31,19 @@ public class KostController {
     /**
      * Get Kost By Search
      *
-     * @param city      -> parameter search
-     * @param name      -> parameter search
+     * @param search      -> parameter search
      * @param page      -> parameter indexing page (halaman ke berapa) > start dari 0,1,2,3,....
      * @param size      -> parameter size(data yang ditampilkan) per page (1,2,3,...)
      * @return data entity kost
      */
     @GetMapping("/search")
-    public ResponseEntity getKostBySearch(@RequestParam(value = "city", required = false) String city,
-                                          @RequestParam(value = "name", required = false) String name,
+    public ResponseEntity getKostBySearch(@RequestParam(value = "search", required = false) String search,
                                           @RequestParam(value = "page", required = false) @Nullable Integer page,
                                           @RequestParam(value = "size", required = false) @Nullable Integer size
                                           ) {
         Map<String, Object> resp = new HashMap<>();
         try {
-            List<Kost> data = kostService.getKostBySearch(city, name, PageRequest.of(page, size));
+            List<Map<String, Object>> data = kostService.getKostBySearch(search, PageRequest.of(page, size));
             return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(response.internalServerError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);

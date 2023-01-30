@@ -128,8 +128,8 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public List<Kost> getKostBySearch(String city, String name, Pageable pageable) {
-        return kostRepo.getKostBySearchWithPagination(city, name, pageable);
+    public List<Map<String, Object>> getKostBySearch(String search, Pageable pageable) {
+        return kostRepo.getKostBySearchWithPagination(search, pageable);
     }
 
 
