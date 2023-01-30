@@ -1,4 +1,4 @@
-name: main workflow
+name: Deploy
 
 on:
   push:
@@ -6,14 +6,9 @@ on:
       - production
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Checkout
-      uses: actions/checkout@v3
     - name: Set up JDK 8
       uses: actions/setup-java@v3
       with: 
@@ -21,9 +16,28 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots package
-    - name: Install Railway
-      run: npm i -g @railway/cli
-    - name: Deploy
-      run: railway up
-      env:
-        RAILWAY_TOKEN: ae68d74b-c6e2-4c1f-9518-fb134623b450
+    - uses: actions/checkout@v2
+    - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      with:
+          heroku_api_key: 352798ee-a74b-43bf-a74f-d5e3bbe6f60c
+          heroku_app_name: production-service
+          heroku_email: junkevin88@gmail.com
+
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
+#     - name: Checkout
+#       uses: actions/checkout@v3
+#     - name: Set up JDK 8
+#       uses: actions/setup-java@v3
+#       with: 
+#         java-version: '8'
+#         distribution: 'adopt'
+#     - name: Build with Maven
+#       run: mvn --batch-mode --update-snapshots package
+#     - name: Install Railway
+#       run: npm i -g @railway/cli
+#     - name: Deploy
+#       run: railway up
+#       env:
+#         RAILWAY_TOKEN: ae68d74b-c6e2-4c1f-9518-fb134623b450
