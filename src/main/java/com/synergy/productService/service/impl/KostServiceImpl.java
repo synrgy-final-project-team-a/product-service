@@ -169,10 +169,12 @@ public class KostServiceImpl implements KostService {
                                                 Pageable pageable) {
 
 
+
+
         return kostRepo.getKostByFilterWithPagination(ac, blanket, fan, furniture, shower, sittingCloset, springbed,
                 tableLearning, waterHeater, insideBathroom, nonsittingCloset, outsideBathroom, windows, roomTv,
                 kostTypeMan, kostTypeWoman, kostTypeMixed, durationType, priceMinimum, priceMaximum, kostTv, electric,
-                laundry, refrigerator, water, wifi, dispenser, dryingGround, kitchen, livingRoom, parking, pageable);
+                laundry, refrigerator, water, wifi, dispenser, dryingGround, kitchen, livingRoom, parking,  pageable);
     }
 }
 
