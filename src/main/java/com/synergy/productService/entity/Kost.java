@@ -89,8 +89,8 @@ public class Kost {
     @Column(name = "enabled")
     private Boolean enabled;
 
-    @Column(name = "tv")
-    private Boolean tv;
+    @Column(name = "kost_tv")
+    private Boolean kostTv;
 
     @Column(name = "electric")
     private Boolean electric;
@@ -106,6 +106,9 @@ public class Kost {
 
     @Column(name = "wifi")
     private Boolean wifi;
+
+    @Column(name = "dispenser")
+    private Boolean dispenser;
 
     @Column(name = "drying_ground")
     private Boolean drying_ground;

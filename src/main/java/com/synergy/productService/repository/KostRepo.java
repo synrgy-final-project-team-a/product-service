@@ -1,6 +1,7 @@
 package com.synergy.productService.repository;
 
 import com.synergy.productService.entity.Kost;
+import com.synergy.productService.entity.Room;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,68 +40,78 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
     public Page<Kost> getListDataTennant(@Param("profileId") Long profileId, Pageable pageable);
 
 
-    @Query(value = "\tselect ko.kost_id,ko.name, ko.front_building_photo, pr.price,\n" +
-            "\t\tpr.duration_type, r.kost_type_man, r.kost_type_mixed,\n" +
-            "\t\tr.kost_type_woman, ko.city, ko.province\t\t\n" +
-            "from room r\n" +
-            "\tjoin facility f on f.facility_id = r.facility_id\n" +
-            "\t join price pr on  pr.price_id = r.price_id\n" +
-            "\t join kost ko on ko.kost_id = r.kost_id\n" +
-            "\twhere (:city is null or ko.city like %:city%)\n" +
-            "\tand (:name is null or ko.name like '%:name:%') ", nativeQuery = true)
-    List<Object> getKostBySearchWithPagination(@Param("city") String city,
+    @Query(value = "\tselect * from kost k\n" +
+            "\twhere (:city is null or lower(k.city) like lower (concat('%', :city,'%')))\n" +
+            "\tor (:name is null or lower(k.name) like lower (concat('%', :name,'%')))", nativeQuery = true)
+    List<Kost> getKostBySearchWithPagination(@Param("city") String city,
                                                @Param("name") String name,
                                                Pageable pageable);
 
 
-    @Query(nativeQuery = true, value = "select ko.kost_id, ko.name, ko.front_building_photo, pr.price,\n" +
-            "\tpr.duration_type, r.kost_type_man, r.kost_type_mixed,\n" +
-            "\tr.kost_type_woman, ko.city, ko.province \t " +
-            "\tfrom room r\n" +
-            "\tjoin facility f on f.facility_id = r.facility_id \n" +
-            "\tjoin price pr on  pr.price_id = r.price_id \n" +
-            "\tjoin kost ko on ko.kost_id = r.kost_id \n" +
-            "\twhere (:ac is null or f.ac = :ac) \n" +
-            "\tand (:blanket is null or f.blanket = :blanket ) \n" +
-            "\tand (:fan is null or f.fan = :fan) \n" +
-            "\tand (:furniture is null or f.furniture = :furniture) \n" +
-            "\tand (:shower is null or f.shower = :shower) \n" +
-            "\tand (:sitting_closet is null or f.sitting_closet = :sitting_closet) \n" +
-            "\tand (:springbed is null or f.springbed = :springbed) \n" +
-            "\tand (:table_learning is null or f.table_learning = :table_learning) \n" +
-            "\tand (:water_heater is null or f.water_heater = :water_heater) \n" +
-            "\tand (:inside_bathroom is null or f.inside_bathroom = :inside_bathroom) \n" +
-            "\tand (:non_sitting_closet is null or f.non_sitting_closet = :non_sitting_closet) \n" +
-            "\tand (:outside_bathroom is null or f.outside_bathroom = :outside_bathroom) \n" +
-            "\tand (:kost_tv is null or f.tv = :kost_tv) \n" +
-            "\tand (:kost_type_man is null or r.kost_type_man = :kost_type_man) \n" +
-            "\tand (:kost_type_woman is null or r.kost_type_woman = :kost_type_woman) \n" +
-            "\tand (:kost_type_mixed is null or r.kost_type_mixed = :kost_type_mixed) \n" +
-            "\tand (:duration_type is null or pr.duration_type = :duration_type) \n" +
-            "\tand (pr.price >= :price_minimum and pr.price <= :price_maximum) \n" +
-            "\tand (:dispenser is null or ko.dispenser = :dispenser) \n" +
-            "\tand (:electric is null or ko.electric = :electric) \n" +
-            "\tand (:laundry is null or ko.laundry = :laundry) \n" +
-            "\tand (:refrigerator is null or ko.refrigerator = :refrigerator) \n" +
-            "\tand (:water is null or ko.water = :water) \n" +
-            "\tand (:wifi is null or ko.wifi = :wifi) \n" +
-            "\tand (:drying_ground is null or ko.drying_ground = :drying_ground) \n" +
-            "\tand (:kitchen is null or ko.kitchen = :kitchen) \n" +
-            "\tand (:living_room is null or ko.living_room = :living_room) \n" +
-            "\tand (:parking is null or ko.parking = :parking) \n" +
-            "\tand (:room_tv is null or ko.tv = :room_tv)")
-    List<Object> getKostByFilterWithPagination(@Param("ac") Boolean ac, @Param("blanket") Boolean blanket,
-                                               @Param("fan") Boolean fan, @Param("furniture") Boolean furniture,
-                                               @Param("shower") Boolean shower, @Param("sitting_closet") Boolean sittingCloset,
-                                               @Param("springbed") Boolean springbed, @Param("table_learning") Boolean table, @Param("water_heater") Boolean waterHeater,
-                                               @Param("inside_bathroom") Boolean insideBathroom, @Param("non_sitting_closet") Boolean nonSittingCloset,
-                                               @Param("outside_bathroom") Boolean outsideBathroom, @Param("kost_tv") Boolean kostTv,
-                                               @Param("kost_type_man") Boolean kostTypeMan, @Param("kost_type_woman") Boolean kostTypeWoman, @Param("kost_type_mixed") Boolean kostTypeMixed,
-                                               @Param("duration_type") String durationType,
-                                               @Param("price_minimum") Double priceMinimum, @Param("price_maximum") Double priceMaximum,
-                                               @Param("dispenser") Boolean dispenser, @Param("electric") Boolean electric,
-                                               @Param("laundry") Boolean laundry, @Param("refrigerator") Boolean refrigerator, @Param("water") Boolean water,
-                                               @Param("wifi") Boolean wifi, @Param("drying_ground") Boolean dryingGround,
-                                               @Param("kitchen") Boolean kitchen,@Param("living_room") Boolean livingRoom,
-                                               @Param("parking") Boolean parking,@Param("room_tv") Boolean roomTv, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "select r from room r\t " +
+            "\tjoin facility fa on fa.facility_id = r.facility_id \n" +
+            "\tjoin price pr on  pr.room_id = r.room_id \n" +
+            "\tjoin kost k on k.kost_id = r.kost_id \n" +
+            "\twhere (:ac is null or fa.ac = :ac) \n" +
+            "\tor (:blanket is null or fa.blanket = :blanket ) \n" +
+            "\tor (:fan is null or fa.fan = :fan) \n" +
+            "\tor (:furniture is null or fa.furniture = :furniture) \n" +
+            "\tor (:shower is null or fa.shower = :shower) \n" +
+            "\tor (:sitting_closet is null or fa.sitting_closet = :sitting_closet) \n" +
+            "\tor (:springbed is null or fa.springbed = :springbed) \n" +
+            "\tor (:table_learning is null or fa.table_learning = :table_learning) \n" +
+            "\tor (:water_heater is null or fa.water_heater = :water_heater) \n" +
+            "\tor (:inside_bathroom is null or fa.inside_bathroom = :inside_bathroom) \n" +
+            "\tor (:non_sitting_closet is null or fa.non_sitting_closet = :non_sitting_closet) \n" +
+            "\tor (:outside_bathroom is null or fa.outside_bathroom = :outside_bathroom) \n" +
+            "\tor (:windows is null or fa.windows = :windows) \n" +
+            "\tor (:room_tv is null or fa.room_tv = :room_tv) \n" +
+            "\tor (:kost_type_man is null or r.kost_type_man = :kost_type_man) \n" +
+            "\tor (:kost_type_woman is null or r.kost_type_woman = :kost_type_woman) \n" +
+            "\tor (:kost_type_mixed is null or r.kost_type_mixed = :kost_type_mixed) \n" +
+            "\tor (:duration_type is null or pr.duration_type = :duration_type) \n" +
+            "\tor (pr.price > :price_minimum or pr.price < :price_maximum) \n" +
+            "\tor (:kost_tv is null or k.kost_tv = :kost_tv) \n" +
+            "\tor (:electric is null or k.electric = :electric) \n" +
+            "\tor (:laundry is null or k.laundry = :laundry) \n" +
+            "\tor (:refrigerator is null or k.refrigerator = :refrigerator) \n" +
+            "\tor (:water is null or k.water = :water) \n" +
+            "\tor (:wifi is null or k.wifi = :wifi) \n" +
+            "\tor (:dispenser is null or k.dispenser = :dispenser) \n" +
+            "\tor (:drying_ground is null or k.drying_ground = :drying_ground) \n" +
+            "\tor (:kitchen is null or k.kitchen = :kitchen) \n" +
+            "\tor (:living_room is null or k.living_room = :living_room) \n" +
+            "\tor (:parking is null or k.parking = :parking)")
+    List<Room> getKostByFilterWithPagination(@Param("ac") Boolean ac,
+                                             @Param("blanket") Boolean blanket,
+                                             @Param("fan") Boolean fan,
+                                             @Param("furniture") Boolean furniture,
+                                             @Param("shower") Boolean shower,
+                                             @Param("sitting_closet") Boolean sittingCloset,
+                                             @Param("springbed") Boolean springbed,
+                                             @Param("table_learning") Boolean table,
+                                             @Param("water_heater") Boolean waterHeater,
+                                             @Param("inside_bathroom") Boolean insideBathroom,
+                                             @Param("non_sitting_closet") Boolean nonSittingCloset,
+                                             @Param("outside_bathroom") Boolean outsideBathroom,
+                                             @Param("windows") Boolean windows,
+                                             @Param("room_tv") Boolean roomTv,
+                                             @Param("kost_type_man") Boolean kostTypeMan,
+                                             @Param("kost_type_woman") Boolean kostTypeWoman,
+                                             @Param("kost_type_mixed") Boolean kostTypeMixed,
+                                             @Param("duration_type") String durationType,
+                                             @Param("price_minimum") Double priceMinimum,
+                                             @Param("price_maximum") Double priceMaximum,
+                                             @Param("kost_tv") Boolean kostTv,
+                                             @Param("electric") Boolean electric,
+                                             @Param("laundry") Boolean laundry,
+                                             @Param("refrigerator") Boolean refrigerator,
+                                             @Param("water") Boolean water,
+                                             @Param("wifi") Boolean wifi,
+                                             @Param("dispenser") Boolean dispenser,
+                                             @Param("drying_ground") Boolean dryingGround,
+                                             @Param("kitchen") Boolean kitchen,
+                                             @Param("living_room") Boolean livingRoom,
+                                             @Param("parking") Boolean parking, Pageable pageable);
 }
