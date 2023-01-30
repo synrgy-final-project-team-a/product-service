@@ -14,7 +14,7 @@ public interface KostService {
     String uploadFrontRoadPhoto(MultipartFile file) throws IOException;
     String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException;
 
-    Map<String, Object> getKostByProfileId(Long profileIf);
+//    Map<String, Object> getKostByProfileId(Long profileIf);
 
     public Map getByIdTennant(Long id);
     public Map getByIdSeeker(Long id);
