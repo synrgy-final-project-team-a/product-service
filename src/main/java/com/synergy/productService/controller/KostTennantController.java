@@ -72,7 +72,7 @@ public class KostTennantController {
             kostInstance.setEnabled(kost.getEnabled());
 
             // Assign general facility
-            kostInstance.setTv(kost.getTv());
+            kostInstance.setKostTv(kost.getTv());
             kostInstance.setElectric(kost.getElectric());
             kostInstance.setLaundry(kost.getLaundry());
             kostInstance.setRefrigerator(kost.getRefrigerator());
@@ -220,9 +220,8 @@ public class KostTennantController {
             facilityInstance.setNonSittingCloset(room.getNonSittingCloset());
             facilityInstance.setOutsideBathroom(room.getOutsideBathroom());
             facilityInstance.setWindows(room.getWindows());
-            facilityInstance.setBathtub(room.getBathtub());
             facilityInstance.setRoomTv(room.getRoomTv());
-            facilityInstance.setDispenser(room.getDispenser());
+
 
             Facility facilityRoomCreated = facilityRepo.save(facilityInstance);
 
