@@ -2,7 +2,6 @@ package com.synergy.productService.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.synergy.productService.entity.Kost;
-import com.synergy.productService.entity.Room;
 import com.synergy.productService.repository.KostRepo;
 import com.synergy.productService.repository.ProfileRepo;
 import com.synergy.productService.service.KostService;
@@ -10,7 +9,6 @@ import com.synergy.productService.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +17,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 public class KostServiceImpl implements KostService {
@@ -139,38 +135,38 @@ public class KostServiceImpl implements KostService {
 
 
     @Override
-    public List<Room> getKostByFilter(Boolean ac,
-                                      Boolean blanket,
-                                      Boolean fan,
-                                      Boolean furniture,
-                                      Boolean shower,
-                                      Boolean sittingCloset,
-                                      Boolean springbed,
-                                      Boolean tableLearning,
-                                      Boolean waterHeater,
-                                      Boolean insideBathroom,
-                                      Boolean nonsittingCloset,
-                                      Boolean outsideBathroom,
-                                      Boolean windows,
-                                      Boolean roomTv,
-                                      Boolean kostTypeMan,
-                                      Boolean kostTypeWoman,
-                                      Boolean kostTypeMixed,
-                                      String durationType,
-                                      Double priceMinimum,
-                                      Double priceMaximum,
-                                      Boolean kostTv,
-                                      Boolean electric,
-                                      Boolean laundry,
-                                      Boolean refrigerator,
-                                      Boolean water,
-                                      Boolean wifi,
-                                      Boolean dispenser,
-                                      Boolean dryingGround,
-                                      Boolean kitchen,
-                                      Boolean livingRoom,
-                                      Boolean parking,
-                                      Pageable pageable) {
+    public List<Map<String, Object>> getKostByFilter(Boolean ac,
+                                                Boolean blanket,
+                                                Boolean fan,
+                                                Boolean furniture,
+                                                Boolean shower,
+                                                Boolean sittingCloset,
+                                                Boolean springbed,
+                                                Boolean tableLearning,
+                                                Boolean waterHeater,
+                                                Boolean insideBathroom,
+                                                Boolean nonsittingCloset,
+                                                Boolean outsideBathroom,
+                                                Boolean windows,
+                                                Boolean roomTv,
+                                                Boolean kostTypeMan,
+                                                Boolean kostTypeWoman,
+                                                Boolean kostTypeMixed,
+                                                String durationType,
+                                                Double priceMinimum,
+                                                Double priceMaximum,
+                                                Boolean kostTv,
+                                                Boolean electric,
+                                                Boolean laundry,
+                                                Boolean refrigerator,
+                                                Boolean water,
+                                                Boolean wifi,
+                                                Boolean dispenser,
+                                                Boolean dryingGround,
+                                                Boolean kitchen,
+                                                Boolean livingRoom,
+                                                Boolean parking,
+                                                Pageable pageable) {
 
 
         return kostRepo.getKostByFilterWithPagination(ac, blanket, fan, furniture, shower, sittingCloset, springbed,

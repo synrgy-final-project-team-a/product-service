@@ -1,7 +1,6 @@
 package com.synergy.productService.controller;
 
 import com.synergy.productService.entity.Kost;
-import com.synergy.productService.entity.Room;
 import com.synergy.productService.service.impl.KostServiceImpl;
 import com.synergy.productService.util.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -134,7 +133,7 @@ public class KostController {
 
 
         try {
-            List<Room> data = kostService.getKostByFilter(ac, blanket, fan, furniture, shower, sittingCloset, springbed,
+            List<Map<String, Object>> data = kostService.getKostByFilter(ac, blanket, fan, furniture, shower, sittingCloset, springbed,
                     tableLearning, waterHeater, insideBathroom, nonsittingCloset, outsideBathroom, windows, roomTv,
                     kostTypeMan, kostTypeWoman, kostTypeMixed, durationType, priceMinimum, priceMaximum, kostTv, electric,
                     laundry, refrigerator, water, wifi, dispenser, dryingGround, kitchen, livingRoom, parking, PageRequest.of(page, size, Sort.Direction.fromString(direction), field));
