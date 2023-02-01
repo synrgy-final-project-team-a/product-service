@@ -50,4 +50,14 @@ public class RoomModel {
 
     private Boolean roomTv;
 
+    private String durationType;
+    private Double priceDaily;
+    private Double priceWeekly;
+    private Double priceMonthly;
+    private Double priceQuarter;
+
+    private Double priceSemester;
+
+    private Double priceYearly;
+
 }

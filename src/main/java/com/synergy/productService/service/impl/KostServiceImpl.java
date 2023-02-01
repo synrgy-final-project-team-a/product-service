@@ -2,8 +2,12 @@ package com.synergy.productService.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.synergy.productService.entity.Kost;
+import com.synergy.productService.entity.Price;
+import com.synergy.productService.entity.Room;
 import com.synergy.productService.repository.KostRepo;
+import com.synergy.productService.repository.PriceRepo;
 import com.synergy.productService.repository.ProfileRepo;
+import com.synergy.productService.repository.RoomRepo;
 import com.synergy.productService.service.KostService;
 import com.synergy.productService.util.Response;
 import org.slf4j.Logger;
@@ -33,6 +37,10 @@ public class KostServiceImpl implements KostService {
     private KostRepo kostRepo;
     @Autowired
     private ProfileRepo profileRepo;
+    @Autowired
+    private RoomRepo roomRepo;
+    @Autowired
+    private PriceRepo priceRepo;
 
     public String uploadFrontBuildingPhoto(MultipartFile file) throws IOException {
         Map<String, Object> options = new HashMap<>();
@@ -81,6 +89,36 @@ public class KostServiceImpl implements KostService {
     public Map getByIdSeeker(Long id) {
         try {
             Kost checkingData = kostRepo.checkExistingKostId(id);
+            if (checkingData == null) {
+                return res.notFoundError("Data cannot be found!");
+            }
+            return res.resSuccess(checkingData, "success", 200);
+
+        } catch (Exception e) {
+            logger.error("Error get by id, {} " + e);
+            return res.clientError("Error get by id: " + e);
+        }
+    }
+
+    @Override
+    public Map getRoomById(Long id) {
+        try {
+            Room checkingData = roomRepo.checkExistingRoomId(id);
+            if (checkingData == null) {
+                return res.notFoundError("Data cannot be found!");
+            }
+            return res.resSuccess(checkingData, "success", 200);
+
+        } catch (Exception e) {
+            logger.error("Error get by id, {} " + e);
+            return res.clientError("Error get by id: " + e);
+        }
+    }
+
+    @Override
+    public Map getPricebyRoomId(Long id) {
+        try {
+            List checkingData = priceRepo.checkExistingRoomId(id);
             if (checkingData == null) {
                 return res.notFoundError("Data cannot be found!");
             }

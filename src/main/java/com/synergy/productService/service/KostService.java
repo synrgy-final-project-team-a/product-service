@@ -19,6 +19,8 @@ public interface KostService {
     public Map getByIdSeeker(Long id);
     public Map approveById(Long id);
     public Map rejectById(Long id);
+    public Map getRoomById(Long id);
+    public Map getPricebyRoomId(Long id);
 
 
 

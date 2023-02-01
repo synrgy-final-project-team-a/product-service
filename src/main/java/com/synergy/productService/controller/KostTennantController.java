@@ -3,6 +3,7 @@ package com.synergy.productService.controller;
 import com.synergy.productService.dto.KostModel;
 import com.synergy.productService.dto.RoomModel;
 import com.synergy.productService.entity.*;
+import com.synergy.productService.entity.enumeration.EDurationType;
 import com.synergy.productService.repository.*;
 import com.synergy.productService.service.impl.KostServiceImpl;
 import com.synergy.productService.util.Response;
@@ -46,6 +47,8 @@ public class KostTennantController {
 
     @Autowired
     private RoomRepo roomRepo;
+    @Autowired
+    private PriceRepo priceRepo;
 
     @PostMapping("/kost/user/{profileId}")
     public ResponseEntity<Map<String, Object>> createKost(
@@ -259,6 +262,54 @@ public class KostTennantController {
             // Save kost
             Room roomCreated = roomRepo.save(roomInstance);
 
+            if(room.getPriceDaily() !=null){
+                Price priceInstanceDaily = new Price();
+                priceInstanceDaily.setPrice(room.getPriceDaily());
+                priceInstanceDaily.setDurationType(EDurationType.DAILY.name());
+                priceInstanceDaily.setRoom(roomCreated);
+                priceRepo.save(priceInstanceDaily);
+            }
+            if(room.getPriceWeekly() != null) {
+                Price priceInstanceWeekly = new Price();
+                priceInstanceWeekly.setPrice(room.getPriceWeekly());
+                priceInstanceWeekly.setDurationType(EDurationType.WEEKLY.name());
+                priceInstanceWeekly.setRoom(roomCreated);
+                priceRepo.save(priceInstanceWeekly);
+            }
+
+            if(room.getPriceMonthly() != null) {
+                Price priceInstanceMonthly = new Price();
+                priceInstanceMonthly.setPrice(room.getPriceMonthly());
+                priceInstanceMonthly.setDurationType(EDurationType.MONTHLY.name());
+                priceInstanceMonthly.setRoom(roomCreated);
+                priceRepo.save(priceInstanceMonthly);
+            }
+
+            if(room.getPriceQuarter() != null) {
+                Price priceInstanceQuarter = new Price();
+                priceInstanceQuarter.setPrice(room.getPriceQuarter());
+                priceInstanceQuarter.setDurationType(EDurationType.QUARTER.name());
+                priceInstanceQuarter.setRoom(roomCreated);
+                priceRepo.save(priceInstanceQuarter);
+            }
+
+            if(room.getPriceSemester() != null) {
+                Price priceInstanceSemester = new Price();
+                priceInstanceSemester.setPrice(room.getPriceSemester());
+                priceInstanceSemester.setDurationType(EDurationType.SEMESTER.name());
+                priceInstanceSemester.setRoom(roomCreated);
+                priceRepo.save(priceInstanceSemester);
+            }
+
+
+            if(room.getPriceYearly() != null) {
+                Price priceInstanceYearly = new Price();
+                priceInstanceYearly.setPrice(room.getPriceYearly());
+                priceInstanceYearly.setDurationType(EDurationType.YEARLY.name());
+                priceInstanceYearly.setRoom(roomCreated);
+                priceRepo.save(priceInstanceYearly);
+            }
+
             return new ResponseEntity<>(res.resSuccess(roomCreated, "success", 201), HttpStatus.CREATED);
         }catch (Exception e) {
             return new ResponseEntity<>(res.internalServerError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -313,6 +364,56 @@ public class KostTennantController {
 
             // Save kost
             Room roomCreated = roomRepo.save(roomInstance);
+
+            priceRepo.deletePriceByRoomId(roomId);
+
+            if(room.getPriceDaily() !=null){
+                Price priceInstanceDaily = new Price();
+                priceInstanceDaily.setPrice(room.getPriceDaily());
+                priceInstanceDaily.setDurationType(EDurationType.DAILY.name());
+                priceInstanceDaily.setRoom(roomCreated);
+                priceRepo.save(priceInstanceDaily);
+            }
+            if(room.getPriceWeekly() != null) {
+                Price priceInstanceWeekly = new Price();
+                priceInstanceWeekly.setPrice(room.getPriceWeekly());
+                priceInstanceWeekly.setDurationType(EDurationType.WEEKLY.name());
+                priceInstanceWeekly.setRoom(roomCreated);
+                priceRepo.save(priceInstanceWeekly);
+            }
+
+            if(room.getPriceMonthly() != null) {
+                Price priceInstanceMonthly = new Price();
+                priceInstanceMonthly.setPrice(room.getPriceMonthly());
+                priceInstanceMonthly.setDurationType(EDurationType.MONTHLY.name());
+                priceInstanceMonthly.setRoom(roomCreated);
+                priceRepo.save(priceInstanceMonthly);
+            }
+
+            if(room.getPriceQuarter() != null) {
+                Price priceInstanceQuarter = new Price();
+                priceInstanceQuarter.setPrice(room.getPriceQuarter());
+                priceInstanceQuarter.setDurationType(EDurationType.QUARTER.name());
+                priceInstanceQuarter.setRoom(roomCreated);
+                priceRepo.save(priceInstanceQuarter);
+            }
+
+            if(room.getPriceSemester() != null) {
+                Price priceInstanceSemester = new Price();
+                priceInstanceSemester.setPrice(room.getPriceSemester());
+                priceInstanceSemester.setDurationType(EDurationType.SEMESTER.name());
+                priceInstanceSemester.setRoom(roomCreated);
+                priceRepo.save(priceInstanceSemester);
+            }
+
+
+            if(room.getPriceYearly() != null) {
+                Price priceInstanceYearly = new Price();
+                priceInstanceYearly.setPrice(room.getPriceYearly());
+                priceInstanceYearly.setDurationType(EDurationType.YEARLY.name());
+                priceInstanceYearly.setRoom(roomCreated);
+                priceRepo.save(priceInstanceYearly);
+            }
 
             return new ResponseEntity<>(res.resSuccess(roomCreated, "success", 200), HttpStatus.OK);
         }catch (Exception e) {
