@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 
-
-
 @Repository
 public interface KostRepo extends JpaRepository<Kost, Long> {
 
@@ -40,7 +38,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
     public Page<Kost> getListDataTennant(@Param("profileId") Long profileId, Pageable pageable);
 
 
-    @Query(nativeQuery = true, value = "select k.kost_id, k.name, k.city, k.address, k.province, pr.price, pr.duration_type, k.kost_type_man,\n" +
+    @Query(nativeQuery = true, value = "select k.kost_id, k.kost_name, k.city, k.address, k.province, pr.price, pr.duration_type, k.kost_type_man,\n" +
             "k.kost_type_mixed , k.kost_type_woman, k.front_building_photo  from kost k\t " +
             "\tleft join room r on k.kost_id = r.kost_id and r.deleted_at is null\n" +
             "\tleft join facility fa on fa.facility_id = r.facility_id and fa.deleted_at is null\n" +
@@ -48,7 +46,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\twhere k.deleted_at is null " +
             "\tand k.enabled = true \n" +
             "\tand (( fa.ac = :ac) \n" +
-            "\tor ( fa.blanket = :blanket ) \n" +
+            "\tor ( fa.pillow = :pillow ) \n" +
             "\tor ( fa.fan = :fan) \n" +
             "\tor ( fa.furniture = :furniture) \n" +
             "\tor (fa.shower = :shower) \n" +
@@ -76,45 +74,46 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tor (k.drying_ground = :drying_ground) \n" +
             "\tor (k.kitchen = :kitchen) \n" +
             "\tor (k.living_room = :living_room) \n" +
-            "\tor (k.parking = :parking))")
+            "\tor (k.parking_car = :parking_car) \n" +
+            "\tor (k.parking_motorcycle = :parking_motorcycle))")
     List<Map<String, Object>> getKostByFilterWithPagination(@Param("ac") Boolean ac,
-                                             @Param("blanket") Boolean blanket,
-                                             @Param("fan") Boolean fan,
-                                             @Param("furniture") Boolean furniture,
-                                             @Param("shower") Boolean shower,
-                                             @Param("sitting_closet") Boolean sittingCloset,
-                                             @Param("springbed") Boolean springbed,
-                                             @Param("table_learning") Boolean table,
-                                             @Param("water_heater") Boolean waterHeater,
-                                             @Param("inside_bathroom") Boolean insideBathroom,
-                                             @Param("non_sitting_closet") Boolean nonSittingCloset,
-                                             @Param("outside_bathroom") Boolean outsideBathroom,
-                                             @Param("windows") Boolean windows,
-                                             @Param("room_tv") Boolean roomTv,
-                                             @Param("kost_type_man") Boolean kostTypeMan,
-                                             @Param("kost_type_woman") Boolean kostTypeWoman,
-                                             @Param("kost_type_mixed") Boolean kostTypeMixed,
-                                             @Param("duration_type") String durationType,
-                                             @Param("price_minimum") Double priceMinimum,
-                                             @Param("price_maximum") Double priceMaximum,
-                                             @Param("kost_tv") Boolean kostTv,
-                                             @Param("electric") Boolean electric,
-                                             @Param("laundry") Boolean laundry,
-                                             @Param("refrigerator") Boolean refrigerator,
-                                             @Param("water") Boolean water,
-                                             @Param("wifi") Boolean wifi,
-                                             @Param("dispenser") Boolean dispenser,
-                                             @Param("drying_ground") Boolean dryingGround,
-                                             @Param("kitchen") Boolean kitchen,
-                                             @Param("living_room") Boolean livingRoom,
-                                             @Param("parking") Boolean parking, Pageable pageable);
-
+                                                            @Param("pillow") Boolean pillow,
+                                                            @Param("fan") Boolean fan,
+                                                            @Param("furniture") Boolean furniture,
+                                                            @Param("shower") Boolean shower,
+                                                            @Param("sitting_closet") Boolean sittingCloset,
+                                                            @Param("springbed") Boolean springbed,
+                                                            @Param("table_learning") Boolean table,
+                                                            @Param("water_heater") Boolean waterHeater,
+                                                            @Param("inside_bathroom") Boolean insideBathroom,
+                                                            @Param("non_sitting_closet") Boolean nonSittingCloset,
+                                                            @Param("outside_bathroom") Boolean outsideBathroom,
+                                                            @Param("windows") Boolean windows,
+                                                            @Param("room_tv") Boolean roomTv,
+                                                            @Param("kost_type_man") Boolean kostTypeMan,
+                                                            @Param("kost_type_woman") Boolean kostTypeWoman,
+                                                            @Param("kost_type_mixed") Boolean kostTypeMixed,
+                                                            @Param("duration_type") String durationType,
+                                                            @Param("price_minimum") Double priceMinimum,
+                                                            @Param("price_maximum") Double priceMaximum,
+                                                            @Param("kost_tv") Boolean kostTv,
+                                                            @Param("electric") Boolean electric,
+                                                            @Param("laundry") Boolean laundry,
+                                                            @Param("refrigerator") Boolean refrigerator,
+                                                            @Param("water") Boolean water,
+                                                            @Param("wifi") Boolean wifi,
+                                                            @Param("dispenser") Boolean dispenser,
+                                                            @Param("drying_ground") Boolean dryingGround,
+                                                            @Param("kitchen") Boolean kitchen,
+                                                            @Param("living_room") Boolean livingRoom,
+                                                            @Param("parking_car") Boolean parkingCar,
+                                                            @Param("parking_motorcycle") Boolean parkingMotorcycle, Pageable pageable);
 
 
     @Query(value = "select\n" +
             "\tk.kost_id,\n" +
             "\tk.province,\n" +
-            "\tk.\"name\",\n" +
+            "\tk.kost_name,\n" +
             "\tk.address,\n" +
             "\tk.city,\n" +
             "\tp.price,\n" +
@@ -131,24 +130,25 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tr.room_id = p.room_id\n" +
             "\twhere k.deleted_at is null " +
             "\tand k.enabled = true \n" +
-            "\tand k.province ilike %:search%\n" +
-            "\tor k.city ilike %:search% ", nativeQuery = true)
-    List<Map<String, Object>> getKostByAreaWithPagination(@Param("search") String search,
-                                               Pageable pageable);
+            "\tand k.province ilike %:province%\n" +
+            "\tand k.city ilike %:city% ", nativeQuery = true)
+    List<Map<String, Object>> getKostByAreaWithPagination(@Param("province") String province,
+                                                          @Param("city") String city,
+                                                          Pageable pageable);
 
-    @Query(nativeQuery = true, value = "select distinct k.province, k.city, k.kost_id, k.name \n" +
+    @Query(nativeQuery = true, value = "select distinct k.province, k.city, k.kost_id, k.kost_name \n" +
             "from kost k\n" +
             "where k.deleted_at is null \n" +
             "and k.enabled = true \n" +
             "and k.city ilike %:keyword%\n" +
             "or k.province ilike %:keyword%\n" +
-            "or k.\"name\" ilike %:keyword%")
+            "or k.kost_name ilike %:keyword%")
     List<Map<String, Object>> getKostBySearchWithPagination(@Param("keyword") String keyword);
 
 
     @Query(value = "select \n" +
             "k.kost_id,\n" +
-            "\tk.name,\n" +
+            "\tk.kost_name,\n" +
             "\tk.city,\n" +
             "\tk.address,\n" +
             "\tk.province,\n" +
