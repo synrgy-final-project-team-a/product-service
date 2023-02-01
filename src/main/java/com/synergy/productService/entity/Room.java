@@ -21,42 +21,20 @@ public class Room {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    @Column(name = "front_room_photo")
-    @Type(type = "org.hibernate.type.TextType")
-    private String frontRoomPhoto;
+    @Column(name = "room_name", nullable = false)
+    private String roomName;
 
-
-    @Column(name = "inside_room_photo")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "inside_room_photo", columnDefinition = "TEXT")
     private String insideRoomPhoto;
 
-
-    @Column(name = "bathroom_photo")
-    @Type(type = "org.hibernate.type.TextType")
-    private String bathroomPhoto;
-
-
-    @Column(name = "other_room_photo")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "other_room_photo", columnDefinition = "TEXT")
     private String otherRoomPhoto;
 
     @Column(name = "quantity_room")
     private Integer quantityRoom;
 
-    @Column(name = "kost_type_man")
-    private Boolean kostTypeMan;
-
-    @Column(name = "kost_type_woman")
-    private Boolean kostTypeWoman;
-
-    @Column(name = "kost_type_mixed")
-    private Boolean kostTypeMixed;
-
     @Column(name = "size_room")
     private String sizeRoom;
-
-    @Column(name = "enabled")
-    private Boolean enabled;
 
     @Column(name = "available_room")
     private Integer availableRoom;

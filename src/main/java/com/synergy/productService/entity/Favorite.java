@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @Entity
 @Data
 @Table(name = "favorite")
-@Where(clause = "deleted_at IS NULL")
 public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +32,4 @@ public class Favorite {
     @CreationTimestamp
     private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
 }

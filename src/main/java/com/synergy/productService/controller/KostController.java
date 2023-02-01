@@ -1,5 +1,6 @@
 package com.synergy.productService.controller;
 
+import com.synergy.productService.entity.Kost;
 import com.synergy.productService.service.impl.KostServiceImpl;
 import com.synergy.productService.util.Response;
 import lombok.NonNull;
@@ -13,8 +14,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class KostController {
     Response response;
 
     /**
-     * Get Kost By Search
+     * Get Kost By City
      *
      * @param search      -> parameter search
      * @param page      -> parameter indexing page (halaman ke berapa) > start dari 0,1,2,3,....
@@ -39,22 +40,36 @@ public class KostController {
      * @return data entity kost
      */
     @GetMapping("/search")
-    public ResponseEntity getKostBySearch(@RequestParam(value = "search", required = false) String search,
-                                          @RequestParam(value = "page", required = false) @Nullable Integer page,
-                                          @RequestParam(value = "size", required = false) @Nullable Integer size
+    public ResponseEntity getKostBySearch(@RequestParam(value = "search", required = true, defaultValue = "Jakarta") String search,
+                                          @RequestParam(value = "page", required = false, defaultValue = "0") @Nullable Integer page,
+                                          @RequestParam(value = "size", required = false, defaultValue = "6") @Nullable Integer size
                                           ) {
         try {
-            List<Map<String, Object>> data = kostService.getKostBySearch(search, PageRequest.of(page, size));
+            List<Map<String, Object>> data = kostService.getKostByArea(search, PageRequest.of(page, size));
             return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(response.internalServerError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    /** Get List City and Name By Keyword Search
+     *
+     * @param keyword
+     * @return
+     */
+    @GetMapping("/search-keyword")
+    public ResponseEntity getListCityAndNameBySearch(@RequestParam(value = "keyword", required = false) String keyword){
+
+        List<Map<String,Object>> data = kostService.getKostBySearch(keyword);
+        return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
+    }
 
 
 
-    /**
+
+
+
+    /** Get Kost By Filter and Sort
      * @param ac                 -> parameter filter
      * @param blanket            -> parameter filter
      * @param fan->              parameter filter
@@ -92,7 +107,8 @@ public class KostController {
      * @return data entity room
      */
     @GetMapping("/filter/sort")
-    public ResponseEntity getKostByFilter(@RequestParam(value = "ac", required = true, defaultValue = "false")  @NonNull Boolean ac,
+    public ResponseEntity getKostByFilter(
+            @RequestParam(value = "ac", required = true, defaultValue = "false")  @NonNull Boolean ac,
                                           @RequestParam(value = "blanket", required = true, defaultValue = "false") @NonNull Boolean blanket,
                                           @RequestParam(value = "fan", required = true, defaultValue = "false") @NonNull Boolean fan,
                                           @RequestParam(value = "furniture", required = true, defaultValue = "false") @NonNull Boolean furniture,
@@ -124,12 +140,11 @@ public class KostController {
                                           @RequestParam(value = "living_room", required = true, defaultValue = "false") @NonNull Boolean livingRoom,
                                           @RequestParam(value = "parking", required = true, defaultValue = "false") @NonNull Boolean parking,
                                           @RequestParam(value = "page", required = true, defaultValue = "0" )  Integer page,
-                                          @RequestParam(value = "size", required = true, defaultValue = "10")  Integer size,
+                                          @RequestParam(value = "size", required = true, defaultValue = "6")  Integer size,
                                           @RequestParam(value = "sort-by", required = false) @Nullable String field,
                                           @RequestParam(value = "order-type", required = false) @Nullable String direction
     ) {
         try {
-
             // field automatically convert to kost_id by default if null or empty ("") or whitespace (" ")
             field = field == null || StringUtils.isEmpty(field.trim()) ? "kost_id" : field.toLowerCase();
 
@@ -172,5 +187,11 @@ public class KostController {
     @GetMapping(value = {"/get/{id}"})
     public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
         return new ResponseEntity<Map>(kostService.getByIdSeeker(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/get"})
+    public ResponseEntity getKostById(@RequestParam(value = "id") Long id){
+        List<Map<String, Object>> data = kostService.getKostById(id);
+        return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
     }
 }
