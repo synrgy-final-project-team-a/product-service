@@ -18,14 +18,12 @@ public class Room {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    @Column(name = "inside_room_photo")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "inside_room_photo",  columnDefinition = "TEXT")
     private String insideRoomPhoto;
 
 
 
-    @Column(name = "other_room_photo")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "other_room_photo",  columnDefinition = "TEXT")
     private String otherRoomPhoto;
 
     @Column(name = "quantity_room")

@@ -40,12 +40,9 @@ public class Kost {
     @Type(type = "org.hibernate.type.TextType")
     private String additionalNotes;
 
-    @Column(name = "front_building_photo")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "front_building_photo", columnDefinition = "TEXT")
     private String frontBuildingPhoto;
-
-    @Column(name = "front_farbuilding_photo")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "front_farbuilding_photo",  columnDefinition = "TEXT")
     private String frontFarbuildingPhoto;
 
     @Column(name = "province")

@@ -42,9 +42,6 @@ public class KostModel {
 
     private Boolean enabled = false;
 
-
-
-
     private Boolean kostTv;
 
     private Boolean electric;

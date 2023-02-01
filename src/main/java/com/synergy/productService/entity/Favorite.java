@@ -26,14 +26,14 @@ public class Favorite {
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    @CreationTimestamp
-    private LocalDateTime updatedAt;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+//    @Column(name = "created_at", nullable = false, updatable = false)
+//    @CreationTimestamp
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "updated_at", nullable = false)
+//    @CreationTimestamp
+//    private LocalDateTime updatedAt;
+//
+//    @Column(name = "deleted_at")
+//    private LocalDateTime deletedAt;
 }
