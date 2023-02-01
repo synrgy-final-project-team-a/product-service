@@ -16,11 +16,11 @@ public interface KostService {
 
 //    Map<String, Object> getKostByProfileId(Long profileIf);
 
-    public Map getByIdTennant(Long id);
-    public Map getByIdSeeker(Long id);
-    public Map approveById(Long id);
-
-    List<Map<String, Object>> getKostBySearch(String search, Pageable pageable);
+     Map getByIdTennant(Long id);
+     Map getByIdSeeker(Long id);
+     Map approveById(Long id);
+     List<Map<String, Object>> getKostBySearch(String keyword);
+    List<Map<String, Object>> getKostByArea(String search, Pageable pageable);
 
 
 

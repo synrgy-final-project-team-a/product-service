@@ -20,8 +20,8 @@ public class Facility {
     private Long id;
     @Column(name = "ac")
     private Boolean ac;
-    @Column(name = "blanket")
-    private Boolean blanket;
+    @Column(name = "pillow")
+    private Boolean pillow;
     @Column(name = "fan")
     private Boolean fan;
     @Column(name = "furniture")
@@ -46,6 +46,8 @@ public class Facility {
     private Boolean windows;
     @Column(name = "room_tv")
     private Boolean roomTv;
+    @Column(name = "chair")
+    private Boolean chair;
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;

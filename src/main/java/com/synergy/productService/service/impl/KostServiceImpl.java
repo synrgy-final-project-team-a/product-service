@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,53 +120,59 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public List<Map<String, Object>> getKostBySearch(String search, Pageable pageable) {
-        return kostRepo.getKostBySearchWithPagination(search, pageable);
+    public List<Map<String, Object>> getKostByArea(String search, Pageable pageable) {
+        return kostRepo.getKostByAreaWithPagination(search, pageable);
     }
-
 
 
     @Override
     public List<Map<String, Object>> getKostByFilter(Boolean ac,
-                                                Boolean blanket,
-                                                Boolean fan,
-                                                Boolean furniture,
-                                                Boolean shower,
-                                                Boolean sittingCloset,
-                                                Boolean springbed,
-                                                Boolean tableLearning,
-                                                Boolean waterHeater,
-                                                Boolean insideBathroom,
-                                                Boolean nonsittingCloset,
-                                                Boolean outsideBathroom,
-                                                Boolean windows,
-                                                Boolean roomTv,
-                                                Boolean kostTypeMan,
-                                                Boolean kostTypeWoman,
-                                                Boolean kostTypeMixed,
-                                                String durationType,
-                                                Double priceMinimum,
-                                                Double priceMaximum,
-                                                Boolean kostTv,
-                                                Boolean electric,
-                                                Boolean laundry,
-                                                Boolean refrigerator,
-                                                Boolean water,
-                                                Boolean wifi,
-                                                Boolean dispenser,
-                                                Boolean dryingGround,
-                                                Boolean kitchen,
-                                                Boolean livingRoom,
-                                                Boolean parking,
-                                                Pageable pageable) {
-
-
+                                                     Boolean blanket,
+                                                     Boolean fan,
+                                                     Boolean furniture,
+                                                     Boolean shower,
+                                                     Boolean sittingCloset,
+                                                     Boolean springbed,
+                                                     Boolean tableLearning,
+                                                     Boolean waterHeater,
+                                                     Boolean insideBathroom,
+                                                     Boolean nonsittingCloset,
+                                                     Boolean outsideBathroom,
+                                                     Boolean windows,
+                                                     Boolean roomTv,
+                                                     Boolean kostTypeMan,
+                                                     Boolean kostTypeWoman,
+                                                     Boolean kostTypeMixed,
+                                                     String durationType,
+                                                     Double priceMinimum,
+                                                     Double priceMaximum,
+                                                     Boolean kostTv,
+                                                     Boolean electric,
+                                                     Boolean laundry,
+                                                     Boolean refrigerator,
+                                                     Boolean water,
+                                                     Boolean wifi,
+                                                     Boolean dispenser,
+                                                     Boolean dryingGround,
+                                                     Boolean kitchen,
+                                                     Boolean livingRoom,
+                                                     Boolean parking,
+                                                     Pageable pageable) {
 
 
         return kostRepo.getKostByFilterWithPagination(ac, blanket, fan, furniture, shower, sittingCloset, springbed,
                 tableLearning, waterHeater, insideBathroom, nonsittingCloset, outsideBathroom, windows, roomTv,
                 kostTypeMan, kostTypeWoman, kostTypeMixed, durationType, priceMinimum, priceMaximum, kostTv, electric,
-                laundry, refrigerator, water, wifi, dispenser, dryingGround, kitchen, livingRoom, parking,  pageable);
+                laundry, refrigerator, water, wifi, dispenser, dryingGround, kitchen, livingRoom, parking, pageable);
+    }
+
+    @Override
+    public List<Map<String, Object>> getKostBySearch(String keyword) {
+        return kostRepo.getKostBySearchWithPagination(keyword);
+    }
+
+    public List<Map<String, Object>> getKostById(Long id) {
+        return kostRepo.getKostById(id);
     }
 }
 

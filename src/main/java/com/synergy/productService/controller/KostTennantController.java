@@ -58,17 +58,14 @@ public class KostTennantController {
             }
             Kost kostInstance = new Kost();
 
-            kostInstance.setName(kost.getName());
+            kostInstance.setKostName(kost.getName());
             kostInstance.setDescription(kost.getDescription());
             kostInstance.setPic(kost.getPic());
             kostInstance.setPicPhoneNumber(kost.getPicPhoneNumber());
-            kostInstance.setAdditionalNotes(kost.getAdditionalNotes());
             kostInstance.setProvince(kost.getProvince());
             kostInstance.setCity(kost.getCity());
             kostInstance.setAddress(kost.getAddress());
             kostInstance.setGmaps(kost.getGmaps());
-            kostInstance.setLocationAdditionalNotes(kost.getLocationAdditionalNotes());
-            kostInstance.setAvailableRoom(kost.getAvailableRoom());
             kostInstance.setEnabled(kost.getEnabled());
 
             // Assign general facility
@@ -81,11 +78,10 @@ public class KostTennantController {
             kostInstance.setDrying_ground(kost.getDrying_ground());
             kostInstance.setKitchen(kost.getKitchen());
             kostInstance.setLivingRoom(kost.getLivingRoom());
-            kostInstance.setParking(kost.getParking());
+            kostInstance.setParkingCar(kost.getParking());
 
             // From file upload form
             kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(kost.getFrontBuildingPhoto()));
-            kostInstance.setFrontRoadPhoto(kostServiceImpl.uploadFrontRoadPhoto(kost.getFrontRoadPhoto()));
             kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(kost.getFrontFarbuildingPhoto()));
 
             // Add rule to kost
@@ -93,7 +89,7 @@ public class KostTennantController {
             for (String id : kost.getRuleList().split(",")) {
                 rules.add(ruleRepo.findById(Long.parseLong(id)).get());
             }
-            kostInstance.setRuleList(rules);
+
 
             // Assign the new instance kost into current user
             Optional<Profile> user = profileRepo.findById(profileId);
@@ -146,16 +142,15 @@ public class KostTennantController {
 
         try {
             Kost kost = kostRepo.checkExistingKostId(kostId);
-            kost.setName(name);
+            kost.setKostName(name);
             kost.setDescription(description);
             kost.setPic(pic);
-            kost.setAdditionalNotes(additionalNotes);
             kost.setPicPhoneNumber(picPhoneNumber);
             kost.setProvince(province);
             kost.setAddress(address);
             kost.setCity(city);
             kost.setGmaps(gmaps);
-            kost.setLocationAdditionalNotes(locationAdditionalNotes);
+
 
             // delete old rule
             kostRuleRepo.deleteRuleById(kostRepo.findById(kostId).get().getId());
@@ -165,9 +160,9 @@ public class KostTennantController {
                 rules.add(ruleRepo.findById(Long.parseLong(idRule)).get());
             }
 
-            kost.setRuleList(rules);
+
             kost.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(file1));
-            kost.setFrontRoadPhoto(kostServiceImpl.uploadFrontRoadPhoto(file2));
+
             kost.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(file3));
 
             Kost obj = kostRepo.save(kost);
@@ -193,22 +188,18 @@ public class KostTennantController {
 
             Room roomInstance = new Room();
             roomInstance.setQuantityRoom(room.getQuantityRoom());
-            roomInstance.setKostTypeMan(room.getKostTypeMan());
-            roomInstance.setKostTypeWoman(room.getKostTypeWoman());
-            roomInstance.setKostTypeMixed(room.getKostTypeMixed());
             roomInstance.setSizeRoom(room.getSizeRoom());
-            roomInstance.setEnabled(room.getEnabled());
+
 
             // From file upload form
-            roomInstance.setFrontRoomPhoto(kostServiceImpl.uploadFile(room.getFrontRoomPhoto(), "from_room_photo"));
+
             roomInstance.setInsideRoomPhoto(kostServiceImpl.uploadFile(room.getInsideRoomPhoto(), "inside_room_photo"));
-            roomInstance.setBathroomPhoto(kostServiceImpl.uploadFile(room.getBathroomPhoto(), "bathroom_photo"));
+
             roomInstance.setOtherRoomPhoto(kostServiceImpl.uploadFile(room.getOtherRoomPhoto(), "other_room_photo"));
 
             // Create facility for room
             Facility facilityInstance = new Facility();
             facilityInstance.setAc(room.getAc());
-            facilityInstance.setBlanket(room.getBlanket());
             facilityInstance.setFan(room.getFan());
             facilityInstance.setFurniture(room.getFurniture());
             facilityInstance.setShower(room.getShower());

@@ -42,7 +42,7 @@ public class Profile {
     @Column(name = "province")
     private String province;
 
-    
+
     @Column(name = "gender")
     private String gender;
 
@@ -57,4 +57,15 @@ public class Profile {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    @Column(name = "bank_account")
+    private String bankAccount;
+
+    @Column(name = "bank_name")
+    private String bankName;
+
+    @Column(name = "bank_username")
+    private String bankUsername;
+
+    @Column(name = "status")
+    private String profileStatus;
 }
