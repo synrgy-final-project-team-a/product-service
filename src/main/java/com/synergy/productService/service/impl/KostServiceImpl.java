@@ -1,6 +1,7 @@
 package com.synergy.productService.service.impl;
 
 import com.cloudinary.Cloudinary;
+import com.synergy.productService.dto.FilterModel;
 import com.synergy.productService.entity.Kost;
 import com.synergy.productService.repository.KostRepo;
 import com.synergy.productService.repository.ProfileRepo;
@@ -120,55 +121,54 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public List<Map<String, Object>> getKostByArea(String search, Pageable pageable) {
-        return kostRepo.getKostByAreaWithPagination(search, pageable);
+    public List<Map<String, Object>> getKostByArea(String province, String city, Pageable pageable) {
+        return kostRepo.getKostByAreaWithPagination(province, city, pageable);
     }
 
 
     @Override
-    public List<Map<String, Object>> getKostByFilter(Boolean ac,
-                                                     Boolean blanket,
-                                                     Boolean fan,
-                                                     Boolean furniture,
-                                                     Boolean shower,
-                                                     Boolean sittingCloset,
-                                                     Boolean springbed,
-                                                     Boolean tableLearning,
-                                                     Boolean waterHeater,
-                                                     Boolean insideBathroom,
-                                                     Boolean nonsittingCloset,
-                                                     Boolean outsideBathroom,
-                                                     Boolean windows,
-                                                     Boolean roomTv,
-                                                     Boolean kostTypeMan,
-                                                     Boolean kostTypeWoman,
-                                                     Boolean kostTypeMixed,
-                                                     String durationType,
-                                                     Double priceMinimum,
-                                                     Double priceMaximum,
-                                                     Boolean kostTv,
-                                                     Boolean electric,
-                                                     Boolean laundry,
-                                                     Boolean refrigerator,
-                                                     Boolean water,
-                                                     Boolean wifi,
-                                                     Boolean dispenser,
-                                                     Boolean dryingGround,
-                                                     Boolean kitchen,
-                                                     Boolean livingRoom,
-                                                     Boolean parking,
+    public List<Map<String, Object>> getKostByFilter(FilterModel filterModel,
                                                      Pageable pageable) {
 
 
-        return kostRepo.getKostByFilterWithPagination(ac, blanket, fan, furniture, shower, sittingCloset, springbed,
-                tableLearning, waterHeater, insideBathroom, nonsittingCloset, outsideBathroom, windows, roomTv,
-                kostTypeMan, kostTypeWoman, kostTypeMixed, durationType, priceMinimum, priceMaximum, kostTv, electric,
-                laundry, refrigerator, water, wifi, dispenser, dryingGround, kitchen, livingRoom, parking, pageable);
+        return kostRepo.getKostByFilterWithPagination(filterModel.getAc(), filterModel.getPillow(),
+                filterModel.getFan(), filterModel.getFurniture(), filterModel.getShower(), filterModel.getSitting_closet(), filterModel.getSpringbed(),
+                filterModel.getTable_learning(), filterModel.getWater_heater(), filterModel.getInside_bathroom(), filterModel.getNon_sitting_closet(),
+                filterModel.getOutside_bathroom(), filterModel.getWindows(), filterModel.getKost_tv(),
+                filterModel.getKost_type_man(), filterModel.getKost_type_woman(), filterModel.getKost_type_mixed(),
+                filterModel.getDuration_type(), filterModel.getPrice_minimum(), filterModel.getPrice_maximum(), filterModel.getKost_tv(),
+                filterModel.getElectric(), filterModel.getLaundry(), filterModel.getRefrigerator(),
+                filterModel.getWater(), filterModel.getWifi(), filterModel.getDispenser(), filterModel.getDrying_ground(),
+                filterModel.getKitchen(), filterModel.getLiving_room(), filterModel.getParking_car(), filterModel.getParking_motorcycle(), pageable);
     }
 
     @Override
-    public List<Map<String, Object>> getKostBySearch(String keyword) {
-        return kostRepo.getKostBySearchWithPagination(keyword);
+    public Map<String, List<Map<String,Object>>> getKostBySearch(String keyword) {
+        List<Map<String, Object>> data = kostRepo.getKostBySearchWithPagination(keyword);
+        Map<String, List<Map<String,Object>>> res = new HashMap<>();
+        List<Map<String,Object>> location = new ArrayList<>();
+        List<Map<String,Object>> kost = new ArrayList<>();
+
+
+        for(Map<String, Object> item : data){
+            Map<String, Object> itemLoc = new HashMap<>();
+            Map<String, Object> itemKost = new HashMap<>();
+
+
+            itemLoc.put("province", item.get("province"));
+            itemLoc.put("city", item.get("city"));
+            itemKost.put("kost_name", item.get("kost_name"));
+            itemKost.put("kost_id", item.get("kost_id"));
+
+            location.add(itemLoc);
+            kost.add(itemKost);
+
+        }
+
+        res.put("location", location);
+        res.put("kost", kost);
+
+        return res;
     }
 
     public List<Map<String, Object>> getKostById(Long id) {
