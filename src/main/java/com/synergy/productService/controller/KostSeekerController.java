@@ -75,13 +75,15 @@ public class KostSeekerController {
         return new ResponseEntity<Map>(response.resSuccess(list, "Success get list favorite kost", 200), HttpStatus.OK);
     }
     @PostMapping("/kost/favorite/add")
-    public ResponseEntity addKostToFavorite(@ModelAttribute FavoriteModel favoriteModel){
+    public ResponseEntity addKostToFavorite(FavoriteModel favoriteModel){
         Map<String, Object> resp = new HashMap<>();
 
         try{
-            kostFavoriteServiceImpl.postFavorite(favoriteModel.getKostId(), favoriteModel.getProfileId());
-            List<Favorite> favorites = favoriteRepo.findAll();
-            resp.put("data", favorites);
+            Favorite favorite = new Favorite();
+            favorite.setProfile(profileRepo.findById(favoriteModel.getProfileId()).get());
+            favorite.setKost(kostRepo.findById(favoriteModel.getKostId()).get());
+            favoriteRepo.save(favorite);
+            resp.put("data", favorite);
             resp.put("message", "Kost telah ditambahkan ke dalam favorite");
             resp.put("status_code", 201);
 
@@ -104,9 +106,7 @@ public class KostSeekerController {
             Optional<Favorite> favorite = favoriteRepo.findById(favoriteId);
 
             if (favorite.isPresent()) {
-                favorite.get().setDeletedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-                Favorite kostDeleted = favoriteRepo.save(favorite.get());
-
+                favoriteRepo.deleteKostFavorite(favoriteId);
                 resp.put("message", "Kost berhasil dihapus dari favorite");
                 resp.put("status_code", 200);
                 return new ResponseEntity<>(resp, HttpStatus.OK);

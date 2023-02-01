@@ -43,15 +43,6 @@ public class KostServiceImpl implements KostService {
         return secureUrl;
     }
 
-    public String uploadFrontRoadPhoto(MultipartFile file) throws IOException {
-        Map<String, Object> options = new HashMap<>();
-        options.put("folder", "front_road_photo");
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
-        String publicId = (String) uploadResult.get("public_id");
-        String secureUrl = cloudinary.url().secure(true).generate(publicId);
-        return secureUrl;
-    }
-
     public String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException {
         Map<String, Object> options = new HashMap<>();
         options.put("folder", "front_farbuilding_photo");
@@ -111,6 +102,22 @@ public class KostServiceImpl implements KostService {
             checkingData.setEnabled(true);
             Kost done = kostRepo.save(checkingData);
             return res.resSuccess(done, "success", 200);
+
+        } catch (Exception e) {
+            logger.error("Error get by id, {} " + e);
+            return res.clientError("Error get by id: " + e);
+        }
+    }
+
+    @Override
+    public Map rejectById(Long id) {
+        try {
+            Kost checkingData = kostRepo.checkExistingKostIdAdmin(id);
+            if (checkingData == null) {
+                return res.notFoundError("Data cannot be found!");
+            }
+            kostRepo.delete(checkingData);
+            return res.resSuccess(checkingData, "success delete", 200);
 
         } catch (Exception e) {
             logger.error("Error get by id, {} " + e);

@@ -65,6 +65,7 @@ public class KostFavoriteServiceImpl implements KostFavorite {
             }
             favoriteRepo.postKostFavorite(profileId, kostId);
 
+
         } catch (Exception e) {
             log.error("Error has been found! because : {}", e.getMessage());
         }

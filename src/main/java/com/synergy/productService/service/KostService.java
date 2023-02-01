@@ -11,7 +11,6 @@ import java.util.Map;
 public interface KostService {
 
     String uploadFrontBuildingPhoto(MultipartFile file) throws IOException;
-    String uploadFrontRoadPhoto(MultipartFile file) throws IOException;
     String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException;
 
 //    Map<String, Object> getKostByProfileId(Long profileIf);
@@ -19,6 +18,9 @@ public interface KostService {
     public Map getByIdTennant(Long id);
     public Map getByIdSeeker(Long id);
     public Map approveById(Long id);
+    public Map rejectById(Long id);
+
+
 
     List<Map<String, Object>> getKostBySearch(String search, Pageable pageable);
 

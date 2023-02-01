@@ -22,8 +22,9 @@ public class Favorite {
     @JoinColumn(name = "kost_id", nullable = false)
     private Kost kost;
 
-    @Column(name = "profile_id")
-    private Long profileId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp

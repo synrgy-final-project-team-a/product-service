@@ -7,29 +7,22 @@ import javax.persistence.Column;
 
 @Data
 public class RoomModel {
-    private MultipartFile frontRoomPhoto;
+
+    private String roomName;
 
     private MultipartFile insideRoomPhoto;
-
-    private MultipartFile bathroomPhoto;
 
     private MultipartFile otherRoomPhoto;
 
     private Integer quantityRoom;
+    private Integer availableRoom;
 
-    private Boolean kostTypeMan;
-
-    private Boolean kostTypeWoman;
-
-    private Boolean kostTypeMixed;
 
     private String sizeRoom;
 
-    private Boolean enabled = true;
-
     private Boolean ac;
 
-    private Boolean blanket;
+    private Boolean pillow;
 
     private Boolean fan;
 
@@ -53,10 +46,8 @@ public class RoomModel {
 
     private Boolean windows;
 
-    private Boolean bathtub;
+    private Boolean chair;
 
     private Boolean roomTv;
-
-    private Boolean dispenser;
 
 }
