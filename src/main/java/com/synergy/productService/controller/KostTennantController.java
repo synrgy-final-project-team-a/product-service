@@ -62,12 +62,10 @@ public class KostTennantController {
             kostInstance.setDescription(kost.getDescription());
             kostInstance.setPic(kost.getPic());
             kostInstance.setPicPhoneNumber(kost.getPicPhoneNumber());
-            kostInstance.setAdditionalNotes(kost.getAdditionalNotes());
             kostInstance.setProvince(kost.getProvince());
             kostInstance.setCity(kost.getCity());
             kostInstance.setAddress(kost.getAddress());
             kostInstance.setGmaps(kost.getGmaps());
-            kostInstance.setLocationAdditionalNotes(kost.getLocationAdditionalNotes());
             kostInstance.setEnabled(kost.getEnabled());
 
             // Assign general facility
@@ -147,13 +145,12 @@ public class KostTennantController {
             kost.setKostName(name);
             kost.setDescription(description);
             kost.setPic(pic);
-            kost.setAdditionalNotes(additionalNotes);
             kost.setPicPhoneNumber(picPhoneNumber);
             kost.setProvince(province);
             kost.setAddress(address);
             kost.setCity(city);
             kost.setGmaps(gmaps);
-            kost.setLocationAdditionalNotes(locationAdditionalNotes);
+
 
             // delete old rule
             kostRuleRepo.deleteRuleById(kostRepo.findById(kostId).get().getId());
@@ -192,12 +189,12 @@ public class KostTennantController {
             Room roomInstance = new Room();
             roomInstance.setQuantityRoom(room.getQuantityRoom());
             roomInstance.setSizeRoom(room.getSizeRoom());
-            roomInstance.setEnabled(room.getEnabled());
+
 
             // From file upload form
-            roomInstance.setFrontRoomPhoto(kostServiceImpl.uploadFile(room.getFrontRoomPhoto(), "from_room_photo"));
+
             roomInstance.setInsideRoomPhoto(kostServiceImpl.uploadFile(room.getInsideRoomPhoto(), "inside_room_photo"));
-            roomInstance.setBathroomPhoto(kostServiceImpl.uploadFile(room.getBathroomPhoto(), "bathroom_photo"));
+
             roomInstance.setOtherRoomPhoto(kostServiceImpl.uploadFile(room.getOtherRoomPhoto(), "other_room_photo"));
 
             // Create facility for room

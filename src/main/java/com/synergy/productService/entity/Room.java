@@ -21,7 +21,7 @@ public class Room {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    @Column(name = "room_name", nullable = false)
+    @Column(name = "room_name")
     private String roomName;
 
     @Column(name = "inside_room_photo", columnDefinition = "TEXT")
