@@ -43,7 +43,7 @@ public class KostController {
      * @return data entity kost
      */
     @GetMapping("/search")
-    public ResponseEntity getKostBySearch(@RequestParam(value = "province") String province,
+    public ResponseEntity getKostByArea(@RequestParam(value = "province") String province,
                                           @RequestParam(value = "city") String city,
                                           @RequestParam(value = "page", required = false, defaultValue = "0") @Nullable Integer page,
                                           @RequestParam(value = "size", required = false, defaultValue = "6") @Nullable Integer size
@@ -63,7 +63,7 @@ public class KostController {
      * @return
      */
     @GetMapping("/search-keyword")
-    public ResponseEntity getListCityAndNameBySearch(@RequestParam(value = "keyword", required = false) String keyword) {
+    public ResponseEntity getAreaAndKostBySearch(@RequestParam(value = "keyword", required = false) String keyword) {
 
         Map<String, List<Map<String, Object>>> data = kostService.getKostBySearch(keyword);
         return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
