@@ -75,13 +75,15 @@ public class KostSeekerController {
         return new ResponseEntity<Map>(response.resSuccess(list, "Success get list favorite kost", 200), HttpStatus.OK);
     }
     @PostMapping("/kost/favorite/add")
-    public ResponseEntity addKostToFavorite(@ModelAttribute FavoriteModel favoriteModel){
+    public ResponseEntity addKostToFavorite(FavoriteModel favoriteModel){
         Map<String, Object> resp = new HashMap<>();
 
         try{
-            kostFavoriteServiceImpl.postFavorite(favoriteModel.getKostId(), favoriteModel.getProfileId());
-            List<Favorite> favorites = favoriteRepo.findAll();
-            resp.put("data", favorites);
+            Favorite favorite = new Favorite();
+            favorite.setProfile(profileRepo.findById(favoriteModel.getProfileId()).get());
+            favorite.setKost(kostRepo.findById(favoriteModel.getKostId()).get());
+            favoriteRepo.save(favorite);
+            resp.put("data", favorite);
             resp.put("message", "Kost telah ditambahkan ke dalam favorite");
             resp.put("status_code", 201);
 
@@ -102,11 +104,9 @@ public class KostSeekerController {
 
         try {
             Optional<Favorite> favorite = favoriteRepo.findById(favoriteId);
-
             if(favorite.isPresent()){
                 favoriteRepo.deleteById(favoriteId);
-                return new ResponseEntity(response.resSuccess(null, "Data berhasil dihapus", 200), HttpStatus.OK );
-            }
+                return new ResponseEntity(response.resSuccess(null, "Data berhasil dihapus", 200), HttpStatus.OK );            }
             resp.put("message", "Data tidak berhasil ditemukan");
             resp.put("status", 404);
             return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);

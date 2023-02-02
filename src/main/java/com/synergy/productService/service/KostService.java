@@ -12,10 +12,10 @@ import java.util.Map;
 public interface KostService {
 
     String uploadFrontBuildingPhoto(MultipartFile file) throws IOException;
-    String uploadFrontRoadPhoto(MultipartFile file) throws IOException;
     String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException;
 
 //    Map<String, Object> getKostByProfileId(Long profileIf);
+
 
      Map getByIdTennant(Long id);
      Map getByIdSeeker(Long id);
@@ -25,6 +25,5 @@ public interface KostService {
 
 
 
-     List<Map<String, Object>> getKostByFilter(FilterModel filterModel,
-                                                Pageable pageable);
+     List<Map<String, Object>> getKostByFilter(FilterModel filterModel, Pageable pageable);
 }

@@ -5,10 +5,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
@@ -30,17 +29,16 @@ public class Kost {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "pic", nullable = false)
+    @Column(name = "pic")
     private String pic;
 
-    @Column(name = "pic_phone_number", nullable = false)
+    @Column(name = "pic_phone_number")
     private String picPhoneNumber;
 
 
     @Column(name = "front_building_photo", columnDefinition = "TEXT")
     private String frontBuildingPhoto;
-
-    @Column(name = "front_farbuilding_photo", columnDefinition = "TEXT")
+    @Column(name = "front_farbuilding_photo",  columnDefinition = "TEXT")
     private String frontFarbuildingPhoto;
 
     @Column(name = "province")
@@ -55,6 +53,7 @@ public class Kost {
     @Column(name = "gmaps", columnDefinition = "TEXT")
     private String gmaps;
 
+
     @OneToOne(targetEntity = Rule.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "rule_id")
     private Rule rule;
@@ -62,7 +61,6 @@ public class Kost {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
-
 
     @Column(name = "enabled")
     private Boolean enabled;
@@ -75,6 +73,9 @@ public class Kost {
 
     @Column(name = "kost_type_mixed")
     private Boolean kostTypeMixed;
+
+    @Column(name = "parking_motorcycle")
+    private Boolean parkingMotorcycle;
 
     @Column(name = "kost_tv")
     private Boolean kostTv;
@@ -106,14 +107,9 @@ public class Kost {
     @Column(name = "living_room")
     private Boolean livingRoom;
 
-    @Column(name = "parking_motorcycle")
-    private Boolean parkingMotorcycle;
-
     @Column(name = "parking_car")
     private Boolean parkingCar;
 
-    @Column(name = "year_since")
-    private String yearSince;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
@@ -125,5 +121,12 @@ public class Kost {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @Column(name = "year_since")
+    private String yearSince;
+
+    @OneToOne(targetEntity = Rule.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "rule_id")
+    private Rule rule;
 
 }

@@ -7,9 +7,6 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -33,11 +30,14 @@ public class Room {
     @Column(name = "quantity_room")
     private Integer quantityRoom;
 
-    @Column(name = "size_room")
-    private String sizeRoom;
 
     @Column(name = "available_room")
     private Integer availableRoom;
+
+
+
+    @Column(name = "size_room")
+    private String sizeRoom;
 
     @OneToOne(targetEntity = Facility.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "facility_id")
@@ -57,5 +57,8 @@ public class Room {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @Column(name = "room_name", nullable = false)
+    private String roomName;
 
 }
