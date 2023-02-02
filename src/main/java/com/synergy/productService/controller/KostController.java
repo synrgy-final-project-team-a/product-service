@@ -128,12 +128,17 @@ public class KostController {
     }
 
     @GetMapping(value = {"/get/room/{id}"})
-    public ResponseEntity<Map> getRoom(@PathVariable(value = "id") Long id) {
+    public ResponseEntity getRoom(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<Map>(kostService.getRoomById(id), HttpStatus.OK);
     }
 
     @GetMapping(value = {"/get/room/price/{roomId}"})
     public ResponseEntity<Map> getPriceByRoom(@PathVariable(value = "roomId") Long roomId) {
         return new ResponseEntity<Map>(kostService.getPricebyRoomId(roomId), HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/get"})
+    public ResponseEntity getByKostId(@RequestParam("id") Long kostId){
+        return new ResponseEntity(kostService.getKostById(kostId), HttpStatus.OK);
     }
 }
