@@ -25,5 +25,10 @@ public interface KostService {
 
 
 
+    public Map getRoomById(Long id);
+
+    public Map getPricebyRoomId(Long id);
+    public Map rejectById(Long id);
+
      List<Map<String, Object>> getKostByFilter(FilterModel filterModel, Pageable pageable);
 }

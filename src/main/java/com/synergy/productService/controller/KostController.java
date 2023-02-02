@@ -37,7 +37,7 @@ public class KostController {
      * Get Kost By City
      *
      * @param province -> parameter search
-     * @param city -> parameter search
+     * @param city     -> parameter search
      * @param page     -> parameter indexing page (halaman ke berapa) > start dari 0,1,2,3,....
      * @param size     -> parameter size(data yang ditampilkan) per page (1,2,3,...)
      * @return data entity kost
@@ -128,18 +128,12 @@ public class KostController {
     }
 
     @GetMapping(value = {"/get/room/{id}"})
-    public ResponseEntity<Map> getRoom(@PathVariable(value = "id") Long id){
+    public ResponseEntity<Map> getRoom(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<Map>(kostService.getRoomById(id), HttpStatus.OK);
     }
 
     @GetMapping(value = {"/get/room/price/{roomId}"})
-    public ResponseEntity<Map> getPriceByRoom(@PathVariable(value = "roomId") Long roomId){
+    public ResponseEntity<Map> getPriceByRoom(@PathVariable(value = "roomId") Long roomId) {
         return new ResponseEntity<Map>(kostService.getPricebyRoomId(roomId), HttpStatus.OK);
-
-
-@GetMapping(value = {"/get"})
-    public ResponseEntity getKostById(@RequestParam(value = "id") Long id) {
-        List<Map<String, Object>> data = kostService.getKostById(id);
-        return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
     }
 }
