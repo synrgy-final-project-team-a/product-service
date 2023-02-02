@@ -51,6 +51,12 @@ public class KostAdminController {
     public ResponseEntity<Map> approveById(@PathVariable(value = "id") Long id){
         return new ResponseEntity<Map>(kostServiceImpl.approveById(id), HttpStatus.OK);
     }
+
+    @DeleteMapping(value = {"/kost/reject/{id}"})
+    public ResponseEntity<Map> rejectById(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<Map>(kostServiceImpl.rejectById(id), HttpStatus.OK);
+    }
+
     @GetMapping("/kost/list")
     public ResponseEntity<Map> getListKostAdmin(
             @RequestParam(required = true) Integer page,

@@ -6,19 +6,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class KostModel {
-    private String name;
+    private String kostName;
     private String description;
-    private String pic;
 
-    private String picPhoneNumber;
-
-    private String additionalNotes;
-
+    private Boolean kostTypeMan;
+    private Boolean kostTypeWoman;
+    private Boolean kostTypeMixed;
     private MultipartFile frontBuildingPhoto;
 
-    private MultipartFile frontRoadPhoto;
-
     private MultipartFile frontFarbuildingPhoto;
+    private String yearSince;
 
     private String province;
 
@@ -27,14 +24,25 @@ public class KostModel {
     private String address;
 
     private String gmaps;
+    private Boolean restrictedNight;
+    private Boolean identityCard;
+    private Boolean restrictedGender;
+    private Boolean restrictedGuest;
 
-    private String locationAdditionalNotes;
+    private Boolean maximumOne;
 
-    private Integer availableRoom;
+    private Boolean maximumTwo;
+    private Boolean restrictedCheckout;
 
-    private Boolean enabled = true;
+    private Boolean restrictedCheckin;
 
-    private Boolean tv;
+    private Boolean includeElectricity;
+
+    private Boolean noSmoking;
+
+    private Boolean enabled = false;
+
+    private Boolean kostTv;
 
     private Boolean electric;
 
@@ -45,6 +53,8 @@ public class KostModel {
     private Boolean water;
 
     private Boolean wifi;
+    private Boolean dispenser;
+
 
     private Boolean drying_ground;
 
@@ -52,8 +62,9 @@ public class KostModel {
 
     private Boolean livingRoom;
 
-    private Boolean parking;
+    private Boolean parkingMotorcycle;
 
-    private String ruleList;
+    private Boolean parkingCar;
+
 
 }

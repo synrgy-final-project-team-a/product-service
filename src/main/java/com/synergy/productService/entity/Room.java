@@ -7,9 +7,6 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -21,45 +18,26 @@ public class Room {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    @Column(name = "front_room_photo")
-    @Type(type = "org.hibernate.type.TextType")
-    private String frontRoomPhoto;
+    @Column(name = "room_name")
+    private String roomName;
 
-
-    @Column(name = "inside_room_photo")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "inside_room_photo", columnDefinition = "TEXT")
     private String insideRoomPhoto;
 
-
-    @Column(name = "bathroom_photo")
-    @Type(type = "org.hibernate.type.TextType")
-    private String bathroomPhoto;
-
-
-    @Column(name = "other_room_photo")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "other_room_photo", columnDefinition = "TEXT")
     private String otherRoomPhoto;
 
     @Column(name = "quantity_room")
     private Integer quantityRoom;
 
-    @Column(name = "kost_type_man")
-    private Boolean kostTypeMan;
-
-    @Column(name = "kost_type_woman")
-    private Boolean kostTypeWoman;
-
-    @Column(name = "kost_type_mixed")
-    private Boolean kostTypeMixed;
-
-    @Column(name = "size_room")
-    private String sizeRoom;
-
-    @Column(name = "enabled")
-    private Boolean enabled;
 
     @Column(name = "available_room")
     private Integer availableRoom;
+
+
+
+    @Column(name = "size_room")
+    private String sizeRoom;
 
     @OneToOne(targetEntity = Facility.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "facility_id")
@@ -79,5 +57,8 @@ public class Room {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @Column(name = "room_name", nullable = false)
+    private String roomName;
 
 }
