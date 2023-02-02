@@ -26,8 +26,7 @@ public class Kost {
     private String kostName;
 
 
-    @Column(name = "description", nullable = false)
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "pic")
@@ -36,9 +35,6 @@ public class Kost {
     @Column(name = "pic_phone_number")
     private String picPhoneNumber;
 
-    @Column(name = "additional_notes")
-    @Type(type = "org.hibernate.type.TextType")
-    private String additionalNotes;
 
     @Column(name = "front_building_photo", columnDefinition = "TEXT")
     private String frontBuildingPhoto;
@@ -54,15 +50,13 @@ public class Kost {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "gmaps")
-    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "gmaps", columnDefinition = "TEXT")
     private String gmaps;
 
-    @Column(name = "location_additional_notes")
-    @Type(type = "org.hibernate.type.TextType")
-    private String locationAdditionalNotes;
 
-
+    @OneToOne(targetEntity = Rule.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "rule_id")
+    private Rule rule;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "profile_id", nullable = false)
@@ -82,6 +76,7 @@ public class Kost {
 
     @Column(name = "parking_motorcycle")
     private Boolean parkingMotorcycle;
+
     @Column(name = "kost_tv")
     private Boolean kostTv;
 
@@ -114,6 +109,7 @@ public class Kost {
 
     @Column(name = "parking_car")
     private Boolean parkingCar;
+
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp

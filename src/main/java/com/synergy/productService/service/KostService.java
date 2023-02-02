@@ -1,5 +1,6 @@
 package com.synergy.productService.service;
 
+import com.synergy.productService.dto.FilterModel;
 import com.synergy.productService.entity.Kost;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,49 +16,14 @@ public interface KostService {
 
 //    Map<String, Object> getKostByProfileId(Long profileIf);
 
-    public Map getByIdTennant(Long id);
-    public Map getByIdSeeker(Long id);
-    public Map approveById(Long id);
-    public Map rejectById(Long id);
-    public Map getRoomById(Long id);
-    public Map getPricebyRoomId(Long id);
+
+     Map getByIdTennant(Long id);
+     Map getByIdSeeker(Long id);
+     Map approveById(Long id);
+    Map<String, List<Map<String,Object>>> getKostBySearch(String keyword);
+    List<Map<String, Object>> getKostByArea(String province, String city, Pageable pageable);
 
 
 
-    List<Map<String, Object>> getKostBySearch(String search, Pageable pageable);
-
-
-
-    public List<Map<String, Object>> getKostByFilter(Boolean ac,
-                                                Boolean blanket,
-                                                Boolean fan,
-                                                Boolean furniture,
-                                                Boolean shower,
-                                                Boolean sittingCloset,
-                                                Boolean springbed,
-                                                Boolean tableLearning,
-                                                Boolean waterHeater,
-                                                Boolean insideBathroom,
-                                                Boolean nonsittingCloset,
-                                                Boolean outsideBathroom,
-                                                Boolean windows,
-                                                Boolean roomTv,
-                                                Boolean kostTypeMan,
-                                                Boolean kostTypeWoman,
-                                                Boolean kostTypeMixed,
-                                                String durationType,
-                                                Double priceMinimum,
-                                                Double priceMaximum,
-                                                Boolean kostTv,
-                                                Boolean electric,
-                                                Boolean laundry,
-                                                Boolean refrigerator,
-                                                Boolean water,
-                                                Boolean wifi,
-                                                Boolean dispenser,
-                                                Boolean dryingGround,
-                                                Boolean kitchen,
-                                                Boolean livingRoom,
-                                                Boolean parking,
-                                                Pageable pageable);
+     List<Map<String, Object>> getKostByFilter(FilterModel filterModel, Pageable pageable);
 }

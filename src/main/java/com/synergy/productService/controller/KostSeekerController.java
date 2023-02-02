@@ -104,13 +104,9 @@ public class KostSeekerController {
 
         try {
             Optional<Favorite> favorite = favoriteRepo.findById(favoriteId);
-
-            if (favorite.isPresent()) {
-                favoriteRepo.deleteKostFavorite(favoriteId);
-                resp.put("message", "Kost berhasil dihapus dari favorite");
-                resp.put("status_code", 200);
-                return new ResponseEntity<>(resp, HttpStatus.OK);
-            }
+            if(favorite.isPresent()){
+                favoriteRepo.deleteById(favoriteId);
+                return new ResponseEntity(response.resSuccess(null, "Data berhasil dihapus", 200), HttpStatus.OK );            }
             resp.put("message", "Data tidak berhasil ditemukan");
             resp.put("status", 404);
             return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);

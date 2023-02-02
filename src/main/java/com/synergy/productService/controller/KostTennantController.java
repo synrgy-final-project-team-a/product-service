@@ -88,6 +88,7 @@ public class KostTennantController {
             kostInstance.setParkingCar(kost.getParkingCar());
             kostInstance.setDispenser(kost.getDispenser());
 
+
             // From file upload form
             kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(kost.getFrontBuildingPhoto()));
             kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(kost.getFrontFarbuildingPhoto()));
@@ -104,6 +105,7 @@ public class KostTennantController {
             ruleInstance.setRestrictedCheckout(kost.getRestrictedCheckout());
             ruleInstance.setIncludeElectricity(kost.getIncludeElectricity());
             ruleInstance.setNoSmoking(kost.getNoSmoking());
+
 
             // Assign the new instance kost into current user
             Optional<Profile> user = profileRepo.findById(profileId);

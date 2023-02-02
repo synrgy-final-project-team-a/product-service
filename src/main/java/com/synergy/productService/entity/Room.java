@@ -18,12 +18,13 @@ public class Room {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    @Column(name = "inside_room_photo",  columnDefinition = "TEXT")
+    @Column(name = "room_name")
+    private String roomName;
+
+    @Column(name = "inside_room_photo", columnDefinition = "TEXT")
     private String insideRoomPhoto;
 
-
-
-    @Column(name = "other_room_photo",  columnDefinition = "TEXT")
+    @Column(name = "other_room_photo", columnDefinition = "TEXT")
     private String otherRoomPhoto;
 
     @Column(name = "quantity_room")
