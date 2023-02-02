@@ -124,9 +124,6 @@ public class Kost {
 
     @Column(name = "year_since")
     private String yearSince;
-
-    @OneToOne(targetEntity = Rule.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "rule_id")
-    private Rule rule;
+    
 
 }

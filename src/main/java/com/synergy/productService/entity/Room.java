@@ -18,7 +18,7 @@ public class Room {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    @Column(name = "room_name")
+    @Column(name = "room_name", nullable = false)
     private String roomName;
 
     @Column(name = "inside_room_photo", columnDefinition = "TEXT")
@@ -58,7 +58,5 @@ public class Room {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @Column(name = "room_name", nullable = false)
-    private String roomName;
 
 }
