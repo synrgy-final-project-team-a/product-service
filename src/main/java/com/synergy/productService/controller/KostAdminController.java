@@ -25,6 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin("*")
 public class KostAdminController {
 
     @Autowired
