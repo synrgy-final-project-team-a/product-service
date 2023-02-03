@@ -1,7 +1,6 @@
 package com.synergy.productService.controller;
 
-import com.synergy.productService.dto.FilterModel;
-import com.synergy.productService.entity.Kost;
+import com.synergy.productService.dto.FilterSortModel;
 import com.synergy.productService.service.impl.KostServiceImpl;
 import com.synergy.productService.util.Response;
 import lombok.NonNull;
@@ -42,19 +41,19 @@ public class KostController {
      * @param size     -> parameter size(data yang ditampilkan) per page (1,2,3,...)
      * @return data entity kost
      */
-    @GetMapping("/search")
-    public ResponseEntity getKostByArea(@RequestParam(value = "province") String province,
-                                          @RequestParam(value = "city") String city,
-                                          @RequestParam(value = "page", required = false, defaultValue = "0") @Nullable Integer page,
-                                          @RequestParam(value = "size", required = false, defaultValue = "6") @Nullable Integer size
-    ) {
-        try {
-            List<Map<String, Object>> data = kostService.getKostByArea(province, city, PageRequest.of(page, size));
-            return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(response.internalServerError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity getKostByArea(@RequestParam(value = "province") String province,
+//                                          @RequestParam(value = "city") String city,
+//                                          @RequestParam(value = "page", required = false, defaultValue = "0") @Nullable Integer page,
+//                                          @RequestParam(value = "size", required = false, defaultValue = "6") @Nullable Integer size
+//    ) {
+//        try {
+//            List<Map<String, Object>> data = kostService.getKostByArea(province, city, PageRequest.of(page, size));
+//            return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(response.internalServerError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     /**
      * Get List City and Name By Keyword Search
@@ -71,7 +70,7 @@ public class KostController {
 
 
     /**
-     * Get Kost By Filter and Sort
+     * Get Kost By Filter, Sort, And Search By Area
      *
      * @param page      -> parameter indexing page (halaman ke berapa) > start dari 0,1,2,3,....
      * @param size      -> parameter size per page (1,2,3,...)
@@ -80,7 +79,7 @@ public class KostController {
      * @return data entity room
      */
     @GetMapping("/filter/sort")
-    public ResponseEntity getKostByFilter(@Valid FilterModel filterModel,
+    public ResponseEntity getKostByFilter(@Valid FilterSortModel filterSortModel,
                                           @RequestParam(value = "page", required = true, defaultValue = "0") @NonNull Integer page,
                                           @RequestParam(value = "size", required = true, defaultValue = "6") @NotNull Integer size,
                                           @RequestParam(value = "sort-by", required = false) @Nullable String field,
@@ -114,7 +113,7 @@ public class KostController {
             }
 
 
-            List<Map<String, Object>> data = kostService.getKostByFilter(filterModel, PageRequest.of(page, size, Sort.Direction.fromString(direction), field));
+            List<Map<String, Object>> data = kostService.getKostByFilterAndSort(filterSortModel, PageRequest.of(page, size, Sort.Direction.fromString(direction), field));
 
             return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
         } catch (Exception e) {
@@ -122,14 +121,16 @@ public class KostController {
         }
     }
 
+    /**
+     * GET DETAIL KOST BY KOST ID
+     * @param id -> kost_id
+     * @return
+     */
     @GetMapping(value = {"/get/{id}"})
     public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id) {
-        return new ResponseEntity<Map>(kostService.getByIdSeeker(id), HttpStatus.OK);
-    }
-
-    @GetMapping(value = {"/get"})
-    public ResponseEntity getKostById(@RequestParam(value = "id") Long id) {
-        List<Map<String, Object>> data = kostService.getKostById(id);
+        Map<String, List<Map<String ,Object>>> data = kostService.getKostById(id);
         return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
     }
+
+
 }

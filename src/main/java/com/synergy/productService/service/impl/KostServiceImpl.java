@@ -1,7 +1,7 @@
 package com.synergy.productService.service.impl;
 
 import com.cloudinary.Cloudinary;
-import com.synergy.productService.dto.FilterModel;
+import com.synergy.productService.dto.FilterSortModel;
 import com.synergy.productService.entity.Kost;
 import com.synergy.productService.repository.KostRepo;
 import com.synergy.productService.repository.ProfileRepo;
@@ -121,25 +121,20 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public List<Map<String, Object>> getKostByArea(String province, String city, Pageable pageable) {
-        return kostRepo.getKostByAreaWithPagination(province, city, pageable);
-    }
+    public List<Map<String, Object>> getKostByFilterAndSort(FilterSortModel filterSortModel,
+                                                            Pageable pageable) {
 
 
-    @Override
-    public List<Map<String, Object>> getKostByFilter(FilterModel filterModel,
-                                                     Pageable pageable) {
-
-
-        return kostRepo.getKostByFilterWithPagination(filterModel.getAc(), filterModel.getPillow(),
-                filterModel.getFan(), filterModel.getFurniture(), filterModel.getShower(), filterModel.getSitting_closet(), filterModel.getSpringbed(),
-                filterModel.getTable_learning(), filterModel.getWater_heater(), filterModel.getInside_bathroom(), filterModel.getNon_sitting_closet(),
-                filterModel.getOutside_bathroom(), filterModel.getWindows(), filterModel.getKost_tv(),
-                filterModel.getKost_type_man(), filterModel.getKost_type_woman(), filterModel.getKost_type_mixed(),
-                filterModel.getDuration_type(), filterModel.getPrice_minimum(), filterModel.getPrice_maximum(), filterModel.getKost_tv(),
-                filterModel.getElectric(), filterModel.getLaundry(), filterModel.getRefrigerator(),
-                filterModel.getWater(), filterModel.getWifi(), filterModel.getDispenser(), filterModel.getDrying_ground(),
-                filterModel.getKitchen(), filterModel.getLiving_room(), filterModel.getParking_car(), filterModel.getParking_motorcycle(), pageable);
+        return kostRepo.getKostByFilterSortAndAreaWithPagination(filterSortModel.getAc(), filterSortModel.getPillow(),
+                filterSortModel.getFan(), filterSortModel.getFurniture(), filterSortModel.getShower(), filterSortModel.getSitting_closet(), filterSortModel.getSpringbed(),
+                filterSortModel.getTable_learning(), filterSortModel.getWater_heater(), filterSortModel.getInside_bathroom(), filterSortModel.getNon_sitting_closet(),
+                filterSortModel.getOutside_bathroom(), filterSortModel.getWindows(), filterSortModel.getKost_tv(),
+                filterSortModel.getKost_type_man(), filterSortModel.getKost_type_woman(), filterSortModel.getKost_type_mixed(),
+                filterSortModel.getDuration_type(), filterSortModel.getPrice_minimum(), filterSortModel.getPrice_maximum(), filterSortModel.getKost_tv(),
+                filterSortModel.getElectric(), filterSortModel.getLaundry(), filterSortModel.getRefrigerator(),
+                filterSortModel.getWater(), filterSortModel.getWifi(), filterSortModel.getDispenser(), filterSortModel.getDrying_ground(),
+                filterSortModel.getKitchen(), filterSortModel.getLiving_room(), filterSortModel.getParking_car(), filterSortModel.getParking_motorcycle(),
+                filterSortModel.getProvince(),filterSortModel.getCity(), pageable);
     }
 
     @Override
@@ -171,8 +166,60 @@ public class KostServiceImpl implements KostService {
         return res;
     }
 
-    public List<Map<String, Object>> getKostById(Long id) {
-        return kostRepo.getKostById(id);
+    @Override
+    public Map<String, List<Map<String, Object>>> getKostById(Long id) {
+        List<Map<String,Object>> data = kostRepo.getKostById(id);
+        Map<String ,List<Map<String,Object>>> resp = new HashMap<>();
+        List<Map<String, Object>> room = new ArrayList<>();
+        List<Map<String, Object>> kost = new ArrayList<>();
+
+        for(Map<String,Object> response : data){
+            Map<String, Object> itemRoom = new HashMap<>();
+            Map<String, Object> itemKost = new HashMap<>();
+
+            //Add field room
+            itemRoom.put("room_name", response.get("room_name"));
+            itemRoom.put("price", response.get("price"));
+            itemRoom.put("inside_room_photo", response.get("inside_room_photo"));
+            itemRoom.put("duration_type", response.get("duration_type"));
+            itemRoom.put("available_room", response.get("available_room"));
+            itemRoom.put("size_room", response.get("size_room"));
+
+            //15 facility
+            itemRoom.put("ac", response.get("ac"));
+            itemRoom.put("chair", response.get("chair"));
+            itemRoom.put("fan", response.get("fan"));
+            itemRoom.put("furniture", response.get("furniture"));
+            itemRoom.put("inside_bathroom", response.get("inside_bathroom"));
+            itemRoom.put("non_sitting_closet", response.get("non_sitting_closet"));
+            itemRoom.put("outside_bathroom", response.get("outside_bathroom"));
+            itemRoom.put("pillow", response.get("pillow"));
+            itemRoom.put("room_tv", response.get("room_tv"));
+            itemRoom.put("shower", response.get("shower"));
+            itemRoom.put("sitting_closet", response.get("sitting_closet"));
+            itemRoom.put("springbed", response.get("springbed"));
+            itemRoom.put("table_learning", response.get("table_learning"));
+            itemRoom.put("water_heater", response.get("water_heater"));
+            itemRoom.put("windows", response.get("windows"));
+
+            //Add kost field
+            itemKost.put("kost_id", response.get("kost_id"));
+            itemKost.put("kost_name", response.get("kost_name"));
+            itemKost.put("city", response.get("city"));
+            itemKost.put("address", response.get("address"));
+            itemKost.put("kost_type_man", response.get("kost_type_man"));
+            itemKost.put("kost_type_mixed", response.get("kost_type_mixed"));
+            itemKost.put("kost_type_woman", response.get("kost_type_woman"));
+            itemKost.put("front_building_photo", response.get("front_building_photo"));
+
+            room.add(itemRoom);
+            kost.add(itemKost);
+        }
+
+        resp.put("room", room);
+        resp.put("kost", kost);
+        return resp;
+
     }
 }
 
