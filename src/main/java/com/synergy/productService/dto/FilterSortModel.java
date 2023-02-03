@@ -2,16 +2,13 @@ package com.synergy.productService.dto;
 
 import lombok.Data;
 import lombok.NonNull;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.lang.Nullable;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * POJO Class validation request parameter for filter kost
  */
 @Data
-public class FilterModel {
+public class FilterSortModel {
 
     @NonNull
     private Boolean ac = false;
@@ -48,7 +45,7 @@ public class FilterModel {
     @Nullable
     private Boolean kost_type_mixed;
     @Nullable
-    private String duration_type;
+    private String duration_type = "MONTHLY";
     @Nullable
     private Double price_minimum;
     @Nullable
@@ -77,4 +74,8 @@ public class FilterModel {
     private Boolean parking_car = false;
     @NonNull
     private Boolean parking_motorcycle = false;
+    @Nullable
+    private String province = "";
+    @Nullable
+    private String city = "";
 }
