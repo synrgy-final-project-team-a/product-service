@@ -11,15 +11,18 @@ import java.util.Map;
 public interface KostService {
 
     String uploadFrontBuildingPhoto(MultipartFile file) throws IOException;
-    String uploadFrontRoadPhoto(MultipartFile file) throws IOException;
     String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException;
 
-    public Map getByIdSeeker(Long id);
      Map getByIdTennant(Long id);
      Map approveById(Long id);
     Map<String, List<Map<String,Object>>> getKostBySearch(String keyword);
 
-     List<Map<String, Object>> getKostByFilterAndSort(FilterSortModel filterSortModel,
-                                                      Pageable pageable);
+     List<Map<String, Object>> getKostByFilterAndSortAndArea(FilterSortModel filterSortModel,
+                                                             Pageable pageable);
      Map<String, List<Map<String, Object>>> getKostById(Long id);
+     Map getRoomById(Long id);
+     Map getPricebyRoomId(Long id);
+     Map rejectById(Long id);
+
+
 }

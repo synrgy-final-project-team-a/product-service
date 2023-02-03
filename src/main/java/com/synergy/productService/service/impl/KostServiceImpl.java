@@ -3,8 +3,12 @@ package com.synergy.productService.service.impl;
 import com.cloudinary.Cloudinary;
 import com.synergy.productService.dto.FilterSortModel;
 import com.synergy.productService.entity.Kost;
+import com.synergy.productService.entity.Price;
+import com.synergy.productService.entity.Room;
 import com.synergy.productService.repository.KostRepo;
+import com.synergy.productService.repository.PriceRepo;
 import com.synergy.productService.repository.ProfileRepo;
+import com.synergy.productService.repository.RoomRepo;
 import com.synergy.productService.service.KostService;
 import com.synergy.productService.util.Response;
 import org.slf4j.Logger;
@@ -35,19 +39,14 @@ public class KostServiceImpl implements KostService {
     private KostRepo kostRepo;
     @Autowired
     private ProfileRepo profileRepo;
+    @Autowired
+    private RoomRepo roomRepo;
+    @Autowired
+    private PriceRepo priceRepo;
 
     public String uploadFrontBuildingPhoto(MultipartFile file) throws IOException {
         Map<String, Object> options = new HashMap<>();
         options.put("folder", "front_building_photo");
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
-        String publicId = (String) uploadResult.get("public_id");
-        String secureUrl = cloudinary.url().secure(true).generate(publicId);
-        return secureUrl;
-    }
-
-    public String uploadFrontRoadPhoto(MultipartFile file) throws IOException {
-        Map<String, Object> options = new HashMap<>();
-        options.put("folder", "front_road_photo");
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
         String publicId = (String) uploadResult.get("public_id");
         String secureUrl = cloudinary.url().secure(true).generate(publicId);
@@ -71,7 +70,6 @@ public class KostServiceImpl implements KostService {
         return cloudinary.url().secure(true).generate(publicId);
     }
 
-
     @Override
     public Map getByIdTennant(Long id) {
         try {
@@ -87,11 +85,25 @@ public class KostServiceImpl implements KostService {
         }
     }
 
+    @Override
+    public Map getRoomById(Long id) {
+        try {
+            Room checkingData = roomRepo.checkExistingRoomId(id);
+            if (checkingData == null) {
+                return res.notFoundError("Data cannot be found!");
+            }
+            return res.resSuccess(checkingData, "success", 200);
+
+        } catch (Exception e) {
+            logger.error("Error get by id, {} " + e);
+            return res.clientError("Error get by id: " + e);
+        }
+    }
 
     @Override
-    public Map getByIdSeeker(Long id) {
+    public Map getPricebyRoomId(Long id) {
         try {
-            Kost checkingData = kostRepo.checkExistingKostId(id);
+            List checkingData = priceRepo.checkExistingRoomId(id);
             if (checkingData == null) {
                 return res.notFoundError("Data cannot be found!");
             }
@@ -120,10 +132,23 @@ public class KostServiceImpl implements KostService {
         }
     }
 
-    @Override
-    public List<Map<String, Object>> getKostByFilterAndSort(FilterSortModel filterSortModel,
-                                                            Pageable pageable) {
+    public Map rejectById(Long id) {
+        try {
+            Kost checkingData = kostRepo.checkExistingKostIdAdmin(id);
+            if (checkingData == null) {
+                return res.notFoundError("Data cannot be found!");
+            }
+            kostRepo.delete(checkingData);
+            return res.resSuccess(checkingData, "success delete", 200);
 
+        } catch (Exception e) {
+            logger.error("Error get by id, {} " + e);
+            return res.clientError("Error get by id: " + e);
+        }
+    }
+    @Override
+    public List<Map<String, Object>> getKostByFilterAndSortAndArea(FilterSortModel filterSortModel,
+                                                                   Pageable pageable) {
 
         return kostRepo.getKostByFilterSortAndAreaWithPagination(filterSortModel.getAc(), filterSortModel.getPillow(),
                 filterSortModel.getFan(), filterSortModel.getFurniture(), filterSortModel.getShower(), filterSortModel.getSitting_closet(), filterSortModel.getSpringbed(),

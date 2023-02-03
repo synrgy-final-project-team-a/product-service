@@ -44,10 +44,11 @@ public class Facility {
     private Boolean outsideBathroom;
     @Column(name = "windows")
     private Boolean windows;
-    @Column(name = "room_tv")
-    private Boolean roomTv;
+
     @Column(name = "chair")
     private Boolean chair;
+    @Column(name = "room_tv")
+    private Boolean roomTv;
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
