@@ -91,8 +91,8 @@ public class KostTennantController {
 
 
             // From file upload form
-            kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(kost.getFrontBuildingPhoto()));
-            kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(kost.getFrontFarbuildingPhoto()));
+            kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFile(kost.getFrontBuildingPhoto(), "front_building_photo"));
+            kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFile(kost.getFrontFarbuildingPhoto(), "front_farbuilding_photo"));
 
             // Add rule to kost
             Rule ruleInstance = new Rule();
@@ -180,8 +180,8 @@ public class KostTennantController {
             kostInstance.setDispenser(kost.getDispenser());
 
             // From file upload form
-            kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(kost.getFrontBuildingPhoto()));
-            kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(kost.getFrontFarbuildingPhoto()));
+            kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFile(kost.getFrontBuildingPhoto(), "front_building_photo"));
+            kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFile(kost.getFrontFarbuildingPhoto(), "front_farbuilding_photo"));
 
             // update rule
             Rule ruleInstance = kostInstance.getRule();

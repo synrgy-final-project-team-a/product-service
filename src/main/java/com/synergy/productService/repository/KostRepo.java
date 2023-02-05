@@ -184,4 +184,27 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "pr.price asc", nativeQuery = true)
     List<Map<String, Object>> getKostById(@Param(value = "kost_id") Long id);
 
+
+    @Query(value = "select \n" +
+            "k.*,\n" +
+            "\tk.*,\n" +
+            "\tpr.*,\n" +
+            "\tf.*,\n" +
+            "\tk.kost_id,\n" +
+            "\tk.created_at,\n" +
+            "\tk.updated_at,\n" +
+            "\tk.deleted_at\n" +
+            "from\n" +
+            "kost k \n" +
+            "left join room r on k.kost_id = r.kost_id and r.deleted_at is null\n" +
+            "left join price pr on pr.room_id = r.room_id\n" +
+            "left join facility f on f.facility_id = r.facility_id \n" +
+            "where k.deleted_at is null\n" +
+            "and pr.duration_type = 'MONTHLY'\n" +
+            "and k.enabled = true\n" +
+            "and r.enabled = true\n" +
+            "and k.kost_id = :kost_id\n" +
+            "order by \n" +
+            "pr.price asc", nativeQuery = true)
+    List<Map<String, Object>> getKostByIdAll(@Param(value = "kost_id") Long id);
 }

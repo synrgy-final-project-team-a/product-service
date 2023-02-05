@@ -11,4 +11,6 @@ public interface RoomRepo extends JpaRepository<Room, Long> {
 
     @Query(value = "SELECT * FROM room r WHERE r.room_id = :id", nativeQuery = true)
     Room checkExistingRoomId(Long id);
+
+
 }
