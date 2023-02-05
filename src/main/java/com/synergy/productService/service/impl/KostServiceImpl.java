@@ -44,24 +44,8 @@ public class KostServiceImpl implements KostService {
     @Autowired
     private PriceRepo priceRepo;
 
-    public String uploadFrontBuildingPhoto(MultipartFile file) throws IOException {
-        Map<String, Object> options = new HashMap<>();
-        options.put("folder", "front_building_photo");
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
-        String publicId = (String) uploadResult.get("public_id");
-        String secureUrl = cloudinary.url().secure(true).generate(publicId);
-        return secureUrl;
-    }
 
-    public String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException {
-        Map<String, Object> options = new HashMap<>();
-        options.put("folder", "front_farbuilding_photo");
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
-        String publicId = (String) uploadResult.get("public_id");
-        String secureUrl = cloudinary.url().secure(true).generate(publicId);
-        return secureUrl;
-    }
-
+    @Override
     public String uploadFile(MultipartFile file, String folderName) throws IOException {
         HashMap<Object, Object> options = new HashMap<>();
         options.put("folder", folderName);
@@ -117,10 +101,8 @@ public class KostServiceImpl implements KostService {
 
 
 
-
-
     @Override
-    public Map approveById(Long id) {
+    public Map kostApprovedById(Long id) {
         try {
             Kost checkingData = kostRepo.checkExistingKostIdAdmin(id);
             if (checkingData == null) {
@@ -136,15 +118,49 @@ public class KostServiceImpl implements KostService {
         }
     }
 
+    @Override
+    public Map roomApprovedById(Long id) {
+        try {
+            Room checkingData = roomRepo.checkExistingRoomId(id);
+            if (checkingData == null) {
+                return res.notFoundError("Data cannot be found!");
+            }
+            checkingData.setEnabled(true);
+            Room done = roomRepo.save(checkingData);
+            return res.resSuccess(done, "success", 200);
+
+        } catch (Exception e) {
+            logger.error("Error get by id, {} " + e);
+            return res.clientError("Error get by id: " + e);
+        }
+    }
+
 
     @Override
-    public Map rejectById(Long id) {
+    public Map kostRejectedById(Long id) {
         try {
             Kost checkingData = kostRepo.checkExistingKostIdAdmin(id);
             if (checkingData == null) {
                 return res.notFoundError("Data cannot be found!");
             }
             kostRepo.delete(checkingData);
+            return res.resSuccess(checkingData, "success delete", 200);
+
+        } catch (Exception e) {
+            logger.error("Error get by id, {} " + e);
+            return res.clientError("Error get by id: " + e);
+        }
+
+    }
+
+    @Override
+    public Map roomRejectedById(Long id) {
+        try {
+            Room checkingData = roomRepo.checkExistingRoomId(id);
+            if (checkingData == null) {
+                return res.notFoundError("Data cannot be found!");
+            }
+            roomRepo.delete(checkingData);
             return res.resSuccess(checkingData, "success delete", 200);
 
         } catch (Exception e) {
@@ -200,7 +216,7 @@ public class KostServiceImpl implements KostService {
 
     @Override
     public Map<String, List<Map<String, Object>>> getKostById(Long id) {
-        List<Map<String,Object>> data = kostRepo.getKostById(id);
+        List<Map<String,Object>> data = kostRepo.getKostByIdAll(id);
         Map<String ,List<Map<String,Object>>> resp = new HashMap<>();
         List<Map<String, Object>> room = new ArrayList<>();
         List<Map<String, Object>> kost = new ArrayList<>();

@@ -29,6 +29,8 @@ public class Room {
 
     @Column(name = "quantity_room")
     private Integer quantityRoom;
+    @Column(name = "enabled")
+    private Boolean enabled;
 
 
     @Column(name = "available_room")
