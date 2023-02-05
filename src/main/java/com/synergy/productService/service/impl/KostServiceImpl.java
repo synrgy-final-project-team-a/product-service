@@ -217,7 +217,7 @@ public class KostServiceImpl implements KostService {
             itemRoom.put("available_room", response.get("available_room"));
             itemRoom.put("size_room", response.get("size_room"));
 
-            //15 facility
+            //facility room 15
             itemRoom.put("ac", response.get("ac"));
             itemRoom.put("chair", response.get("chair"));
             itemRoom.put("fan", response.get("fan"));
@@ -243,6 +243,36 @@ public class KostServiceImpl implements KostService {
             itemKost.put("kost_type_mixed", response.get("kost_type_mixed"));
             itemKost.put("kost_type_woman", response.get("kost_type_woman"));
             itemKost.put("front_building_photo", response.get("front_building_photo"));
+            // Add province and description
+            itemKost.put("province", response.get("province"));
+            itemKost.put("description", response.get("description"));
+
+            // facility kost 12
+            itemKost.put("dispenser", response.get("dispenser"));
+            itemKost.put("drying_ground", response.get("drying_ground"));
+            itemKost.put("electric", response.get("electric"));
+            itemKost.put("kitchen", response.get("kitchen"));
+            itemKost.put("kost_tv", response.get("kost_tv"));
+            itemKost.put("laundry", response.get("laundry"));
+            itemKost.put("living_room", response.get("living_room"));
+            itemKost.put("parking_car", response.get("parking_car"));
+            itemKost.put("parking_motorcycle", response.get("parking_motorcycle"));
+            itemKost.put("refrigerator", response.get("refrigerator"));
+            itemKost.put("water", response.get("water"));
+            itemKost.put("wifi", response.get("wifi"));
+
+            // rule kost 11
+            itemKost.put("identity_card", response.get("identity_card"));
+            itemKost.put("include_electricity", response.get("include_electricity"));
+            itemKost.put("maxixmum_one", response.get("maxixmum_one"));
+            itemKost.put("maximum_two", response.get("maximum_two"));
+            itemKost.put("restricted_checkin", response.get("restricted_checkin"));
+            itemKost.put("restricted_checkout", response.get("restricted_checkout"));
+            itemKost.put("restricted_gender", response.get("restricted_gender"));
+            itemKost.put("restricted_guest", response.get("restricted_guest"));
+            itemKost.put("restricted_night", response.get("restricted_night"));
+            itemKost.put("no_smoking", response.get("no_smoking"));
+            itemKost.put("rule_name", response.get("rule_name"));
 
             room.add(itemRoom);
             kost.add(itemKost);
