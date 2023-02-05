@@ -26,6 +26,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/seeker")
+@CrossOrigin("*")
 @Slf4j
 public class KostSeekerController {
     @Autowired

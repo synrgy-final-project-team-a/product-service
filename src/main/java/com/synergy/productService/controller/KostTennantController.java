@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/tennant")
 public class KostTennantController {
 
