@@ -59,11 +59,6 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tor (fa.outside_bathroom = :outside_bathroom) \n" +
             "\tor (fa.windows = :windows) \n" +
             "\tor (fa.room_tv = :room_tv) \n" +
-            "\tor (k.kost_type_man = :kost_type_man) \n" +
-            "\tor (k.kost_type_woman = :kost_type_woman) \n" +
-            "\tor (k.kost_type_mixed = :kost_type_mixed) \n" +
-            "\tor (pr.duration_type = :duration_type) \n" +
-            "\tor (pr.price > :price_minimum and pr.price < :price_maximum) \n" +
             "\tor (k.kost_tv = :kost_tv) \n" +
             "\tor (k.electric = :electric) \n" +
             "\tor (k.laundry = :laundry) \n" +
@@ -77,7 +72,12 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tor (k.parking_car = :parking_car) \n" +
             "\tor (k.parking_motorcycle = :parking_motorcycle))" +
             "\tand lower(k.province) like (%:province%) \n"  +
-            "\tand lower(k.city)  like (%:city%)")
+            "\tand lower(k.city)  like (%:city%)" +
+            "\tand (k.kost_type_man = :kost_type_man) \n" +
+            "\tand (k.kost_type_woman = :kost_type_woman) \n" +
+            "\tand (k.kost_type_mixed = :kost_type_mixed) \n" +
+            "\tand (pr.duration_type = :duration_type) \n" +
+            "\tand (pr.price >= :price_minimum and pr.price <= :price_maximum)")
     List<Map<String, Object>> getKostByFilterSortAndAreaWithPagination(@Param("ac") Boolean ac,
                                                                        @Param("pillow") Boolean pillow,
                                                                        @Param("fan") Boolean fan,
@@ -135,17 +135,47 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tk.kost_type_man,\n" +
             "\tk.kost_type_mixed,\n" +
             "\tk.kost_type_woman,\n" +
-            "\tk.front_building_photo,\n" +
+            "\tk.front_building_photo, \n" +
+            "\tk.province,\n" +
+            "\tk.description,\n" +
+            "--fasilitas kost 12 \n" +
+            "\tk.dispenser,\n" +
+            "\tk.drying_ground,\n" +
+            "\tk.electric,\n" +
+            "\tk.kitchen,\n" +
+            "\tk.kost_tv,\n" +
+            "\tk.laundry,\n" +
+            "\tk.living_room,\n" +
+            "\tk.parking_car,\n" +
+            "\tk.parking_motorcycle,\n" +
+            "\tk.refrigerator,\n" +
+            "\tk.water,\n" +
+            "\tk.wifi, \n" +
             "\tr.room_name,\n" +
             "\tr.inside_room_photo,\n" +
+            "--\tfacility\n" +
             "\tf.*,\n" +
             "\tr.available_room,\n" +
-            "\tr.size_room \n" +
-            "from\n" +
-            "kost k \n" +
+            "\tr.size_room,\n" +
+            "--\trule\n" +
+            "\tr2.identity_card,\n" +
+            "\tr2.include_electricity,\n" +
+            "\tr2.maxixmum_one,\n" +
+            "\tr2.maximum_two,\n" +
+            "\tr2.no_smoking,\n" +
+            "\tr2.restricted_checkin,\n" +
+            "\tr2.restricted_checkout,\n" +
+            "\tr2.restricted_gender,\n" +
+            "\tr2.restricted_guest,\n" +
+            "\tr2.restricted_night,\n" +
+            "\tr2.rule_name" +
+            "\tfrom\n" +
+            "\t kost k \n" +
             "left join room r on k.kost_id = r.kost_id and r.deleted_at is null\n" +
-            "left join price pr on pr.room_id = r.room_id\n" +
-            "left join facility f on f.facility_id = r.facility_id \n" +
+            "left join price pr on pr.room_id = r.room_id and pr.deleted_at is null \n" +
+            "left join facility f on f.facility_id = r.facility_id and f.deleted_at is null\n" +
+            "left join kost_rule kr on kr.kost_id = k.kost_id \n" +
+            "left join \"rule\" r2 on r2.rule_id = kr.rule_id \n" +
             "where k.deleted_at is null\n" +
             "and pr.duration_type = 'MONTHLY'\n" +
             "and k.enabled = true\n" +
