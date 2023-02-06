@@ -29,4 +29,7 @@ public interface KostService {
 
     Map kostApprovedById(Long id);
 
+    Map<String, List<Map<String, Object>>> getKostByIdTennantAdmin(Long id);
+
+
 }
