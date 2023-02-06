@@ -1,8 +1,9 @@
 package com.synergy.productService.dto;
 
 import lombok.Data;
-import lombok.NonNull;
 import org.springframework.lang.Nullable;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * POJO Class validation request parameter for filter kost
@@ -10,69 +11,69 @@ import org.springframework.lang.Nullable;
 @Data
 public class FilterSortModel {
 
-    @NonNull
+    @NotNull
     private Boolean ac = false;
-    @NonNull
+    @NotNull
     private Boolean pillow = false;
-    @NonNull
+    @NotNull
     private Boolean fan = false;
-    @NonNull
+    @NotNull
     private Boolean furniture= false;
-    @NonNull
+    @NotNull
     private Boolean shower= false;
-    @NonNull
+    @NotNull
     private Boolean sitting_closet = false;
-    @NonNull
+    @NotNull
     private Boolean springbed = false;
-    @NonNull
+    @NotNull
     private Boolean table_learning = false;
-    @NonNull
+    @NotNull
     private Boolean water_heater = false;
-    @NonNull
+    @NotNull
     private Boolean inside_bathroom = false;
-    @NonNull
+    @NotNull
     private Boolean non_sitting_closet = false;
-    @NonNull
+    @NotNull
     private Boolean outside_bathroom = false;
-    @NonNull
+    @NotNull
     private Boolean windows = false;
-    @NonNull
+    @NotNull
     private Boolean room_tv = false;
     @Nullable
-    private Boolean kost_type_man = false;
+    private Boolean kost_type_man = true;
     @Nullable
     private Boolean kost_type_woman = false;
     @Nullable
     private Boolean kost_type_mixed = false;
     @Nullable
-    private String duration_type = "MONTHLY";
+    private String duration_type;
     @Nullable
-    private Double price_minimum;
+    private Double price_minimum = 0.0;
     @Nullable
-    private Double price_maximum;
-    @NonNull
+    private Double price_maximum = 10000000.0;
+    @NotNull
     private Boolean kost_tv = false;
-    @NonNull
+    @NotNull
     private Boolean electric = false;
-    @NonNull
+    @NotNull
     private Boolean laundry = false;
-    @NonNull
+    @NotNull
     private Boolean refrigerator = false;
-    @NonNull
+    @NotNull
     private Boolean water = false;
-    @NonNull
+    @NotNull
     private Boolean wifi = false;
-    @NonNull
+    @NotNull
     private Boolean dispenser = false;
-    @NonNull
+    @NotNull
     private Boolean drying_ground = false;
-    @NonNull
+    @NotNull
     private Boolean kitchen = false;
-    @NonNull
+    @NotNull
     private Boolean living_room = false;
-    @NonNull
+    @NotNull
     private Boolean parking_car = false;
-    @NonNull
+    @NotNull
     private Boolean parking_motorcycle = false;
     @Nullable
     private String province = "";
