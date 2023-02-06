@@ -49,22 +49,34 @@ public class KostAdminController {
     private KostRuleRepo kostRuleRepo;
 
     @PostMapping(value = {"/kost/approve/{id}"})
-    public ResponseEntity<Map> approveById(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<Map>(kostServiceImpl.approveById(id), HttpStatus.OK);
+    public ResponseEntity<Map> kostApproveById(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<Map>(kostServiceImpl.kostApprovedById(id), HttpStatus.OK);
     }
 
+//    @PostMapping(value = {"/room/approve/{id}"})
+//    public ResponseEntity<Map> roomApprovedById(@PathVariable(value = "id") Long id){
+//        return new ResponseEntity<Map>(kostServiceImpl.roomApprovedById(id), HttpStatus.OK);
+//    }
+
+
     @DeleteMapping(value = {"/kost/reject/{id}"})
-    public ResponseEntity<Map> rejectById(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<Map>(kostServiceImpl.rejectById(id), HttpStatus.OK);
+    public ResponseEntity<Map> rejectedById(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<Map>(kostServiceImpl.kostRejectedById(id), HttpStatus.OK);
     }
+
+//    @DeleteMapping(value = {"/room/reject/{id}"})
+//    public ResponseEntity<Map> roomRejectedById(@PathVariable(value = "id") Long id){
+//        return new ResponseEntity<Map>(kostServiceImpl.roomRejectedById(id), HttpStatus.OK);
+//    }
 
     @GetMapping("/kost/list")
     public ResponseEntity<Map> getListKostAdmin(
             @RequestParam(required = true) Integer page,
-            @RequestParam(required = true) Integer size) {
+            @RequestParam(required = true) Integer size,
+            @RequestParam(required = false) Boolean enabled) {
         Pageable show_data = PageRequest.of(page, size);
         Page<Kost> list = null;
-        list = kostRepo.getListDataAdmin(show_data);
+        list = kostRepo.getListDataAdmin(enabled, show_data);
         return new ResponseEntity<Map>(response.resSuccess(list, "Success get list kost", 400), HttpStatus.OK);
     }
 
@@ -83,6 +95,6 @@ public class KostAdminController {
 
     @GetMapping(value = {"/kost/get/{id}"})
     public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<Map>(kostServiceImpl.getByIdTennant(id), HttpStatus.OK);
+        return new ResponseEntity<Map>(kostServiceImpl.getKostByIdTennantAdmin(id), HttpStatus.OK);
     }
 }

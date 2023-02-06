@@ -91,8 +91,8 @@ public class KostTennantController {
 
 
             // From file upload form
-            kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(kost.getFrontBuildingPhoto()));
-            kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(kost.getFrontFarbuildingPhoto()));
+            kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFile(kost.getFrontBuildingPhoto(), "front_building_photo"));
+            kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFile(kost.getFrontFarbuildingPhoto(), "front_farbuilding_photo"));
 
             // Add rule to kost
             Rule ruleInstance = new Rule();
@@ -180,8 +180,8 @@ public class KostTennantController {
             kostInstance.setDispenser(kost.getDispenser());
 
             // From file upload form
-            kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFrontBuildingPhoto(kost.getFrontBuildingPhoto()));
-            kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFrontFarbuildingPhoto(kost.getFrontFarbuildingPhoto()));
+            kostInstance.setFrontBuildingPhoto(kostServiceImpl.uploadFile(kost.getFrontBuildingPhoto(), "front_building_photo"));
+            kostInstance.setFrontFarbuildingPhoto(kostServiceImpl.uploadFile(kost.getFrontFarbuildingPhoto(), "front_farbuilding_photo"));
 
             // update rule
             Rule ruleInstance = kostInstance.getRule();
@@ -229,7 +229,7 @@ public class KostTennantController {
             roomInstance.setQuantityRoom(room.getQuantityRoom());
             roomInstance.setAvailableRoom(room.getAvailableRoom());
             roomInstance.setSizeRoom(room.getSizeRoom());
-
+            roomInstance.setEnabled(true);
 
 
             // From file upload form
@@ -336,7 +336,6 @@ public class KostTennantController {
             roomInstance.setSizeRoom(room.getSizeRoom());
 
 
-
             // From file upload form
             roomInstance.setInsideRoomPhoto(kostServiceImpl.uploadFile(room.getInsideRoomPhoto(), "inside_room_photo"));
             roomInstance.setOtherRoomPhoto(kostServiceImpl.uploadFile(room.getOtherRoomPhoto(), "other_room_photo"));
@@ -439,7 +438,7 @@ public class KostTennantController {
 
     @GetMapping(value = {"/kost/get/{id}"})
     public ResponseEntity<Map> getById(@PathVariable(value = "id") Long id){
-        return new ResponseEntity<Map>(kostServiceImpl.getByIdTennant(id), HttpStatus.OK);
+        return new ResponseEntity<Map>(kostServiceImpl.getKostByIdTennantAdmin(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/room/{id}")

@@ -45,24 +45,8 @@ public class KostServiceImpl implements KostService {
     @Autowired
     private PriceRepo priceRepo;
 
-    public String uploadFrontBuildingPhoto(MultipartFile file) throws IOException {
-        Map<String, Object> options = new HashMap<>();
-        options.put("folder", "front_building_photo");
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
-        String publicId = (String) uploadResult.get("public_id");
-        String secureUrl = cloudinary.url().secure(true).generate(publicId);
-        return secureUrl;
-    }
 
-    public String uploadFrontFarbuildingPhoto(MultipartFile file) throws IOException {
-        Map<String, Object> options = new HashMap<>();
-        options.put("folder", "front_farbuilding_photo");
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
-        String publicId = (String) uploadResult.get("public_id");
-        String secureUrl = cloudinary.url().secure(true).generate(publicId);
-        return secureUrl;
-    }
-
+    @Override
     public String uploadFile(MultipartFile file, String folderName) throws IOException {
         HashMap<Object, Object> options = new HashMap<>();
         options.put("folder", folderName);
@@ -104,7 +88,7 @@ public class KostServiceImpl implements KostService {
     @Override
     public Map getPricebyRoomId(Long id) {
         try {
-            List checkingData = priceRepo.checkExistingRoomId(id);
+            List<Price> checkingData = priceRepo.getPriceByRoom(id);
             if (checkingData == null) {
                 return res.notFoundError("Data cannot be found!");
             }
@@ -117,11 +101,8 @@ public class KostServiceImpl implements KostService {
     }
 
 
-
-
-
     @Override
-    public Map approveById(Long id) {
+    public Map kostApprovedById(Long id) {
         try {
             Kost checkingData = kostRepo.checkExistingKostIdAdmin(id);
             if (checkingData == null) {
@@ -137,9 +118,26 @@ public class KostServiceImpl implements KostService {
         }
     }
 
+//    @Override
+//    public Map roomApprovedById(Long id) {
+//        try {
+//            Room checkingData = roomRepo.checkExistingRoomId(id);
+//            if (checkingData == null) {
+//                return res.notFoundError("Data cannot be found!");
+//            }
+//            checkingData.setEnabled(true);
+//            Room done = roomRepo.save(checkingData);
+//            return res.resSuccess(done, "success", 200);
+//
+//        } catch (Exception e) {
+//            logger.error("Error get by id, {} " + e);
+//            return res.clientError("Error get by id: " + e);
+//        }
+//    }
+
 
     @Override
-    public Map rejectById(Long id) {
+    public Map kostRejectedById(Long id) {
         try {
             Kost checkingData = kostRepo.checkExistingKostIdAdmin(id);
             if (checkingData == null) {
@@ -154,6 +152,23 @@ public class KostServiceImpl implements KostService {
         }
 
     }
+
+//    @Override
+//    public Map roomRejectedById(Long id) {
+//        try {
+//            Room checkingData = roomRepo.checkExistingRoomId(id);
+//            if (checkingData == null) {
+//                return res.notFoundError("Data cannot be found!");
+//            }
+//            roomRepo.delete(checkingData);
+//            return res.resSuccess(checkingData, "success delete", 200);
+//
+//        } catch (Exception e) {
+//            logger.error("Error get by id, {} " + e);
+//            return res.clientError("Error get by id: " + e);
+//        }
+//
+//    }
 
 
     @Override
@@ -170,18 +185,18 @@ public class KostServiceImpl implements KostService {
                 filterSortModel.getElectric(), filterSortModel.getLaundry(), filterSortModel.getRefrigerator(),
                 filterSortModel.getWater(), filterSortModel.getWifi(), filterSortModel.getDispenser(), filterSortModel.getDrying_ground(),
                 filterSortModel.getKitchen(), filterSortModel.getLiving_room(), filterSortModel.getParking_car(), filterSortModel.getParking_motorcycle(),
-                filterSortModel.getProvince(),filterSortModel.getCity(), pageable);
+                filterSortModel.getProvince(), filterSortModel.getCity(), pageable);
     }
 
     @Override
-    public Map<String, List<Map<String,Object>>> getKostBySearch(String keyword) {
+    public Map<String, List<Map<String, Object>>> getKostBySearch(String keyword) {
         List<Map<String, Object>> data = kostRepo.getKostBySearchWithPagination(keyword);
-        Map<String, List<Map<String,Object>>> res = new HashMap<>();
-        List<Map<String,Object>> location = new ArrayList<>();
-        List<Map<String,Object>> kost = new ArrayList<>();
+        Map<String, List<Map<String, Object>>> res = new HashMap<>();
+        List<Map<String, Object>> location = new ArrayList<>();
+        List<Map<String, Object>> kost = new ArrayList<>();
 
 
-        for(Map<String, Object> item : data){
+        for (Map<String, Object> item : data) {
             Map<String, Object> itemLoc = new HashMap<>();
             Map<String, Object> itemKost = new HashMap<>();
 
@@ -204,12 +219,12 @@ public class KostServiceImpl implements KostService {
 
     @Override
     public Map<String, List<Map<String, Object>>> getKostById(Long id) {
-        List<Map<String,Object>> data = kostRepo.getKostById(id);
-        Map<String ,List<Map<String,Object>>> resp = new HashMap<>();
+        List<Map<String, Object>> data = kostRepo.getKostById(id);
+        Map<String, List<Map<String, Object>>> resp = new HashMap<>();
         List<Map<String, Object>> room = new ArrayList<>();
         List<Map<String, Object>> kost = new ArrayList<>();
 
-        for(Map<String,Object> response : data){
+        for (Map<String, Object> response : data) {
             Map<String, Object> itemRoom = new HashMap<>();
             Map<String, Object> itemKost = new HashMap<>();
 
@@ -288,5 +303,92 @@ public class KostServiceImpl implements KostService {
         return resp;
 
     }
+
+    @Override
+    public Map<String, List<Map<String, Object>>> getKostByIdTennantAdmin(Long id) {
+        List<Map<String, Object>> data = kostRepo.getKostByIdAdmin(id);
+        Map<String, List<Map<String, Object>>> resp = new HashMap<>();
+        List<Map<String, Object>> room = new ArrayList<>();
+        List<Map<String, Object>> kost = new ArrayList<>();
+
+        for (Map<String, Object> response : data) {
+            Map<String, Object> itemRoom = new HashMap<>();
+            Map<String, Object> itemKost = new HashMap<>();
+
+            //Add field room
+            itemRoom.put("room_name", response.get("room_name"));
+            itemRoom.put("price", response.get("price"));
+            itemRoom.put("inside_room_photo", response.get("inside_room_photo"));
+            itemRoom.put("duration_type", response.get("duration_type"));
+            itemRoom.put("available_room", response.get("available_room"));
+            itemRoom.put("size_room", response.get("size_room"));
+
+            //facility room 15
+            itemRoom.put("ac", response.get("ac"));
+            itemRoom.put("chair", response.get("chair"));
+            itemRoom.put("fan", response.get("fan"));
+            itemRoom.put("furniture", response.get("furniture"));
+            itemRoom.put("inside_bathroom", response.get("inside_bathroom"));
+            itemRoom.put("non_sitting_closet", response.get("non_sitting_closet"));
+            itemRoom.put("outside_bathroom", response.get("outside_bathroom"));
+            itemRoom.put("pillow", response.get("pillow"));
+            itemRoom.put("room_tv", response.get("room_tv"));
+            itemRoom.put("shower", response.get("shower"));
+            itemRoom.put("sitting_closet", response.get("sitting_closet"));
+            itemRoom.put("springbed", response.get("springbed"));
+            itemRoom.put("table_learning", response.get("table_learning"));
+            itemRoom.put("water_heater", response.get("water_heater"));
+            itemRoom.put("windows", response.get("windows"));
+
+            //Add kost field
+            itemKost.put("kost_id", response.get("kost_id"));
+            itemKost.put("kost_name", response.get("kost_name"));
+            itemKost.put("city", response.get("city"));
+            itemKost.put("address", response.get("address"));
+            itemKost.put("kost_type_man", response.get("kost_type_man"));
+            itemKost.put("kost_type_mixed", response.get("kost_type_mixed"));
+            itemKost.put("kost_type_woman", response.get("kost_type_woman"));
+            itemKost.put("front_building_photo", response.get("front_building_photo"));
+            // Add province and description
+            itemKost.put("province", response.get("province"));
+            itemKost.put("description", response.get("description"));
+
+            // facility kost 12
+            itemKost.put("dispenser", response.get("dispenser"));
+            itemKost.put("drying_ground", response.get("drying_ground"));
+            itemKost.put("electric", response.get("electric"));
+            itemKost.put("kitchen", response.get("kitchen"));
+            itemKost.put("kost_tv", response.get("kost_tv"));
+            itemKost.put("laundry", response.get("laundry"));
+            itemKost.put("living_room", response.get("living_room"));
+            itemKost.put("parking_car", response.get("parking_car"));
+            itemKost.put("parking_motorcycle", response.get("parking_motorcycle"));
+            itemKost.put("refrigerator", response.get("refrigerator"));
+            itemKost.put("water", response.get("water"));
+            itemKost.put("wifi", response.get("wifi"));
+
+            // rule kost 11
+            itemKost.put("identity_card", response.get("identity_card"));
+            itemKost.put("include_electricity", response.get("include_electricity"));
+            itemKost.put("maxixmum_one", response.get("maxixmum_one"));
+            itemKost.put("maximum_two", response.get("maximum_two"));
+            itemKost.put("restricted_checkin", response.get("restricted_checkin"));
+            itemKost.put("restricted_checkout", response.get("restricted_checkout"));
+            itemKost.put("restricted_gender", response.get("restricted_gender"));
+            itemKost.put("restricted_guest", response.get("restricted_guest"));
+            itemKost.put("restricted_night", response.get("restricted_night"));
+            itemKost.put("no_smoking", response.get("no_smoking"));
+            itemKost.put("rule_name", response.get("rule_name"));
+
+            room.add(itemRoom);
+            kost.add(itemKost);
+        }
+
+        resp.put("room", room);
+        resp.put("kost", kost);
+        return resp;
+
+    }
+
 }
 

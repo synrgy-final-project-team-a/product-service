@@ -19,6 +19,6 @@ public interface PriceRepo extends JpaRepository<Price, Long> {
     @Query(nativeQuery = true, value = "DELETE FROM price WHERE room_id = :room_id")
     void deletePriceByRoomId(@Param(value = "room_id") Long roomId);
 
-    @Query(value = "SELECT * FROM price p WHERE p.room_id = :id", nativeQuery = true)
-    List checkExistingRoomId(Long id);
+    @Query(value = "SELECT * from price p where p.room_id = :roomId", nativeQuery = true)
+    List<Price> getPriceByRoom(@Param(value = "roomId") Long id);
 }
