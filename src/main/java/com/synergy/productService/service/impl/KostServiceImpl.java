@@ -87,7 +87,7 @@ public class KostServiceImpl implements KostService {
     @Override
     public Map getPricebyRoomId(Long id) {
         try {
-            List checkingData = priceRepo.checkExistingRoomId(id);
+            List<Price> checkingData = priceRepo.getPriceByRoom(id);
             if (checkingData == null) {
                 return res.notFoundError("Data cannot be found!");
             }
@@ -98,7 +98,6 @@ public class KostServiceImpl implements KostService {
             return res.clientError("Error get by id: " + e);
         }
     }
-
 
 
     @Override
@@ -118,22 +117,22 @@ public class KostServiceImpl implements KostService {
         }
     }
 
-    @Override
-    public Map roomApprovedById(Long id) {
-        try {
-            Room checkingData = roomRepo.checkExistingRoomId(id);
-            if (checkingData == null) {
-                return res.notFoundError("Data cannot be found!");
-            }
-            checkingData.setEnabled(true);
-            Room done = roomRepo.save(checkingData);
-            return res.resSuccess(done, "success", 200);
-
-        } catch (Exception e) {
-            logger.error("Error get by id, {} " + e);
-            return res.clientError("Error get by id: " + e);
-        }
-    }
+//    @Override
+//    public Map roomApprovedById(Long id) {
+//        try {
+//            Room checkingData = roomRepo.checkExistingRoomId(id);
+//            if (checkingData == null) {
+//                return res.notFoundError("Data cannot be found!");
+//            }
+//            checkingData.setEnabled(true);
+//            Room done = roomRepo.save(checkingData);
+//            return res.resSuccess(done, "success", 200);
+//
+//        } catch (Exception e) {
+//            logger.error("Error get by id, {} " + e);
+//            return res.clientError("Error get by id: " + e);
+//        }
+//    }
 
 
     @Override
@@ -153,22 +152,22 @@ public class KostServiceImpl implements KostService {
 
     }
 
-    @Override
-    public Map roomRejectedById(Long id) {
-        try {
-            Room checkingData = roomRepo.checkExistingRoomId(id);
-            if (checkingData == null) {
-                return res.notFoundError("Data cannot be found!");
-            }
-            roomRepo.delete(checkingData);
-            return res.resSuccess(checkingData, "success delete", 200);
-
-        } catch (Exception e) {
-            logger.error("Error get by id, {} " + e);
-            return res.clientError("Error get by id: " + e);
-        }
-
-    }
+//    @Override
+//    public Map roomRejectedById(Long id) {
+//        try {
+//            Room checkingData = roomRepo.checkExistingRoomId(id);
+//            if (checkingData == null) {
+//                return res.notFoundError("Data cannot be found!");
+//            }
+//            roomRepo.delete(checkingData);
+//            return res.resSuccess(checkingData, "success delete", 200);
+//
+//        } catch (Exception e) {
+//            logger.error("Error get by id, {} " + e);
+//            return res.clientError("Error get by id: " + e);
+//        }
+//
+//    }
 
 
     @Override
@@ -183,18 +182,18 @@ public class KostServiceImpl implements KostService {
                 filterSortModel.getElectric(), filterSortModel.getLaundry(), filterSortModel.getRefrigerator(),
                 filterSortModel.getWater(), filterSortModel.getWifi(), filterSortModel.getDispenser(), filterSortModel.getDrying_ground(),
                 filterSortModel.getKitchen(), filterSortModel.getLiving_room(), filterSortModel.getParking_car(), filterSortModel.getParking_motorcycle(),
-                filterSortModel.getProvince(),filterSortModel.getCity(), pageable);
+                filterSortModel.getProvince(), filterSortModel.getCity(), pageable);
     }
 
     @Override
-    public Map<String, List<Map<String,Object>>> getKostBySearch(String keyword) {
+    public Map<String, List<Map<String, Object>>> getKostBySearch(String keyword) {
         List<Map<String, Object>> data = kostRepo.getKostBySearchWithPagination(keyword);
-        Map<String, List<Map<String,Object>>> res = new HashMap<>();
-        List<Map<String,Object>> location = new ArrayList<>();
-        List<Map<String,Object>> kost = new ArrayList<>();
+        Map<String, List<Map<String, Object>>> res = new HashMap<>();
+        List<Map<String, Object>> location = new ArrayList<>();
+        List<Map<String, Object>> kost = new ArrayList<>();
 
 
-        for(Map<String, Object> item : data){
+        for (Map<String, Object> item : data) {
             Map<String, Object> itemLoc = new HashMap<>();
             Map<String, Object> itemKost = new HashMap<>();
 
@@ -216,12 +215,12 @@ public class KostServiceImpl implements KostService {
 
     @Override
     public Map<String, List<Map<String, Object>>> getKostById(Long id) {
-        List<Map<String,Object>> data = kostRepo.getKostByIdAll(id);
-        Map<String ,List<Map<String,Object>>> resp = new HashMap<>();
+        List<Map<String, Object>> data = kostRepo.getKostById(id);
+        Map<String, List<Map<String, Object>>> resp = new HashMap<>();
         List<Map<String, Object>> room = new ArrayList<>();
         List<Map<String, Object>> kost = new ArrayList<>();
 
-        for(Map<String,Object> response : data){
+        for (Map<String, Object> response : data) {
             Map<String, Object> itemRoom = new HashMap<>();
             Map<String, Object> itemKost = new HashMap<>();
 
@@ -299,5 +298,6 @@ public class KostServiceImpl implements KostService {
         return resp;
 
     }
+
 }
 

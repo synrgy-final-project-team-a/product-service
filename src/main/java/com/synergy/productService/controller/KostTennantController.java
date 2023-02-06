@@ -229,7 +229,7 @@ public class KostTennantController {
             roomInstance.setQuantityRoom(room.getQuantityRoom());
             roomInstance.setAvailableRoom(room.getAvailableRoom());
             roomInstance.setSizeRoom(room.getSizeRoom());
-
+            roomInstance.setEnabled(true);
 
 
             // From file upload form
@@ -334,7 +334,6 @@ public class KostTennantController {
             roomInstance.setQuantityRoom(room.getQuantityRoom());
             roomInstance.setAvailableRoom(room.getAvailableRoom());
             roomInstance.setSizeRoom(room.getSizeRoom());
-
 
 
             // From file upload form
