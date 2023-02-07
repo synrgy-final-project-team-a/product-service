@@ -12,71 +12,71 @@ import javax.validation.constraints.NotNull;
 public class FilterSortModel {
 
     @NotNull
-    private Boolean ac = false;
+    private String ac = '';
     @NotNull
-    private Boolean pillow = false;
+    private String pillow = '';
     @NotNull
-    private Boolean fan = false;
+    private String fan = '';
     @NotNull
-    private Boolean furniture= false;
+    private String furniture= '';
     @NotNull
-    private Boolean shower= false;
+    private String shower= '';
     @NotNull
-    private Boolean sitting_closet = false;
+    private String sitting_closet = '';
     @NotNull
-    private Boolean springbed = false;
+    private String springbed = '';
     @NotNull
-    private Boolean table_learning = false;
+    private String table_learning = '';
     @NotNull
-    private Boolean water_heater = false;
+    private String water_heater = '';
     @NotNull
-    private Boolean inside_bathroom = false;
+    private String inside_bathroom = '';
     @NotNull
-    private Boolean non_sitting_closet = false;
+    private String non_sitting_closet = '';
     @NotNull
-    private Boolean outside_bathroom = false;
+    private String outside_bathroom = '';
     @NotNull
-    private Boolean windows = false;
+    private String windows = '';
     @NotNull
-    private Boolean room_tv = false;
+    private String room_tv = '';
     @Nullable
-    private Boolean kost_type_man = false;
+    private String kost_type_man = '';
     @Nullable
-    private Boolean kost_type_woman = false;
+    private String kost_type_woman = '';
     @Nullable
-    private Boolean kost_type_mixed = false;
+    private String kost_type_mixed = '';
     @Nullable
-    private String duration_type = "MONTHLY";
+    private String duration_type = 'MONTHLY';
     @Nullable
     private Double price_minimum = 0.0;
     @Nullable
     private Double price_maximum = 10000000.0;
     @NotNull
-    private Boolean kost_tv = false;
+    private String kost_tv = '';
     @NotNull
-    private Boolean electric = false;
+    private String electric = '';
     @NotNull
-    private Boolean laundry = false;
+    private String laundry = '';
     @NotNull
-    private Boolean refrigerator = false;
+    private String refrigerator = '';
     @NotNull
-    private Boolean water = false;
+    private String water = '';
     @NotNull
-    private Boolean wifi = false;
+    private String wifi = '';
     @NotNull
-    private Boolean dispenser = false;
+    private String dispenser = '';
     @NotNull
-    private Boolean drying_ground = false;
+    private String drying_ground = '';
     @NotNull
-    private Boolean kitchen = false;
+    private String kitchen = '';
     @NotNull
-    private Boolean living_room = false;
+    private String living_room = '';
     @NotNull
-    private Boolean parking_car = false;
+    private String parking_car = '';
     @NotNull
-    private Boolean parking_motorcycle = false;
+    private String parking_motorcycle = '';
     @Nullable
-    private String province = "";
+    private String province = '';
     @Nullable
-    private String city = "";
+    private String city = '';
 }
