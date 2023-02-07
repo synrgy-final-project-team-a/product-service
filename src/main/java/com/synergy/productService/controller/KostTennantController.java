@@ -223,6 +223,9 @@ public class KostTennantController {
             if(!kost.isPresent()){
                 return new ResponseEntity<>(res.clientError("kost doesn't exist"), HttpStatus.BAD_REQUEST);
             }
+            if(room.getQuantityRoom()< room.getAvailableRoom()){
+                return new ResponseEntity<>(res.clientError("quantity room must be greater or equal than available room"), HttpStatus.BAD_REQUEST);
+            }
 
             Room roomInstance = new Room();
             roomInstance.setRoomName(room.getRoomName());
@@ -328,6 +331,9 @@ public class KostTennantController {
             Room roomInstance = roomRepo.checkExistingRoomId(roomId);
             if (roomInstance == null) {
                 return new ResponseEntity<>(res.notFoundError("kost doesn't exist"), HttpStatus.NOT_FOUND);
+            }
+            if(room.getQuantityRoom()< room.getAvailableRoom()){
+                return new ResponseEntity<>(res.clientError("quantity room must be greater or equal than available room"), HttpStatus.BAD_REQUEST);
             }
 
             roomInstance.setRoomName(room.getRoomName());
