@@ -136,6 +136,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tk.kost_type_mixed,\n" +
             "\tk.kost_type_woman,\n" +
             "\tk.front_building_photo, \n" +
+            "\tk.front_farbuilding_photo, \n" +
             "\tk.province,\n" +
             "\tk.description,\n" +
             "--fasilitas kost 12 \n" +
@@ -153,6 +154,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tk.wifi, \n" +
             "\tr.room_name,\n" +
             "\tr.inside_room_photo,\n" +
+            "\tr.other_room_photo,\n" +
             "--\tfacility\n" +
             "\tf.*,\n" +
             "\tr.available_room,\n" +
@@ -197,6 +199,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tk.kost_type_mixed,\n" +
             "\tk.kost_type_woman,\n" +
             "\tk.front_building_photo, \n" +
+            "\tk.front_farbuilding_photo, \n" +
             "\tk.province,\n" +
             "\tk.description,\n" +
             "--fasilitas kost 12 \n" +
@@ -214,6 +217,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
             "\tk.wifi, \n" +
             "\tr.room_name,\n" +
             "\tr.inside_room_photo,\n" +
+            "\tr.other_room_photo,\n" +
             "--\tfacility\n" +
             "\tf.*,\n" +
             "\tr.available_room,\n" +

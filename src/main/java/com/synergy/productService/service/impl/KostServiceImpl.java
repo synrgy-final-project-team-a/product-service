@@ -228,6 +228,7 @@ public class KostServiceImpl implements KostService {
             itemRoom.put("room_name", response.get("room_name"));
             itemRoom.put("price", response.get("price"));
             itemRoom.put("inside_room_photo", response.get("inside_room_photo"));
+            itemRoom.put("other_room_photo", response.get("other_room_photo"));
             itemRoom.put("duration_type", response.get("duration_type"));
             itemRoom.put("available_room", response.get("available_room"));
             itemRoom.put("size_room", response.get("size_room"));
@@ -258,6 +259,7 @@ public class KostServiceImpl implements KostService {
             itemKost.put("kost_type_mixed", response.get("kost_type_mixed"));
             itemKost.put("kost_type_woman", response.get("kost_type_woman"));
             itemKost.put("front_building_photo", response.get("front_building_photo"));
+            itemKost.put("front_farbuilding_photo", response.get("front_farbuilding_photo"));
             // Add province and description
             itemKost.put("province", response.get("province"));
             itemKost.put("description", response.get("description"));
@@ -314,6 +316,7 @@ public class KostServiceImpl implements KostService {
             itemRoom.put("room_name", response.get("room_name"));
             itemRoom.put("price", response.get("price"));
             itemRoom.put("inside_room_photo", response.get("inside_room_photo"));
+            itemRoom.put("other_room_photo", response.get("other_room_photo"));
             itemRoom.put("duration_type", response.get("duration_type"));
             itemRoom.put("available_room", response.get("available_room"));
             itemRoom.put("size_room", response.get("size_room"));
@@ -344,6 +347,7 @@ public class KostServiceImpl implements KostService {
             itemKost.put("kost_type_mixed", response.get("kost_type_mixed"));
             itemKost.put("kost_type_woman", response.get("kost_type_woman"));
             itemKost.put("front_building_photo", response.get("front_building_photo"));
+            itemKost.put("front_farbuilding_photo", response.get("front_farbuilding_photo"));
             // Add province and description
             itemKost.put("province", response.get("province"));
             itemKost.put("description", response.get("description"));
