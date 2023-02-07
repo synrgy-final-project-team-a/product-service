@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -173,6 +174,8 @@ public class KostServiceImpl implements KostService {
     @Override
     public List<Map<String, Object>> getKostByFilterAndSortAndArea(FilterSortModel filterSortModel,
                                                                    Pageable pageable) {
+
+
         return kostRepo.getKostByFilterSortAndAreaWithPagination(filterSortModel.getAc(), filterSortModel.getPillow(),
                 filterSortModel.getFan(), filterSortModel.getFurniture(), filterSortModel.getShower(), filterSortModel.getSitting_closet(), filterSortModel.getSpringbed(),
                 filterSortModel.getTable_learning(), filterSortModel.getWater_heater(), filterSortModel.getInside_bathroom(), filterSortModel.getNon_sitting_closet(),
@@ -203,6 +206,7 @@ public class KostServiceImpl implements KostService {
             itemKost.put("kost_name", item.get("kost_name"));
             itemKost.put("kost_id", item.get("kost_id"));
 
+
             location.add(itemLoc);
             kost.add(itemKost);
         }
@@ -232,6 +236,7 @@ public class KostServiceImpl implements KostService {
             itemRoom.put("duration_type", response.get("duration_type"));
             itemRoom.put("available_room", response.get("available_room"));
             itemRoom.put("size_room", response.get("size_room"));
+            itemRoom.put("room_id", response.get("room_id"));
 
             //facility room 15
             itemRoom.put("ac", response.get("ac"));
