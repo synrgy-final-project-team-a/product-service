@@ -36,99 +36,99 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
         @Query(value = "SELECT * FROM kost k WHERE k.profile_id = :profileId", nativeQuery = true)
         public Page<Kost> getListDataTennant(@Param("profileId") Long profileId, Pageable pageable);
 
-        @Query(nativeQuery = true, value = "select k.kost_id, k.kost_name, k.city, k.address, k.province, k.kost_type_man, k.kost_type_mixed, k.kost_type_woman, k.front_building_photo, r.room_id, price.price, price.duration_type\n" +
-                                        "\tfrom\n" +
-                                        "\tkost k\n" +
-                                        "\tinner join room r on k.kost_id = r.kost_id\n" +
-                                        "\tand r.deleted_at is null\n" +
-                                        "\tand r.enabled = true\n" +
-                                        "\tand r.room_id = (\n" +
-                                        "\tselect ro.room_id from room ro, price pri where ro.room_id = pri.room_id and ro.kost_id = k.kost_id and pri.price = (\n" +
-                                        "\tselect min(pric.price) from room rom, price pric where rom.room_id = pric.room_id and rom.kost_id = k.kost_id and pric.duration_type = :duration_type\n" +
-                                        "\t) LIMIT 1\n" +
-                                        "\t)\n" +
-                                        "\tleft join (\n" +
-                                        "\tselect room_id, min(price_id) as price_id from price where deleted_at is null and duration_type = :duration_type group by room_id\n" +
-                                        "\t) pr on pr.room_id = r.room_id\n" +
-                                        "\tleft join price on price.price_id = pr.price_id\n" +
-                                        "\tleft join facility fa on fa.facility_id = r.facility_id\n" +
-                                        "\tand fa.deleted_at is null\n" +
-                                        "\twhere\n" +
-                                        "\tk.deleted_at is null\n" +
-                                        "\tand k.enabled is true\n" +
-                                        "\tand (\n" +
-                                        "\tlower(k.province) like (% :province %)\n" +
-                                        "\tand lower(k.city) like (% :city %)\n" +
-                                        "\tand (\n" +
-                                        "\tpr.price between :price_minimum\n" +
-                                        "\tand :price_maximum\n" +
-                                        "\t)\n" +
-                                        "\t)\n" +
-                                        "\tand (\n" +
-                                        "\t(fa.ac = :ac or :ac = '')\n" +
-                                        "\tand (fa.pillow = :pillow or :pillow = '')\n" +
-                                        "\tand (fa.fan = :fan  or :fan = '')\n" +
-                                        "\tand (fa.furniture = :furniture or :furniture = '')\n" +
-                                        "\tand (fa.shower = :shower or :shower = '')\n" +
-                                        "\tand (fa.sitting_closet = :sitting_closet or :sitting_closet = '')\n" +
-                                        "\tand (fa.springbed = :springbed or :springbed = '')\n" +
-                                        "\tand (fa.table_learning = :table_learning or :table_learning = '')\n" +
-                                        "\tand (fa.water_heater = :water_heater or :water_heater = '')\n" +
-                                        "\tand (fa.inside_bathroom = :inside_bathroom or :inside_bathroom = '')\n" +
-                                        "\tand (fa.non_sitting_closet = :non_sitting_closet or :non_sitting_closet = '')\n" +
-                                        "\tand (fa.outside_bathroom = :outside_bathroom or :outside_bathroom = '' )\n" +
-                                        "\tand (fa.windows = :windows or :windows = '')\n" +
-                                        "\tand (fa.room_tv = :room_tv or :room_tv = '')\n" +
-                                        "\tand (k.kost_tv = :kost_tv or :kost_tv = '')\n" +
-                                        "\tand (k.electric = :electric or :electric = '')\n" +
-                                        "\tand (k.laundry = :laundry or :laundry = '')\n" +
-                                        "\tand (k.refrigerator = :refrigerator or :refrigerator = '')\n" +
-                                        "\tand (k.water = :water or :water = '')\n" +
-                                        "\tand (k.wifi = :wifi or :wifi = '')\n" +
-                                        "\tand (k.dispenser = :dispenser or :dispenser = '')\n" +
-                                        "\tand (k.drying_ground = :drying_ground or :drying_ground = '')\n" +
-                                        "\tand (k.kitchen = :kitchen or :kitchen = '')\n" +
-                                        "\tand (k.living_room = :living_room or :living_room = '')\n" +
-                                        "\tand (k.parking_car = :parking_car or :parking_car = '')\n" +
-                                        "\tand (k.parking_motorcycle = :parking_motorcycle or :parking_motorcycle = '')\n" +
-                                        "\t)\n" +
-                                        "\tand (\n" +
-                                        "\t(k.kost_type_man = :kost_type_man or :kost_type_man = '')\n" +
-                                        "\tand (k.kost_type_woman = :kost_type_woman or :kost_type_woman = '')\n" +
-                                        "\tand (k.kost_type_mixed = :kost_type_mixed or :kost_type_mixed = '')\n" +
-                                        "\t)")
+        @Query(nativeQuery = true, value = "select k.kost_id, k.kost_name, k.city, k.address, k.province, k.kost_type_man, k.kost_type_mixed, k.kost_type_woman, k.front_building_photo, r.room_id, price.price, price.duration_type\n " +
+                        "\tfrom\n " +
+                        "\tkost k\n " +
+                        "\tinner join room r on k.kost_id = r.kost_id\n " +
+                        "\tand r.deleted_at is null\n " +
+                        "\tand r.enabled = true\n " +
+                        "\tand r.room_id = (\n " +
+                        "\tselect ro.room_id from room ro, price pri where ro.room_id = pri.room_id and ro.kost_id = k.kost_id and pri.price = (\n " +
+                        "\tselect min(pric.price) from room rom, price pric where rom.room_id = pric.room_id and rom.kost_id = k.kost_id and pric.duration_type = :duration_type\n " +
+                        "\t) LIMIT 1\n " +
+                        "\t)\n " +
+                        "\tleft join (\n " +
+                        "\tselect room_id, min(price_id) as price_id from price where deleted_at is null and duration_type = :duration_type group by room_id\n " +
+                        "\t) pr on pr.room_id = r.room_id\n " +
+                        "\tleft join price on price.price_id = pr.price_id\n " +
+                        "\tleft join facility fa on fa.facility_id = r.facility_id\n " +
+                        "\tand fa.deleted_at is null\n " +
+                        "\twhere\n " +
+                        "\tk.deleted_at is null\n " +
+                        "\tand k.enabled is true\n " +
+                        "\tand (\n " +
+                        "\tlower(k.province) like concat('%',:province,'%')\n " +
+                        "\tand lower(k.city) like concat('%',:city,'%')\n " +
+                        "\tand (\n " +
+                        "\tprice.price between :price_minimum\n " +
+                        "\tand :price_maximum\n " +
+                        "\t)\n " +
+                        "\t)\n " +
+                        "\tand (\n " +
+                        "\t(fa.ac = :ac or :ac = false)\n " +
+                        "\tand (fa.pillow = :pillow or :pillow = false)\n " +
+                        "\tand (fa.fan = :fan  or :fan = false)\n " +
+                        "\tand (fa.furniture = :furniture or :furniture = false)\n " +
+                        "\tand (fa.shower = :shower or :shower = false)\n " +
+                        "\tand (fa.sitting_closet = :sitting_closet or :sitting_closet = false)\n " +
+                        "\tand (fa.springbed = :springbed or :springbed = false)\n " +
+                        "\tand (fa.table_learning = :table_learning or :table_learning = false)\n " +
+                        "\tand (fa.water_heater = :water_heater or :water_heater = false)\n " +
+                        "\tand (fa.inside_bathroom = :inside_bathroom or :inside_bathroom = false)\n " +
+                        "\tand (fa.non_sitting_closet = :non_sitting_closet or :non_sitting_closet = false)\n " +
+                        "\tand (fa.outside_bathroom = :outside_bathroom or :outside_bathroom = false )\n " +
+                        "\tand (fa.windows = :windows or :windows = false)\n " +
+                        "\tand (fa.room_tv = :room_tv or :room_tv = false)\n " +
+                        "\tand (k.kost_tv = :kost_tv or :kost_tv = false)\n " +
+                        "\tand (k.electric = :electric or :electric = false)\n " +
+                        "\tand (k.laundry = :laundry or :laundry = false)\n " +
+                        "\tand (k.refrigerator = :refrigerator or :refrigerator = false)\n " +
+                        "\tand (k.water = :water or :water = false)\n " +
+                        "\tand (k.wifi = :wifi or :wifi = false)\n " +
+                        "\tand (k.dispenser = :dispenser or :dispenser = false)\n " +
+                        "\tand (k.drying_ground = :drying_ground or :drying_ground = false)\n " +
+                        "\tand (k.kitchen = :kitchen or :kitchen = false)\n " +
+                        "\tand (k.living_room = :living_room or :living_room = false)\n " +
+                        "\tand (k.parking_car = :parking_car or :parking_car = false)\n " +
+                        "\tand (k.parking_motorcycle = :parking_motorcycle or :parking_motorcycle = false)\n " +
+                        "\t)\n " +
+                        "\tand (\n " +
+                        "\t(k.kost_type_man = :kost_type_man or :kost_type_man = false)\n " +
+                        "\tand (k.kost_type_woman = :kost_type_woman or :kost_type_woman = false)\n " +
+                        "\tand (k.kost_type_mixed = :kost_type_mixed or :kost_type_mixed = false)\n " +
+                        "\t)")
         List<Map<String, Object>> getKostByFilterSortAndAreaWithPagination(@Param("ac") Boolean ac,
-                        @Param("pillow") String pillow,
-                        @Param("fan") String fan,
-                        @Param("furniture") String furniture,
-                        @Param("shower") String shower,
-                        @Param("sitting_closet") String sittingCloset,
-                        @Param("springbed") String springbed,
-                        @Param("table_learning") String table,
-                        @Param("water_heater") String waterHeater,
-                        @Param("inside_bathroom") String insideBathroom,
-                        @Param("non_sitting_closet") String nonSittingCloset,
-                        @Param("outside_bathroom") String outsideBathroom,
-                        @Param("windows") String windows,
-                        @Param("room_tv") String roomTv,
-                        @Param("kost_type_man") String kostTypeMan,
-                        @Param("kost_type_woman") String kostTypeWoman,
-                        @Param("kost_type_mixed") String kostTypeMixed,
+                        @Param("pillow") Boolean pillow,
+                        @Param("fan") Boolean fan,
+                        @Param("furniture") Boolean furniture,
+                        @Param("shower") Boolean shower,
+                        @Param("sitting_closet") Boolean sittingCloset,
+                        @Param("springbed") Boolean springbed,
+                        @Param("table_learning") Boolean table,
+                        @Param("water_heater") Boolean waterHeater,
+                        @Param("inside_bathroom") Boolean insideBathroom,
+                        @Param("non_sitting_closet") Boolean nonSittingCloset,
+                        @Param("outside_bathroom") Boolean outsideBathroom,
+                        @Param("windows") Boolean windows,
+                        @Param("room_tv") Boolean roomTv,
+                        @Param("kost_type_man") Boolean kostTypeMan,
+                        @Param("kost_type_woman") Boolean kostTypeWoman,
+                        @Param("kost_type_mixed") Boolean kostTypeMixed,
                         @Param("duration_type") String durationType,
                         @Param("price_minimum") Double priceMinimum,
                         @Param("price_maximum") Double priceMaximum,
-                        @Param("kost_tv") String kostTv,
-                        @Param("electric") String electric,
-                        @Param("laundry") String laundry,
-                        @Param("refrigerator") String refrigerator,
-                        @Param("water") String water,
-                        @Param("wifi") String wifi,
-                        @Param("dispenser") String dispenser,
-                        @Param("drying_ground") String dryingGround,
-                        @Param("kitchen") String kitchen,
-                        @Param("living_room") String livingRoom,
-                        @Param("parking_car") String parkingCar,
-                        @Param("parking_motorcycle") String parkingMotorcycle,
+                        @Param("kost_tv") Boolean kostTv,
+                        @Param("electric") Boolean electric,
+                        @Param("laundry") Boolean laundry,
+                        @Param("refrigerator") Boolean refrigerator,
+                        @Param("water") Boolean water,
+                        @Param("wifi") Boolean wifi,
+                        @Param("dispenser") Boolean dispenser,
+                        @Param("drying_ground") Boolean dryingGround,
+                        @Param("kitchen") Boolean kitchen,
+                        @Param("living_room") Boolean livingRoom,
+                        @Param("parking_car") Boolean parkingCar,
+                        @Param("parking_motorcycle") Boolean parkingMotorcycle,
                         @Param("province") String province,
                         @Param("city") String city, Pageable pageable);
 
