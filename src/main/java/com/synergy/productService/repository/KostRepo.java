@@ -16,7 +16,7 @@ import java.util.Map;
 @Repository
 public interface KostRepo extends JpaRepository<Kost, Long> {
 
-        @Query(value = "SELECT count(profile_id) FROM kost k WHERE k.profile_id = :profileId", nativeQuery = true)
+        @Query(value = "SELECT count(profile_id) FROM kost k WHERE k.profile_id = :profileId AND k.deleted_at is null", nativeQuery = true)
         Integer checkExistingProfileId(Long profileId);
 
         // List<Kost> findByProfileId(Long profilepId);
@@ -27,56 +27,76 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
         @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :kost_id AND k.enabled = true", nativeQuery = true)
         Kost checkExistingKostId(@Param("kost_id") Long id);
 
-        @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :kost_id", nativeQuery = true)
+        @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :kost_id AND k.deleted_at is null", nativeQuery = true)
         Kost checkExistingKostIdAdmin(@Param("kost_id") Long id);
 
-        @Query(value = "select * from kost k where k.enabled = :enabled", nativeQuery = true)
+        @Query(value = "select * from kost k where k.enabled = :enabled AND k.deleted_at is null", nativeQuery = true)
         public Page<Kost> getListDataAdmin(@Param("enabled") Boolean enabled, Pageable pageable);
 
-        @Query(value = "SELECT * FROM kost k WHERE k.profile_id = :profileId", nativeQuery = true)
+        @Query(value = "SELECT * FROM kost k WHERE k.profile_id = :profileId AND k.deleted_at is null", nativeQuery = true)
         public Page<Kost> getListDataTennant(@Param("profileId") Long profileId, Pageable pageable);
 
-        @Query(nativeQuery = true, value = "select k.kost_id, k.kost_name, k.city, k.address, k.province, pr.price, pr.duration_type, k.kost_type_man,\n"
-                        +
-                        "k.kost_type_mixed , k.kost_type_woman, k.front_building_photo  from kost k\t " +
-                        "\tleft join room r on k.kost_id = r.kost_id and r.deleted_at is null and r.enabled = true\n" +
-                        "\tleft join facility fa on fa.facility_id = r.facility_id and fa.deleted_at is null\n" +
-                        "\tleft join price pr on  pr.room_id = r.room_id and pr.deleted_at is null\n" +
-                        "\twhere k.deleted_at is null \n" +
-                        "\tand k.enabled is true \n" +
-                        "\tand (lower(k.province) like (%:province%) \n" +
-                        "\tand lower(k.city)  like (%:city%) \n" +
-                        "\tand (pr.price between :price_minimum and :price_maximum)) \n" +
-                        "\tor ( (fa.ac = :ac) \n" +
-                        "\tor (fa.pillow = :pillow)  \n" +
-                        "\tor (fa.fan = :fan) \n" +
-                        "\tor (fa.furniture = :furniture) \n" +
-                        "\tor (fa.shower = :shower) \n" +
-                        "\tor (fa.sitting_closet = :sitting_closet) \n" +
-                        "\tor (fa.springbed = :springbed) \n" +
-                        "\tor (fa.table_learning = :table_learning) \n" +
-                        "\tor (fa.water_heater = :water_heater) \n" +
-                        "\tor (fa.inside_bathroom = :inside_bathroom) \n" +
-                        "\tor (fa.non_sitting_closet = :non_sitting_closet)\n" +
-                        "\tor (fa.outside_bathroom = :outside_bathroom) \n" +
-                        "\tor (fa.windows = :windows) \n" +
-                        "\tor (fa.room_tv = :room_tv) \n" +
-                        "\tor (k.kost_tv = :kost_tv) \n" +
-                        "\tor (k.electric = :electric) \n" +
-                        "\tor (k.laundry = :laundry) \n" +
-                        "\tor (k.refrigerator = :refrigerator) \n" +
-                        "\tor (k.water = :water) \n" +
-                        "\tor (k.wifi = :wifi) \n" +
-                        "\tor (k.dispenser = :dispenser) \n" +
-                        "\tor (k.drying_ground = :drying_ground) \n" +
-                        "\tor (k.kitchen = :kitchen) \n" +
-                        "\tor (k.living_room = :living_room) \n" +
-                        "\tor (k.parking_car = :parking_car) \n" +
-                        "\tor (k.parking_motorcycle = :parking_motorcycle))\n" +
-                        "\tand (pr.duration_type = :duration_type) \n" +
-                        "\tand ((k.kost_type_man = :kost_type_man) \n" +
-                        "\tand (k.kost_type_woman = :kost_type_woman) \n" +
-                        "\tand (k.kost_type_mixed = :kost_type_mixed))")
+        @Query(nativeQuery = true, value = "select k.kost_id, k.kost_name, k.city, k.address, k.province, k.kost_type_man, k.kost_type_mixed, k.kost_type_woman, k.front_building_photo, r.room_id, pr.price, pr.duration_type\n " +
+                        "\tfrom\n " +
+                        "\tkost k\n " +
+                        "\tinner join room r on k.kost_id = r.kost_id\n " +
+                        "\tand r.deleted_at is null\n " +
+                        "\tand r.enabled = true\n " +
+                        "\tand r.room_id = (\n " +
+                        "\tselect ro.room_id from room ro, price pri where ro.room_id = pri.room_id and ro.kost_id = k.kost_id and pri.price = (\n " +
+                        "\tselect min(pric.price) from room rom, price pric where rom.room_id = pric.room_id and rom.kost_id = k.kost_id and pric.duration_type = :duration_type\n " +
+                        "\t) LIMIT 1\n " +
+                        "\t)\n " +
+                        "\tleft join (\n " +
+                        "\tselect room_id, min(price_id) as price_id from price where deleted_at is null and duration_type = :duration_type group by room_id\n " +
+                        "\t) price on price.room_id = r.room_id\n " +
+                        "\tleft join price pr on price.price_id = pr.price_id\n " +
+                        "\tleft join facility fa on fa.facility_id = r.facility_id\n " +
+                        "\tand fa.deleted_at is null\n " +
+                        "\twhere\n " +
+                        "\tk.deleted_at is null\n " +
+                        "\tand k.enabled is true\n " +
+                        "\tand ((\n " +
+                        "\tlower(k.province) like concat('%',:province,'%')\n " +
+                        "\tand lower(k.city) like concat('%',:city,'%'))\n " +
+                        "\tand (\n " +
+                        "\tpr.price between :price_minimum\n " +
+                        "\tand :price_maximum\n " +
+                        "\t)\n " +
+                        "\t)\n " +
+                        "\tand (\n " +
+                        "\t(fa.ac = :ac or :ac = false)\n " +
+                        "\tand (fa.pillow = :pillow or :pillow = false)\n " +
+                        "\tand (fa.fan = :fan  or :fan = false)\n " +
+                        "\tand (fa.furniture = :furniture or :furniture = false)\n " +
+                        "\tand (fa.shower = :shower or :shower = false)\n " +
+                        "\tand (fa.sitting_closet = :sitting_closet or :sitting_closet = false)\n " +
+                        "\tand (fa.springbed = :springbed or :springbed = false)\n " +
+                        "\tand (fa.table_learning = :table_learning or :table_learning = false)\n " +
+                        "\tand (fa.water_heater = :water_heater or :water_heater = false)\n " +
+                        "\tand (fa.inside_bathroom = :inside_bathroom or :inside_bathroom = false)\n " +
+                        "\tand (fa.non_sitting_closet = :non_sitting_closet or :non_sitting_closet = false)\n " +
+                        "\tand (fa.outside_bathroom = :outside_bathroom or :outside_bathroom = false )\n " +
+                        "\tand (fa.windows = :windows or :windows = false)\n " +
+                        "\tand (fa.room_tv = :room_tv or :room_tv = false)\n " +
+                        "\tand (k.kost_tv = :kost_tv or :kost_tv = false)\n " +
+                        "\tand (k.electric = :electric or :electric = false)\n " +
+                        "\tand (k.laundry = :laundry or :laundry = false)\n " +
+                        "\tand (k.refrigerator = :refrigerator or :refrigerator = false)\n " +
+                        "\tand (k.water = :water or :water = false)\n " +
+                        "\tand (k.wifi = :wifi or :wifi = false)\n " +
+                        "\tand (k.dispenser = :dispenser or :dispenser = false)\n " +
+                        "\tand (k.drying_ground = :drying_ground or :drying_ground = false)\n " +
+                        "\tand (k.kitchen = :kitchen or :kitchen = false)\n " +
+                        "\tand (k.living_room = :living_room or :living_room = false)\n " +
+                        "\tand (k.parking_car = :parking_car or :parking_car = false)\n " +
+                        "\tand (k.parking_motorcycle = :parking_motorcycle or :parking_motorcycle = false)\n " +
+                        "\t)\n " +
+                        "\tand (\n " +
+                        "\t(k.kost_type_man = :kost_type_man or :kost_type_man = false)\n " +
+                        "\tand (k.kost_type_woman = :kost_type_woman or :kost_type_woman = false)\n " +
+                        "\tand (k.kost_type_mixed = :kost_type_mixed or :kost_type_mixed = false)\n " +
+                        "\t)")
         List<Map<String, Object>> getKostByFilterSortAndAreaWithPagination(@Param("ac") Boolean ac,
                         @Param("pillow") Boolean pillow,
                         @Param("fan") Boolean fan,
@@ -174,7 +194,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "left join price pr on pr.room_id = r.room_id and pr.deleted_at is null \n" +
                         "left join facility f on f.facility_id = r.facility_id and f.deleted_at is null\n" +
                         "left join kost_rule kr on kr.kost_id = k.kost_id \n" +
-                        "left join \"rule\" r2 on r2.rule_id = kr.rule_id \n" +
+                        "left join \"rule\" r2 on r2.rule_id = k.rule_id \n" +
                         "where k.deleted_at is null\n" +
                         "and pr.duration_type = 'MONTHLY'\n" +
                         "and k.enabled = true\n" +
@@ -235,8 +255,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "left join room r on k.kost_id = r.kost_id and r.deleted_at is null\n" +
                         "left join price pr on pr.room_id = r.room_id and pr.deleted_at is null \n" +
                         "left join facility f on f.facility_id = r.facility_id and f.deleted_at is null\n" +
-                        "left join kost_rule kr on kr.kost_id = k.kost_id \n" +
-                        "left join \"rule\" r2 on r2.rule_id = kr.rule_id \n" +
+                        "left join \"rule\" r2 on r2.rule_id = k.rule_id \n" +
                         "where k.deleted_at is null\n" +
                         "and pr.duration_type = 'MONTHLY'\n" +
                         "and k.kost_id = :kost_id and pr.deleted_at is null\n" +

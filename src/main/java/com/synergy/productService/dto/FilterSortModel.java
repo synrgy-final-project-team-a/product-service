@@ -40,13 +40,13 @@ public class FilterSortModel {
     @NotNull
     private Boolean room_tv = false;
     @Nullable
-    private Boolean kost_type_man = true;
+    private Boolean kost_type_man = false;
     @Nullable
     private Boolean kost_type_woman = false;
     @Nullable
     private Boolean kost_type_mixed = false;
     @Nullable
-    private String duration_type;
+    private String duration_type = "MONTHLY";
     @Nullable
     private Double price_minimum = 0.0;
     @Nullable
