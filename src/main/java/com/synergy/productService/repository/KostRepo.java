@@ -16,7 +16,7 @@ import java.util.Map;
 @Repository
 public interface KostRepo extends JpaRepository<Kost, Long> {
 
-        @Query(value = "SELECT count(profile_id) FROM kost k WHERE k.profile_id = :profileId", nativeQuery = true)
+        @Query(value = "SELECT count(profile_id) FROM kost k WHERE k.profile_id = :profileId AND k.deleted_at is null", nativeQuery = true)
         Integer checkExistingProfileId(Long profileId);
 
         // List<Kost> findByProfileId(Long profilepId);
@@ -27,16 +27,16 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
         @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :kost_id AND k.enabled = true", nativeQuery = true)
         Kost checkExistingKostId(@Param("kost_id") Long id);
 
-        @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :kost_id", nativeQuery = true)
+        @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :kost_id AND k.deleted_at is null", nativeQuery = true)
         Kost checkExistingKostIdAdmin(@Param("kost_id") Long id);
 
-        @Query(value = "select * from kost k where k.enabled = :enabled", nativeQuery = true)
+        @Query(value = "select * from kost k where k.enabled = :enabled AND k.deleted_at is null", nativeQuery = true)
         public Page<Kost> getListDataAdmin(@Param("enabled") Boolean enabled, Pageable pageable);
 
-        @Query(value = "SELECT * FROM kost k WHERE k.profile_id = :profileId", nativeQuery = true)
+        @Query(value = "SELECT * FROM kost k WHERE k.profile_id = :profileId AND k.deleted_at is null", nativeQuery = true)
         public Page<Kost> getListDataTennant(@Param("profileId") Long profileId, Pageable pageable);
 
-        @Query(nativeQuery = true, value = "select k.kost_id, k.kost_name, k.city, k.address, k.province, k.kost_type_man, k.kost_type_mixed, k.kost_type_woman, k.front_building_photo, r.room_id, price.price, price.duration_type\n " +
+        @Query(nativeQuery = true, value = "select k.kost_id, k.kost_name, k.city, k.address, k.province, k.kost_type_man, k.kost_type_mixed, k.kost_type_woman, k.front_building_photo, r.room_id, pr.price, pr.duration_type\n " +
                         "\tfrom\n " +
                         "\tkost k\n " +
                         "\tinner join room r on k.kost_id = r.kost_id\n " +
@@ -49,18 +49,18 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "\t)\n " +
                         "\tleft join (\n " +
                         "\tselect room_id, min(price_id) as price_id from price where deleted_at is null and duration_type = :duration_type group by room_id\n " +
-                        "\t) pr on pr.room_id = r.room_id\n " +
-                        "\tleft join price on price.price_id = pr.price_id\n " +
+                        "\t) price on price.room_id = r.room_id\n " +
+                        "\tleft join price pr on price.price_id = pr.price_id\n " +
                         "\tleft join facility fa on fa.facility_id = r.facility_id\n " +
                         "\tand fa.deleted_at is null\n " +
                         "\twhere\n " +
                         "\tk.deleted_at is null\n " +
                         "\tand k.enabled is true\n " +
-                        "\tand (\n " +
+                        "\tand ((\n " +
                         "\tlower(k.province) like concat('%',:province,'%')\n " +
-                        "\tand lower(k.city) like concat('%',:city,'%')\n " +
+                        "\tand lower(k.city) like concat('%',:city,'%'))\n " +
                         "\tand (\n " +
-                        "\tprice.price between :price_minimum\n " +
+                        "\tpr.price between :price_minimum\n " +
                         "\tand :price_maximum\n " +
                         "\t)\n " +
                         "\t)\n " +
@@ -194,7 +194,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "left join price pr on pr.room_id = r.room_id and pr.deleted_at is null \n" +
                         "left join facility f on f.facility_id = r.facility_id and f.deleted_at is null\n" +
                         "left join kost_rule kr on kr.kost_id = k.kost_id \n" +
-                        "left join \"rule\" r2 on r2.rule_id = kr.rule_id \n" +
+                        "left join \"rule\" r2 on r2.rule_id = k.rule_id \n" +
                         "where k.deleted_at is null\n" +
                         "and pr.duration_type = 'MONTHLY'\n" +
                         "and k.enabled = true\n" +
@@ -255,8 +255,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "left join room r on k.kost_id = r.kost_id and r.deleted_at is null\n" +
                         "left join price pr on pr.room_id = r.room_id and pr.deleted_at is null \n" +
                         "left join facility f on f.facility_id = r.facility_id and f.deleted_at is null\n" +
-                        "left join kost_rule kr on kr.kost_id = k.kost_id \n" +
-                        "left join \"rule\" r2 on r2.rule_id = kr.rule_id \n" +
+                        "left join \"rule\" r2 on r2.rule_id = k.rule_id \n" +
                         "where k.deleted_at is null\n" +
                         "and pr.duration_type = 'MONTHLY'\n" +
                         "and k.kost_id = :kost_id and pr.deleted_at is null\n" +
