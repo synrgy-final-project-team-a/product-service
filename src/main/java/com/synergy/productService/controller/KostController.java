@@ -52,13 +52,8 @@ public class KostController {
     @GetMapping("/search-keyword")
     public ResponseEntity getAreaAndKostBySearch(@RequestParam(value = "keyword", required = false) String keyword) {
 
-        char[] letter = keyword.toCharArray();
-        for (char c : letter) {
-            if (!Character.isLetterOrDigit(c)) {
-                return new ResponseEntity<>(response.clientError("Keyword must not contain non alphanumeric"), HttpStatus.BAD_REQUEST);
-            }
-        }
-        Map<String, List<Map<String, Object>>> data = kostService.getKostBySearch(keyword);
+        String key = keyword.trim().replaceAll("[\\W]|_", "");
+        Map<String, List<Map<String, Object>>> data = kostService.getKostBySearch(key);
         return new ResponseEntity<Map>(response.resSuccess(data, "Success get list kost", 200), HttpStatus.OK);
     }
 
