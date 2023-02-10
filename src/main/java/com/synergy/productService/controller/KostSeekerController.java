@@ -3,7 +3,6 @@ package com.synergy.productService.controller;
 
 import com.synergy.productService.dto.FavoriteModel;
 import com.synergy.productService.entity.Favorite;
-import com.synergy.productService.entity.Kost;
 import com.synergy.productService.repository.*;
 import com.synergy.productService.service.impl.KostFavoriteServiceImpl;
 import com.synergy.productService.service.impl.KostServiceImpl;
@@ -13,14 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -80,22 +76,30 @@ public class KostSeekerController {
         Map<String, Object> resp = new HashMap<>();
 
         try{
-            Favorite favorite = new Favorite();
-            favorite.setProfile(profileRepo.findById(favoriteModel.getProfileId()).get());
-            favorite.setKost(kostRepo.findById(favoriteModel.getKostId()).get());
-            favoriteRepo.save(favorite);
-            resp.put("data", favorite);
-            resp.put("message", "Kost telah ditambahkan ke dalam favorite");
-            resp.put("status_code", 201);
+           if (favoriteRepo.checkExistingFavoriteKostId(favoriteModel.getKostId()) == 1  &&
+                    favoriteRepo.checkExistingFavoriteProfileId(favoriteModel.getProfileId()) == 1) {
+                return new ResponseEntity(response.clientError("Favorite cannot be duplicated"), HttpStatus.BAD_REQUEST);
+            } else if ( favoriteRepo.checkExistingAndEnabledKostId(favoriteModel.getKostId()) == 0) {
+                return new ResponseEntity<>(response.notFoundError("Kost tidak berhasil ditemukan"), HttpStatus.NOT_FOUND);
+            } else if (favoriteRepo.checkExistingProfileId(favoriteModel.getProfileId()) == 0) {
+                return new ResponseEntity<>(response.notFoundError("Profil tidak berhasil ditemukan"), HttpStatus.NOT_FOUND);
+            }
 
-            return new ResponseEntity<>(resp, HttpStatus.CREATED);
 
         }catch (Exception e) {
-            resp.put("message", "Kost gagal ditambahkan");
-            resp.put("status_code", 400);
             log.error("ERROR has been found! because : {}", e.getMessage());
-            return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response.internalServerError(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        Favorite favorite = new Favorite();
+        favorite.setProfile(profileRepo.findById(favoriteModel.getProfileId()).get());
+        favorite.setKost(kostRepo.findById(favoriteModel.getKostId()).get());
+        favoriteRepo.save(favorite);
+        resp.put("data", favorite);
+        resp.put("message", "Kost telah ditambahkan ke dalam favorite");
+        resp.put("status_code", 201);
+
+        return new ResponseEntity<>(resp, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/kost/favorite/{favoriteId}")

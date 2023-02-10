@@ -24,6 +24,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
         // @Query(value = "SELECT k FROM Kost k WHERE k.id = :id", nativeQuery = false)
         // Kost checkExistingKostId(Long id);
 
+
         @Query(value = "SELECT * FROM kost k WHERE k.kost_id = :kost_id AND k.enabled = true", nativeQuery = true)
         Kost checkExistingKostId(@Param("kost_id") Long id);
 
