@@ -137,9 +137,9 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "from kost k\n" +
                         "where k.deleted_at is null \n" +
                         "and k.enabled = true \n" +
-                        "and k.city ilike %:keyword%\n" +
+                        "and (k.city ilike %:keyword%\n" +
                         "or k.province ilike %:keyword%\n" +
-                        "or k.kost_name ilike %:keyword%")
+                        "or k.kost_name ilike %:keyword%)")
         List<Map<String, Object>> getKostBySearchWithPagination(@Param("keyword") String keyword);
 
         @Query(value = "select distinct \n" +
