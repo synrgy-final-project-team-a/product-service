@@ -207,6 +207,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
 
         @Query(value = "select \n" +
                         "k.kost_id,\n" +
+                        "\tk.year_since,\n" +
                         "\tk.kost_name,\n" +
                         "\tk.city,\n" +
                         "\tk.address,\n" +

@@ -318,6 +318,7 @@ public class KostServiceImpl implements KostService {
             Map<String, Object> itemKost = new HashMap<>();
 
             //Add field room
+            itemRoom.put("year_since", response.get("year_since"));
             itemRoom.put("room_name", response.get("room_name"));
             itemRoom.put("price", response.get("price"));
             itemRoom.put("inside_room_photo", response.get("inside_room_photo"));
