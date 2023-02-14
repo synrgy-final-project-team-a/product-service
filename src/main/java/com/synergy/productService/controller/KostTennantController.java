@@ -447,6 +447,11 @@ public class KostTennantController {
         return new ResponseEntity<Map>(kostServiceImpl.getKostByIdTennantAdmin(id), HttpStatus.OK);
     }
 
+    @GetMapping(value = {"/room/get/{id}"})
+    public ResponseEntity<Map> getRoomById(@PathVariable(value = "id") Long id){
+        return new ResponseEntity<Map>(kostServiceImpl.getRoomByIdTennantAdmin(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/room/{id}")
     public ResponseEntity<Map<String, Object>> deleteRoomById(@PathVariable Long id) {
         try{

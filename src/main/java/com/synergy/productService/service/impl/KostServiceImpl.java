@@ -392,6 +392,57 @@ public class KostServiceImpl implements KostService {
         resp.put("room", room);
         resp.put("kost", kost);
         return resp;
+    }
+
+    @Override
+    public Map<String, List<Map<String, Object>>> getRoomByIdTennantAdmin(Long id) {
+        List<Map<String, Object>> data = roomRepo.getRoomByIdAdmin(id);
+        Map<String, List<Map<String, Object>>> resp = new HashMap<>();
+        List<Map<String, Object>> room = new ArrayList<>();
+        List<Map<String, Object>> price = new ArrayList<>();
+
+        for (Map<String, Object> response : data) {
+            Map<String, Object> itemRoom = new HashMap<>();
+            Map<String, Object> itemPrice = new HashMap<>();
+
+            // General Room
+            itemRoom.put("room_id", response.get("room_id"));
+            itemRoom.put("room_name", response.get("room_name"));
+            itemRoom.put("inside_room_photo", response.get("inside_room_photo"));
+            itemRoom.put("other_room_photo", response.get("other_room_photo"));
+            itemRoom.put("quantity_room", response.get("quantity_room"));
+            itemRoom.put("available_room", response.get("available_room"));
+            itemRoom.put("size_room", response.get("size_room"));
+
+            // Facility Room
+            itemRoom.put("ac", response.get("ac"));
+            itemRoom.put("chair", response.get("chair"));
+            itemRoom.put("fan", response.get("fan"));
+            itemRoom.put("furniture", response.get("furniture"));
+            itemRoom.put("inside_bathroom", response.get("inside_bathroom"));
+            itemRoom.put("non_sitting_closet", response.get("non_sitting_closet"));
+            itemRoom.put("outside_bathroom", response.get("outside_bathroom"));
+            itemRoom.put("pillow", response.get("pillow"));
+            itemRoom.put("room_tv", response.get("room_tv"));
+            itemRoom.put("shower", response.get("shower"));
+            itemRoom.put("sitting_closet", response.get("sitting_closet"));
+            itemRoom.put("springbed", response.get("springbed"));
+            itemRoom.put("table_learning", response.get("table_learning"));
+            itemRoom.put("water_heater", response.get("water_heater"));
+            itemRoom.put("windows", response.get("windows"));
+
+            // Room Price
+            itemPrice.put("price_id", response.get("price_id"));
+            itemPrice.put("duration_type", response.get("duration_type"));
+            itemPrice.put("price", response.get("price"));
+
+            room.add(itemRoom);
+            price.add(itemPrice);
+        }
+
+        resp.put("room", room);
+        resp.put("price", price);
+        return resp;
 
     }
 
