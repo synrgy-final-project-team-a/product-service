@@ -319,10 +319,8 @@ public class KostServiceImpl implements KostService {
 
             //Add field room
             itemRoom.put("room_name", response.get("room_name"));
-            itemRoom.put("price", response.get("price"));
             itemRoom.put("inside_room_photo", response.get("inside_room_photo"));
             itemRoom.put("other_room_photo", response.get("other_room_photo"));
-            itemRoom.put("duration_type", response.get("duration_type"));
             itemRoom.put("available_room", response.get("available_room"));
             itemRoom.put("size_room", response.get("size_room"));
 

@@ -211,8 +211,6 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "\tk.kost_name,\n" +
                         "\tk.city,\n" +
                         "\tk.address,\n" +
-                        "\tpr.price,\n" +
-                        "\tpr.duration_type,\n" +
                         "\tk.kost_type_man,\n" +
                         "\tk.kost_type_mixed,\n" +
                         "\tk.kost_type_woman,\n" +
@@ -255,14 +253,10 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "\tfrom\n" +
                         "\t kost k \n" +
                         "left join room r on k.kost_id = r.kost_id and r.deleted_at is null\n" +
-                        "left join price pr on pr.room_id = r.room_id and pr.deleted_at is null \n" +
                         "left join facility f on f.facility_id = r.facility_id and f.deleted_at is null\n" +
                         "left join \"rule\" r2 on r2.rule_id = k.rule_id \n" +
                         "where k.deleted_at is null\n" +
-                        "and pr.duration_type = 'MONTHLY'\n" +
-                        "and k.kost_id = :kost_id and pr.deleted_at is null\n" +
-                        "order by \n" +
-                        "pr.price asc", nativeQuery = true)
+                        "and k.kost_id = :kost_id", nativeQuery = true)
         List<Map<String, Object>> getKostByIdAdmin(@Param(value = "kost_id") Long id);
 
 }
