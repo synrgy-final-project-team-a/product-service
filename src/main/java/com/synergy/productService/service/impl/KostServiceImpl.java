@@ -318,7 +318,6 @@ public class KostServiceImpl implements KostService {
             Map<String, Object> itemKost = new HashMap<>();
 
             //Add field room
-            itemRoom.put("year_since", response.get("year_since"));
             itemRoom.put("room_name", response.get("room_name"));
             itemRoom.put("price", response.get("price"));
             itemRoom.put("inside_room_photo", response.get("inside_room_photo"));
@@ -345,6 +344,7 @@ public class KostServiceImpl implements KostService {
             itemRoom.put("windows", response.get("windows"));
 
             //Add kost field
+            itemKost.put("year_since", response.get("year_since"));
             itemKost.put("kost_id", response.get("kost_id"));
             itemKost.put("kost_name", response.get("kost_name"));
             itemKost.put("city", response.get("city"));
