@@ -1,10 +1,13 @@
 package com.synergy.productService.repository;
 
-import com.synergy.productService.entity.Kost;
 import com.synergy.productService.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface RoomRepo extends JpaRepository<Room, Long> {
@@ -33,5 +36,5 @@ public interface RoomRepo extends JpaRepository<Room, Long> {
                 "where\n" +
                 "r.deleted_at is null\n" +
                 "and r.room_id = :room_id", nativeQuery = true)
-        List<Map<String, Object>> getRoomByIdAdmin(@Param(value = "room_id") Long id);
+    List<Map<String, Object>> getRoomByIdAdmin(@Param(value = "room_id") Long id);
 }
