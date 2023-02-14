@@ -236,6 +236,7 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "\tr.other_room_photo,\n" +
                         "--\tfacility\n" +
                         "\tf.*,\n" +
+                        "\tr.room_id,\n" +
                         "\tr.quantity_room,\n" +
                         "\tr.available_room,\n" +
                         "\tr.size_room,\n" +
