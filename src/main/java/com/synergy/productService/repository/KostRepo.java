@@ -194,7 +194,6 @@ public interface KostRepo extends JpaRepository<Kost, Long> {
                         "left join kost k on k.kost_id = r.kost_id and r.deleted_at is null\n" +
                         "left join price pr on pr.room_id = r.room_id and pr.deleted_at is null \n" +
                         "left join facility f on f.facility_id = r.facility_id and f.deleted_at is null\n" +
-                        "left join kost_rule kr on kr.kost_id = k.kost_id \n" +
                         "left join \"rule\" r2 on r2.rule_id = k.rule_id \n" +
                         "where k.deleted_at is null\n" +
                         "and pr.duration_type = 'MONTHLY'\n" +
